@@ -1,6 +1,6 @@
 # Daydreams
 
-Daydreams is a generative agent library for playing anything onchain. It is chain agnostic and can be used to play any onchain game by simply injecting context. Base, Solana, Ethereum, Starknet, etc.
+Daydreams is a generative agent library for playing anything onchain. It is chain agnostic and can be used to play anything onchain by simply injecting context. Base, Solana, Ethereum, Starknet, etc.
 
 You can drop daydreams into Eliza or any typescript agent framework via their plugin system.
 
