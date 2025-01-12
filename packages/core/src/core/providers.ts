@@ -102,11 +102,19 @@ export async function executeEvmTransaction(
     const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 
     // Create contract instance
+    if (!transaction.abi) {
+      throw new Error('Contract ABI is required');
+    }
+    
     const contract = new ethers.Contract(
       transaction.contractAddress,
-      ["function " + transaction.method + "(...)"], // You might want to pass ABI instead
+      transaction.abi,
       wallet
     );
+
+    if (!contract[transaction.method]) {
+      throw new Error(`Method ${transaction.method} not found in contract ABI`);
+    }
 
     // Prepare transaction options
     const txOptions = {
