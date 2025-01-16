@@ -3,51 +3,53 @@ export interface BaseIO {
 }
 
 // generic input type
-export interface Input<TContent extends BaseIO> {
+export interface Input<TPayload extends BaseIO> {
   name: string;
-  content: TContent;
+  payload: TPayload;
 }
 
 // generic output type
-export interface Output<TInput extends BaseIO, TContent extends BaseIO> {
+export interface Output<TInput extends BaseIO, TPayload extends BaseIO> {
   input: Input<TInput>;
-  content: TContent | null;
+  payload: TPayload | null;
   error?: Error;
 }
 
 // Generic ProcessorFn type
-export type ProcessorFn<TInput extends BaseIO, TOutput extends BaseIO> = (
+export type ProcessorFn<TInput extends BaseIO, TPayload extends BaseIO> = (
   input: Input<TInput>,
-) => Promise<Output<TInput, TOutput>>;
+) => Promise<Output<TInput, TPayload>>;
 
 // Base Processor interface that works with any message type
-export interface Processor<TInput extends BaseIO, TOutput extends BaseIO> {
+export interface Processor<TInput extends BaseIO, TPayload extends BaseIO> {
   handle(
     input: Input<TInput>,
-    next: ProcessorFn<TInput, TOutput>,
-  ): Promise<Output<TInput, TOutput>>;
+    next: ProcessorFn<TInput, TPayload>,
+  ): Promise<Output<TInput, TPayload>>;
 }
 
-export class Core<TInput extends BaseIO, TOutput extends BaseIO> {
-  private processors: Processor<TInput, TOutput>[] = [];
+export class Core<TInput extends BaseIO, TPayload extends BaseIO> {
+  private processors: Processor<TInput, TPayload>[] = [];
 
-  public registerProcessor(processor: Processor<TInput, TOutput>) {
+  public registerProcessor(processor: Processor<TInput, TPayload>) {
     this.processors.push(processor);
   }
 
-  public async process(input: Input<TInput>): Promise<Output<TInput, TOutput>> {
+  public async process(
+    input: Input<TInput>,
+  ): Promise<Output<TInput, TPayload>> {
     // Create the chain of processor functions
     const chain = this.processors.reduceRight(
       (
-        next: ProcessorFn<TInput, TOutput>,
-        processor: Processor<TInput, TOutput>,
+        next: ProcessorFn<TInput, TPayload>,
+        processor: Processor<TInput, TPayload>,
       ) => {
         return (input: Input<TInput>) => processor.handle(input, next);
       },
       // final handler that creates the Output
       (input: Input<TInput>) =>
-        Promise.resolve({ input, content: null }) as Promise<
-          Output<TInput, TOutput>
+        Promise.resolve({ input, payload: null }) as Promise<
+          Output<TInput, TPayload>
         >,
     );
 
@@ -55,19 +57,19 @@ export class Core<TInput extends BaseIO, TOutput extends BaseIO> {
   }
 }
 
-export class FunctionalProcessor<TInput extends BaseIO, TOutput extends BaseIO>
-  implements Processor<TInput, TOutput> {
+export class FunctionalProcessor<TInput extends BaseIO, TPayload extends BaseIO>
+  implements Processor<TInput, TPayload> {
   constructor(
     private fn: (
       input: Input<TInput>,
-      next: ProcessorFn<TInput, TOutput>,
-    ) => Promise<Output<TInput, TOutput>>,
+      next: ProcessorFn<TInput, TPayload>,
+    ) => Promise<Output<TInput, TPayload>>,
   ) {}
 
   async handle(
     input: Input<TInput>,
-    next: ProcessorFn<TInput, TOutput>,
-  ): Promise<Output<TInput, TOutput>> {
+    next: ProcessorFn<TInput, TPayload>,
+  ): Promise<Output<TInput, TPayload>> {
     return this.fn(input, next);
   }
 }

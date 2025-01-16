@@ -37,8 +37,8 @@ class MemoryProcessor implements Processor<ChatInput, ChatOutput> {
         // add history
         const inputWithHistory: Input<ChatInput> = {
             ...input,
-            content: {
-                ...input.content,
+            payload: {
+                ...input.payload,
                 history: this.history,
             },
         };
@@ -47,10 +47,10 @@ class MemoryProcessor implements Processor<ChatInput, ChatOutput> {
         const output = await next(inputWithHistory);
 
         // if we have a successful response, update the history
-        if (output.content) {
+        if (output.payload) {
             this.history.push(
-                { role: "user", content: input.content.message },
-                { role: "assistant", content: output.content.message },
+                { role: "user", content: input.payload.message },
+                { role: "assistant", content: output.payload.message },
             );
         }
 
@@ -70,13 +70,10 @@ class AnthropicProcessor implements Processor<ChatInput, ChatOutput> {
         next: ProcessorFn<ChatInput, ChatOutput>,
     ): Promise<Output<ChatInput, ChatOutput>> {
         try {
-            const messages = input.content.history?.map((msg) => ({
-                role: msg.role,
-                content: msg.content,
-            })) || [];
+            const messages = input.payload.history ?? [];
 
             // Add the current message
-            messages.push({ role: "user", content: input.content.message });
+            messages.push({ role: "user", content: input.payload.message });
 
             const response = await this.client.messages.create({
                 model: "claude-3-5-sonnet-latest",
@@ -86,7 +83,7 @@ class AnthropicProcessor implements Processor<ChatInput, ChatOutput> {
 
             return {
                 input,
-                content: {
+                payload: {
                     type: "chat",
                     message: response.content[0].text,
                 },
@@ -94,7 +91,7 @@ class AnthropicProcessor implements Processor<ChatInput, ChatOutput> {
         } catch (error) {
             return {
                 input,
-                content: null,
+                payload: null,
                 error: error instanceof Error
                     ? error
                     : new Error(String(error)),
@@ -126,7 +123,7 @@ async function main() {
             try {
                 const input: Input<ChatInput> = {
                     name: "repl",
-                    content: {
+                    payload: {
                         type: "chat",
                         message: line,
                     },
@@ -136,8 +133,8 @@ async function main() {
 
                 if (output.error) {
                     console.error("Error:", output.error);
-                } else if (output.content) {
-                    console.log("\nA:", output.content.message, "\n");
+                } else if (output.payload) {
+                    console.log("\nA:", output.payload.message, "\n");
                 }
             } catch (error) {
                 console.error("Error:", error);
