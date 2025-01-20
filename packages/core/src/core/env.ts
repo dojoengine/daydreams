@@ -12,6 +12,10 @@ const envSchema = z.object({
   STARKNET_PRIVATE_KEY: z.string(),
 
   GRAPHQL_URL: z.string(),
+  ANTHROPIC_MIN_DELAY_MS: z
+  .string()
+  .optional()
+  .transform((val: string | undefined) => (val ? parseInt(val, 10) : 0)),
 });
 
 export const env = envSchema.parse(process.env);

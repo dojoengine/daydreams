@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { setTimeout } from "timers/promises";
 import { env } from "./env";
-
+import { Logger } from "./logger";
 export interface LLMResponse {
   text: string;
   model: string;
@@ -23,6 +23,7 @@ export interface LLMClientConfig {
   apiKey?: string;
   baseDelay?: number;
   maxDelay?: number;
+  minTimeBetweenRequestsMs?: number;
 }
 
 interface AnalysisOptions {
@@ -44,8 +45,11 @@ interface StructuredAnalysis {
 export class LLMClient {
   private anthropic?: Anthropic;
   private readonly config: Required<LLMClientConfig>;
-
-  constructor(config: LLMClientConfig) {
+  private lastRequestTimestamp = 0;
+  private logger: Logger;
+  constructor(config: LLMClientConfig, logger?: Logger) {
+    // If no logger passed, create a default
+    this.logger = logger || new Logger({ level: 3, enableTimestamp: true });
     this.config = {
       provider: config.provider,
       model: config.model || this.getDefaultModel(config.provider),
@@ -56,6 +60,11 @@ export class LLMClient {
       apiKey: config.apiKey || this.getApiKeyFromEnv(config.provider),
       baseDelay: config.baseDelay || 1000,
       maxDelay: config.maxDelay || 10000,
+      // Pull from config if set, otherwise from env if not explicitly provided:
+      minTimeBetweenRequestsMs:
+        typeof config.minTimeBetweenRequestsMs === "number"
+          ? config.minTimeBetweenRequestsMs
+          : env.ANTHROPIC_MIN_DELAY_MS, // fallback to env value
     };
 
     this.initializeClient();
@@ -94,25 +103,45 @@ export class LLMClient {
   }
 
   public async complete(prompt: string): Promise<LLMResponse> {
-    let lastError: Error | null = null;
+    // Enforce a minimum delay between requests if configured
+    await this.enforceMinDelay();
 
+    let lastError: Error | null = null;
     for (let attempt = 1; attempt <= this.config.maxRetries; attempt++) {
       try {
-        return await this.executeCompletion(prompt);
+        const result = await this.executeCompletion(prompt);
+        this.lastRequestTimestamp = Date.now();
+        return result;
       } catch (error) {
         lastError = error as Error;
-
-        if (this.shouldRetry(error as Error, attempt)) {
+        if (this.shouldRetry(lastError, attempt)) {
           const delay = this.calculateBackoff(attempt);
           await setTimeout(delay);
           continue;
         }
-
-        throw this.enhanceError(error as Error);
+        throw this.enhanceError(lastError);
       }
     }
-
     throw this.enhanceError(lastError!);
+  }
+
+  private async enforceMinDelay(): Promise<void> {
+    if (this.config.minTimeBetweenRequestsMs > 0) {
+      const now = Date.now();
+      const elapsed = now - this.lastRequestTimestamp;
+      const remaining = this.config.minTimeBetweenRequestsMs - elapsed;
+      if (remaining > 0) {
+        this.logger.debug(
+          "LLMClient.enforceMinDelay",
+          `Waiting ${remaining} ms to respect minTimeBetweenRequestsMs`,
+          {
+            lastRequestTimestamp: this.lastRequestTimestamp,
+            now,
+          }
+        );
+        await setTimeout(remaining);
+      }
+    }
   }
 
   public getModelName(): string {
