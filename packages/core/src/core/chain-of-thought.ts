@@ -492,13 +492,10 @@ export class ChainOfThought extends EventEmitter {
       Success Criteria:
       ${goal.success_criteria.map((c: string) => `- ${c}`).join("\n")}
       
-      Current Context:
-      ${JSON.stringify(this.context, null, 2)}
-      
       Recent Steps:
       ${JSON.stringify(this.stepManager.getSteps().slice(-10), null, 2)}
       
-      Based on the success criteria and current context, has this goal been achieved?
+      Based on the goal description, success criteria and recent steps, has this goal been achieved?
 
       Outcome Score:
       - 0-100 = 0-100% success
