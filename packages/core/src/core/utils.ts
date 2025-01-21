@@ -23,3 +23,8 @@ export const injectTags = (
 
   return result;
 };
+
+export const generateUniqueId = (): string => {
+  // Quick example ID generator
+  return "step-" + Math.random().toString(36).substring(2, 15);
+};

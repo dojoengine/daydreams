@@ -16,7 +16,7 @@ import {
 } from "./goal-manager";
 import { StepManager, type Step, type StepType } from "./step-manager";
 import { LogLevel } from "../types";
-import { injectTags } from "./utils";
+import { generateUniqueId, injectTags } from "./utils";
 import { systemPromptAction } from "./actions/system-prompt";
 import Ajv from "ajv";
 import type { VectorDB, EpisodicMemory, Documentation } from "./vector-db";
@@ -253,7 +253,7 @@ export class ChainOfThought extends EventEmitter {
     }
   }
 
-  private async refineGoal(goal: any): Promise<void> {
+  private async refineGoal(goal: Goal): Promise<void> {
     const prompt = `
       <goal_refinement>
       Goal to Refine: ${goal.description}
@@ -433,7 +433,7 @@ export class ChainOfThought extends EventEmitter {
   }
 
   private async determineContextUpdates(
-    goal: any
+    goal: Goal
   ): Promise<Partial<ChainOfThoughtContext> | null> {
     const prompt = `
       <context_update_analysis>
@@ -572,7 +572,7 @@ export class ChainOfThought extends EventEmitter {
     meta?: Record<string, any>
   ): Step {
     const newStep: Step = {
-      id: this.generateUniqueId(),
+      id: generateUniqueId(),
       type,
       content,
       timestamp: Date.now(),
@@ -615,7 +615,7 @@ export class ChainOfThought extends EventEmitter {
     }
 
     const newStep: Step = {
-      id: this.generateUniqueId(),
+      id: generateUniqueId(),
       type: "action",
       content,
       timestamp: Date.now(),
@@ -790,15 +790,6 @@ export class ChainOfThought extends EventEmitter {
   }
 
   /**
-   * Generate a unique ID for steps. In a real environment,
-   * you might use a library like uuid to ensure uniqueness.
-   */
-  private generateUniqueId(): string {
-    // Quick example ID generator
-    return "step-" + Math.random().toString(36).substring(2, 15);
-  }
-
-  /**
    * Removes a step from the chain by its ID.
    * @param stepId The unique identifier of the step to remove
    * @throws Error if the step with the given ID doesn't exist
@@ -904,10 +895,6 @@ export class ChainOfThought extends EventEmitter {
       .join("\n")}`;
   }
 
-  /**
-   * Build a prompt that instructs the LLM to produce structured data.
-   * You can adapt the instructions, tone, or style as needed.
-   */
   private buildPrompt(tags: Record<string, string> = {}): string {
     this.logger.debug("buildPrompt", "Building LLM prompt");
 
@@ -925,34 +912,6 @@ ${example}
 `;
       })
       .join("\n\n");
-
-    // Format memory context
-    const pastExperiences = this.context.pastExperiences
-      ? this.context.pastExperiences
-          .map(
-            (exp) => `
-Previous Experience:
-- Action: ${exp.action}
-- Outcome: ${exp.outcome}
-- Importance: ${exp.importance || "N/A"}
-`
-          )
-          .join("\n")
-      : "No relevant past experiences";
-
-    const relevantKnowledge = this.context.relevantKnowledge
-      ? this.context.relevantKnowledge
-          .map(
-            (doc) => `
-Related Knowledge:
-- ${doc.title}
-- Category: ${doc.category}
-- Content: ${doc.content}
-- Tags: ${doc.tags.join(", ")}
-`
-          )
-          .join("\n")
-      : "No relevant knowledge found";
 
     const prompt = `
     <global_context>
@@ -1041,12 +1000,6 @@ Provide a JSON response with the following structure (this is an example only, u
 Do NOT include any additional keys outside of "plan" and "actions".
 Make sure the JSON is valid. No extra text outside of the JSON.
 
-<memory_context>
-${pastExperiences}
-
-${relevantKnowledge}
-</memory_context>
-
 </global_context>
 `;
 
@@ -1089,8 +1042,8 @@ ${relevantKnowledge}
     try {
       // Consult single memory instance for both types of memories
       const [similarExperiences, relevantDocs] = await Promise.all([
-        this.memory.findSimilarEpisodes(userQuery, 3),
-        this.memory.findSimilarDocuments(userQuery, 3),
+        this.memory.findSimilarEpisodes(userQuery, 1),
+        this.memory.findSimilarDocuments(userQuery, 1),
       ]);
 
       // Enhance context with memory insights
@@ -1163,44 +1116,51 @@ ${relevantKnowledge}
               );
             }
 
-            const updateContext = this.buildPrompt({
-              result,
-            });
+            // const updateContext = this.buildPrompt({
+            //   result,
+            // });
 
             // Check completion status
             const completionCheck = await this.llmClient.analyze(
               `
-              ${updateContext}
-
+              
              ${JSON.stringify({
                query: userQuery,
                currentSteps: this.stepManager.getSteps(),
                lastAction: currentAction.toString() + " RESULT:" + result,
              })},
+
              <verification_rules>
-              Analyze using Chain of Verification:
-1. The original query/goal - Verify the exact requirements
-2. All steps taken so far - Verify each step was completed successfully
-3. The current context - Verify the current state matches expectations
-4. The result of the last action - Verify the outcome was correct
-5. Values will always be in hexadecimal so convert them to decimal for verification
+              # Chain of Verification Analysis
 
-For each verification:
-- Check preconditions were met  
-- Validate the execution was proper
-- Confirm expected postconditions
-- Look for any edge cases or errors
+## Verification Steps
+1. Original Query/Goal
+   - Verify exact requirements
+2. All Steps Taken
+   - Verify successful completion of each step
+3. Current Context  
+   - Verify state matches expectations
+4. Last Action Result
+   - Verify correct outcome
+5. Value Conversions
+   - Convert hex values to decimal for verification
 
-Determine through verification:
-- Has the goal been achieved OR determined to be impossible? (complete)
-- What specific verifications led to your determination? (reason)
-- Should the system continue only if resources are available? (shouldContinue)
+## Verification Process
+- Check preconditions were met
+- Validate proper execution
+- Confirm expected postconditions  
+- Check for edge cases/errors
 
-Only return a JSON object with this exact structure:
+## Determination Criteria
+- Goal Achievement Status
+  - Achieved or impossible? (complete)
+  - Supporting verification evidence (reason)
+- Resource Requirements
+  - Continue if resources available? (shouldContinue)
 
 {
   "complete": boolean,
-  "reason": "detailed explanation of verification results",
+  "reason": "detailed explanation of verification results", 
   "shouldContinue": boolean,
   "newActions": [] // Only include if continuing and resources are available and search <global_context> for more details
 }
@@ -1214,8 +1174,6 @@ Do not include any text outside the JSON object. Do not include backticks, backs
 `,
               }
             );
-
-            console.log(completionCheck);
 
             try {
               const completion = JSON.parse(completionCheck.toString());
