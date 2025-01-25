@@ -30,7 +30,7 @@ export class KeyValueDB {
   private threadsCollection!: Collection<MessageThread>;
   private cache: Map<string, Task>; // In-memory cache
 
-  constructor(private uri: string, private dbName: string) {
+  constructor(private uri: string, private dbName: string = "myApp") {
     this.client = new MongoClient(uri);
     this.cache = new Map<string, Task>();
   }
@@ -40,8 +40,11 @@ export class KeyValueDB {
    * 1. tasks collection.
    * 2. threads collection
    */
-  async connect(): Promise<void> {
-    await this.client.connect();
+  public async connect(): Promise<void> {
+    if (!this.client.listenerCount("connect")) {
+      await this.client.connect();
+    }
+
     const db = this.client.db(this.dbName);
     this.tasksCollection = db.collection<Task>("tasks");
     this.threadsCollection = db.collection<MessageThread>("message_threads");
@@ -120,11 +123,11 @@ export class KeyValueDB {
   async executeTask(taskId: string): Promise<void> {
     const task = await this.fetchTaskFromCacheOrDB(taskId);
     if (!task) {
-      throw new Error("Task with ID ${taskId} not found");
+      throw new Error(`Task with ID ${taskId} not found`);
     }
 
     // Simulate task execution
-    console.log("Executing task:, task");
+    console.log(`Executing task:, ${task}`);
 
     // Update task status
     const now = new Date();
