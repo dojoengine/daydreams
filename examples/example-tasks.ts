@@ -10,10 +10,14 @@ async function main() {
 
   await taskDb.connect();
 
+
   // // Store a task
-  await taskDb.createTask('task_001',{
-    _id: "task_001",
-    type: "ongoing",
+  const now = new Date();
+  await taskDb.createTask({
+    status: "pending",
+    type: "scheduled",
+    updatedAt: now,
+    createdAt: now,
     scheduledFor: new Date(Date.now() + 1000 * 60 * 60 * 24), // 24 hours from now,
     metadata: { description: "Sample task" },
   });
@@ -23,6 +27,8 @@ async function main() {
   for (const task of tasks) {
     await taskDb.executeTask(task._id);
   }
+
+  console.log(tasks);
 
   // Store a message thread
   await taskDb.storeMessageThread("thread_001", "user_123", [
