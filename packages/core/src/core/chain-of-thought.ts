@@ -53,6 +53,7 @@ export class ChainOfThought extends EventEmitter {
 
         this.context = initialContext ?? {
             worldState: "",
+            providerContext: "",
         };
 
         this.logger = new Logger({
@@ -147,6 +148,8 @@ export class ChainOfThought extends EventEmitter {
       6. Ensure goals are achievable given the current context
       7. Consider past experiences when setting goals
       8. Use available game state information to inform strategy
+      9. Ensure that goals requiring specific variables are only planned after those variables are obtained
+      10. Break down goals further if they depend on the results of previous actions
       
       # Return a JSON structure with three arrays:
       - long_term: Strategic goals that might take multiple sessions
@@ -471,24 +474,25 @@ export class ChainOfThought extends EventEmitter {
       ${JSON.stringify(blackboardState, null, 2)}
       </current_game_state>
 
-      # Goal Refinement Rules
-      Break this goal down into more specific, immediately actionable sub-goals.
-      Each sub-goal must be:
-      1. Concrete and measurable
-      2. Achievable with current resources
-      3. Properly sequenced
+        # Goal Refinement Rules
+        Focus ONLY on the immediately actionable first steps. Additional sub-goals will be added dynamically as the goal progresses.
 
-      # Goal Refinement Schema
-      Return an array of sub-goals, each with:
-      - description: Clear goal statement
-      - success_criteria: Array of specific conditions for completion
-      - priority: Number 1-10 (10 being highest)
-      - horizon: Must be "short" for immediate actions
-      - requirements: Object containing needed resources/conditions
+        Key Points:
+        1. Include only sub-goals with all required information currently available
+        2. Focus on initiating actions - further steps will emerge during execution
+        3. Each sub-goal must be concrete, measurable, and immediately executable with current resources and properly sequenced
 
-      <thinking>
-      Think about this goal and the context here.
-      </thinking>
+
+        # Goal Refinement Schema
+        Return an array of sub-goals, each with:
+        - description: Clear goal statement
+        - success_criteria: Array of completion conditions
+        - priority: 1-10 (10 being highest)
+        - horizon: Must be "short" for immediate actions
+        - requirements: Object containing needed resources/conditions
+        <thinking>
+        Think about this goal and the context here. Identify only the clear first steps. The plan will evolve naturally as these steps complete.
+        </thinking>
     `;
 
         try {
@@ -845,11 +849,6 @@ export class ChainOfThought extends EventEmitter {
                 logger: this.logger,
             });
 
-            console.log(
-                "evaluateGoalCompletion response: =================================",
-                response
-            );
-
             if (response.success) {
                 this.recordReasoningStep(
                     `Goal validated as successful: ${response.reason}`,
@@ -1141,78 +1140,81 @@ export class ChainOfThought extends EventEmitter {
     <global_context>
     <OBJECTIVE>
     
-    <GOAL>
-    {{query}}
-    </GOAL>
+        <GOAL>
+        {{query}}
+        </GOAL>
 
+        You are a Chain of Thought reasoning system. Think through this problem step by step:
 
+        1. Carefully analyze the goal and break it into logical components.
+        2. Identify the **first actionable steps** based on current information and resources.
+        3. Defer planning for steps that depend on unknowns or intermediate results. These will be addressed dynamically as more information becomes available.
+        4. For each component:
+        - Determine the **precise actions and information** required.
+        - Consider **dependencies** and **prerequisites** between steps.
+        - Ensure that every step directly contributes to the goal.
+        5. Validate that the sequence of steps is complete **for the current state** but flexible enough to adapt during execution.
 
-You are a Chain of Thought reasoning system. Think through this problem step by step:
+        ## Key Rules:
+        - Each step must be:
+        - **Actionable and concrete**
+        - **Directly contributing** to the goal
+        - Properly **ordered** and **validated**
+        - Avoid redundancy or planning steps that are not immediately relevant.
 
-1. First, carefully analyze the goal and break it down into logical components
-2. For each component, determine the precise actions and information needed
-3. Consider dependencies and prerequisites between steps
-4. Validate that each step directly contributes to the goal
-5. Ensure the sequence is complete and sufficient to achieve the goal
+        ## Output:
+        Provide a sequence of steps that achieves the given goal. Include only what can be executed now and defer future steps until necessary.
 
-Return a precise sequence of steps that achieves the given goal. Each step must be:
-- Actionable and concrete
-- Directly contributing to the goal
-- Properly ordered in the sequence
-- Validated against requirements
+        Focus solely on the goal you have been given. Do not add extra steps or deviate from the objective.
+    </OBJECTIVE>
 
-Focus solely on the goal you have been given. Do not add extra steps or deviate from the objective.
-</OBJECTIVE>
+    <LAST_STEPS>
+    ${lastSteps}
+    </LAST_STEPS>
 
-<LAST_STEPS>
-${lastSteps}
-</LAST_STEPS>
+    <CONTEXT_SUMMARY>
+    ${this.context.worldState}
 
-<CONTEXT_SUMMARY>
-${this.context.worldState}
+    ${this.context.providerContext}
+    </CONTEXT_SUMMARY>
 
-{{additional_context}}
-</CONTEXT_SUMMARY>
+    ## Step Validation Rules
+    1. Each step must have a clear, measurable outcome
+    2. Maximum 10 steps per sequence
+    3. Steps must be non-redundant unless explicitly required
+    4. All dynamic values (marked with <>) must be replaced with actual values
+    5. Use queries for information gathering, transactions for actions only
+    {{custom_validation_rules}}
 
-## Step Validation Rules
-1. Each step must have a clear, measurable outcome
-2. Maximum 10 steps per sequence
-3. Steps must be non-redundant unless explicitly required
-4. All dynamic values (marked with <>) must be replaced with actual values
-5. Use queries for information gathering, transactions for actions only
-{{custom_validation_rules}}
+    ## Required Validations
+    1. Resource costs must be verified before action execution
+    2. Building requirements must be confirmed before construction
+    3. Entity existence must be validated before interaction
+    4. If the required amounts are not available, end the sequence.
+    {{additional_validations}}
 
+    ## Output Format
+    Return a JSON array where each step contains:
+    - plan: A short explanation of what you will do
+    - meta: A metadata object with requirements for the step. Find this in the context.
+    - actions: A list of actions to be executed. You can either use ${this.getAvailableOutputs()}
 
-## Required Validations
-1. Resource costs must be verified before action execution
-2. Building requirements must be confirmed before construction
-3. Entity existence must be validated before interaction
-4. If the required amounts are not available, end the sequence.
-{{additional_validations}}
+    <AVAILABLE_ACTIONS>
+    Below is a list of actions you may use. For each action, 
+    the "payload" must follow the indicated structure exactly. Do not include any markdown formatting, slashes or comments.
 
+    ${availableOutputs
+        .map(
+            ([name, output]) => `${name}:
+        ${JSON.stringify(zodToJsonSchema(output.schema, name), null, 2)}
+    `
+        )
+        .join("\n\n")}
 
-## Output Format
-Return a JSON array where each step contains:
-- plan: A short explanation of what you will do
-- meta: A metadata object with requirements for the step. Find this in the context.
-- actions: A list of actions to be executed. You can either use ${this.getAvailableOutputs()}
+    </AVAILABLE_ACTIONS>
 
-<AVAILABLE_ACTIONS>
-Below is a list of actions you may use. For each action, 
-the "payload" must follow the indicated structure exactly. Do not include any markdown formatting, slashes or comments.
-
-${availableOutputs
-    .map(
-        ([name, output]) => `${name}:
-    ${JSON.stringify(zodToJsonSchema(output.schema, name), null, 2)}
-  `
-    )
-    .join("\n\n")}
-
-</AVAILABLE_ACTIONS>
-
-</global_context>
-`;
+    </global_context>
+    `;
 
         return injectTags(tags, prompt);
     }
@@ -1322,39 +1324,70 @@ ${availableOutputs
                 currentSteps: this.stepManager.getSteps(),
                 lastAction: currentAction.toString() + " RESULT:" + result,
             })}
+
+            
+            <current_pending_actions>
+                ${pendingActions
+                    .map(
+                        (a, index) =>
+                            `Action ${index + 1}: ${JSON.stringify(a, null, 2)}`
+                    )
+                    .join("\n")}
+            </current_pending_actions>
+
             <verification_rules>
-             # Chain of Verification Analysis
+                # Chain of Verification Analysis
 
-             ## Verification Steps
-             1. Original Query/Goal
-             - Verify exact requirements
-             2. All Steps Taken
-             - Verify successful completion of each step
-             3. Current Context  
-             - Verify state matches expectations
-             4. Last Action Result
-             - Verify correct outcome
-             5. Value Conversions
-             - Convert hex values to decimal for verification
+                ## Verification Steps
+                1. Original Query/Goal
+                - Verify exact requirements
+                2. All Steps Taken
+                - Verify successful completion of each step
+                3. Current Context
+                - Verify state matches expectations
+                4. Last Action Result
+                - Verify correct outcome
+                5. Value Conversions
+                - Convert hex values to decimal for verification
 
-             ## Verification Process
-             - Check preconditions were met
-             - Validate proper execution
-             - Confirm expected postconditions  
-             - Check for edge cases/errors
+                ## Verification Process
+                - Check preconditions were met
+                - Validate proper execution
+                - Confirm expected postconditions
+                - Check for edge cases/errors
 
-             ## Determination Criteria
-             - Goal Achievement Status
-             - Achieved or impossible? (complete)
-             - Supporting verification evidence (reason)
-             - Resource Requirements
-             - Continue if resources available? (shouldContinue)
+                ## Determination Criteria
+                - **Goal Achievement Status**
+                - Achieved or impossible? ('complete')
+                - **Supporting Verification Evidence**
+                - Reason for determination.
+                - **Resource Requirements**
+                - Necessary resources for continuation.
+                - **Continuation Decision**
+                - Continue if resources are available? ('shouldContinue')
 
-             </verification_rules>
+                ### Important Rules
+                - **'complete'**:
+                - Set to 'true' only if the goal is fully achieved and no further actions are required ('newActions' is empty).
+                - If 'newActions' are provided, **must set 'complete' to 'false'**.
+                - **'newActions'**:
+                - Provide only necessary, non-duplicate actions to progress the goal.
+                - Avoid proposing actions that have already been executed or are pending.
+                - **'shouldContinue'**:
+                - Set to 'true' if further actions can contribute to achieving the goal.
+                - Set to 'false' if the goal is irrelevant, impossible, or already achieved.
 
-             <thinking_process>
-             Think in detail here
-             </thinking_process>
+                ### Logical Requirements
+                - If 'newActions' is **non-empty**, then 'complete=false'.
+                - If 'newActions' is **empty** and the goal is **fully satisfied**, then 'complete=true'.
+                - Ensure no contradictory states, such as 'complete=true' with 'newActions' present.
+                - Avoid repeating actions that are already in the action queue or have been executed.
+
+            </verification_rules>
+
+            <thinking_process>
+            Think in detail here about the necessary steps, verification, and logic needed to achieve the goal. Ensure all steps are connected and logically consistent. Be clear, concise, and avoid contradictions. Do not propose duplicate actions that are already pending or completed.
+            </thinking_process>
                `,
                         schema: z.object({
                             complete: z.boolean(),
@@ -1373,15 +1406,10 @@ ${availableOutputs
                         isComplete = completion.complete;
 
                         if (completion.newActions?.length > 0) {
-                            // Add new actions to the end of the pending queue
-                            const extractedActions =
-                                completion.newActions.flatMap(
-                                    (plan: any) => plan.actions || []
-                                );
-                            pendingActions.push(...extractedActions);
+                            pendingActions.push(...completion.newActions);
 
                             this.logger.debug("think", "Added new actions", {
-                                newActionsCount: extractedActions.length,
+                                newActionsCount: completion.newActions.length,
                                 totalPendingCount: pendingActions.length,
                             });
                         }

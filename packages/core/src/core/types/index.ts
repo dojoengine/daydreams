@@ -9,6 +9,7 @@ import type { Logger } from "../../core/logger";
 export interface ChainOfThoughtContext {
     // For example, a game state might have player info, world state, etc.
     worldState: string;
+    providerContext: string;
     actionHistory?: Record<
         number,
         {
