@@ -1,4 +1,13 @@
-import { Client, Events, GatewayIntentBits, Partials, User } from "discord.js";
+import {
+    Client,
+    GatewayIntentBits,
+    Events,
+    Message,
+    ChannelType,
+    Partials,
+    TextChannel,
+    GuildMember,
+} from "discord.js";
 import type { JSONSchemaType } from "ajv";
 import { Logger } from "../../core/logger";
 import { LogLevel } from "../types";
@@ -19,6 +28,40 @@ export interface EventCallbacks {
     messageCreate?: (bot: any, message: any) => void;
 }
 
+export interface ReactionData {
+    emoji: string;
+    messageId: string;
+    userId: string;
+}
+
+export interface GuildMemberData {
+    userId: string;
+    username: string;
+    action: "join" | "leave";
+}
+
+export interface VoiceStateData {
+    guildId?: string;
+    userId: string;
+    channelId: string;
+    action: "join" | "leave" | "move";
+}
+
+export interface RoleData {
+    guildId: string;
+    userId: string;
+    roleId: string;
+    action: "add" | "remove";
+}
+
+export interface ChannelData {
+    guildId: string;
+    action: "create" | "delete";
+    name?: string;
+    type?: ChannelType;
+    channelId?: string;
+}
+
 // Schema for message output validation
 export const messageSchema: JSONSchemaType<MessageData> = {
     type: "object",
@@ -34,6 +77,7 @@ export const messageSchema: JSONSchemaType<MessageData> = {
 
 export class DiscordClient {
     private client: Client;
+    private isInitialized: boolean = false;
     private logger: Logger;
 
     constructor(
@@ -63,7 +107,9 @@ export class DiscordClient {
         if (eventCallbacks.messageCreate) {
             this.client.on(Events.MessageCreate, (message) => {
                 if (eventCallbacks.messageCreate) {
-                    eventCallbacks.messageCreate(this.client.user, message);
+                    if (this.client?.user) {
+                        eventCallbacks.messageCreate(this.client.user, message);
+                    }
                 }
             });
         }
@@ -79,11 +125,50 @@ export class DiscordClient {
     }
 
     public destroy() {
-        this.client.destroy();
+        this.client?.destroy();
     }
 
     /**
-     * Create an output for sending messages
+     * Create an input that monitors messages
+     */
+    public createMessageInput(
+        interval: number = this.DEFAULT_COLLECTION_TIMEOUT,
+        channelId?: string
+    ) {
+        return {
+            name: `discord_messages_${channelId || "all"}`,
+            handler: async () => {
+                return this.monitorMessages(channelId);
+            },
+            response: {
+                type: "string",
+                content: "string",
+                metadata: "object",
+            },
+            interval,
+        };
+    }
+
+    /**
+     * Create an output for monitoring joining or leaving of guild members
+     */
+    public createGuildMemberInput() {
+        return {
+            name: "discord_guild_members",
+            handler: async () => {
+                return this.monitorGuildMembers();
+            },
+            response: {
+                type: "string",
+                userId: "string",
+                username: "string",
+                action: "string",
+            },
+        };
+    }
+
+    /**
+     * Create an output for sending messages to a channel
      */
     public createMessageOutput() {
         return {
@@ -97,6 +182,75 @@ export class DiscordClient {
             },
             schema: messageSchema,
         };
+    }
+
+    private readonly DEFAULT_COLLECTION_TIMEOUT = 60000;
+
+    private async monitorMessages(channelId?: string): Promise<MessageData[]> {
+        try {
+            this.logger.debug(
+                "DiscordClient.monitorMessages",
+                "Monitoring messages",
+                { channelId }
+            );
+
+            const messages: Message[] = [];
+
+            if (channelId) {
+                const channel = await this.client?.channels.fetch(channelId);
+                if (!channel || !channel.isTextBased()) {
+                    throw new Error(
+                        "Invalid channel or channel is not text-based"
+                    );
+                }
+
+                const textChannel = channel as TextChannel;
+
+                const collectedMessages = await new Promise<Message[]>(
+                    (resolve) => {
+                        const messageCollector =
+                            textChannel.createMessageCollector({
+                                time: this.DEFAULT_COLLECTION_TIMEOUT,
+                            });
+
+                        messageCollector.on("collect", (message) => {
+                            messages.push(message);
+                        });
+
+                        messageCollector.on("end", () => {
+                            this.logger.debug(
+                                "DiscordClient.monitorMessages",
+                                "Collected messages",
+                                { count: messages.length }
+                            );
+                            resolve(messages);
+                        });
+                    }
+                );
+
+                return collectedMessages.map(this.formatMessageData);
+            } else {
+                return new Promise<MessageData[]>((resolve) => {
+                    const messageHandler = (message: Message) => {
+                        messages.push(message);
+                    };
+
+                    this.client?.on("messageCreate", messageHandler);
+
+                    setTimeout(() => {
+                        this.client?.off("messageCreate", messageHandler);
+                        resolve(messages.map(this.formatMessageData));
+                    }, 60000);
+                });
+            }
+        } catch (error) {
+            this.logger.error(
+                "DiscordClient.monitorMessages",
+                "Error monitoring messages",
+                { error }
+            );
+            throw error;
+        }
     }
 
     private async sendMessage(data: MessageData) {
@@ -147,13 +301,61 @@ export class DiscordClient {
             throw error;
         }
     }
+
+    private async monitorGuildMembers(): Promise<GuildMemberData> {
+        return new Promise((resolve, reject) => {
+            try {
+                this.logger.debug(
+                    "DiscordClient.monitorGuildMembers",
+                    "Monitoring guild members"
+                );
+
+                const handleMemberEvent = (
+                    member: GuildMember,
+                    action: "join" | "leave"
+                ) => {
+                    const memberData: GuildMemberData = {
+                        userId: member.id,
+                        username: member.user.username,
+                        action,
+                    };
+                    resolve(memberData);
+                };
+
+                this.client?.on("guildMemberAdd", (member) =>
+                    handleMemberEvent(member as GuildMember, "join")
+                );
+                this.client?.on("guildMemberRemove", (member) =>
+                    handleMemberEvent(member as GuildMember, "leave")
+                );
+            } catch (error) {
+                this.logger.error(
+                    "DiscordClient.monitorGuildMembers",
+                    "Error monitoring guild members",
+                    { error }
+                );
+                reject(error);
+            }
+        });
+    }
+    private formatMessageData(message: Message): MessageData {
+        return {
+            content: message.content,
+            channelId: message.channel.id,
+            sendBy: message.author.id,
+        };
+    }
 }
 
 // Example usage:
 /*
 const discord = new DiscordClient({
-  discord_token: "M..."
+    discord_token: process.env.DISCORD_TOKEN || "",
 });
+
+// Register inputs
+core.createMessageInput("CHANNEL_ID");
+core.createGuildMemberInput();
 
 // Register output
 core.registerOutput(discord.createMessageOutput());
