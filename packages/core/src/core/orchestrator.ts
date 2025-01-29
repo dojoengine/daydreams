@@ -3,7 +3,7 @@ import { RoomManager } from "./room-manager";
 import { TaskScheduler } from "./task-scheduler";
 import type { BaseProcessor } from "./processor";
 import type { Memory, ProcessedResult, VectorDB } from "./types";
-import { HandlerRole, LogLevel, type LoggerConfig } from "./types";
+import { HandlerRole, type LoggerConfig, LogLevel } from "./types";
 import type { IOHandler } from "./types";
 import type { MongoDb } from "./mongo-db";
 import { ObjectId } from "mongodb";
@@ -45,13 +45,13 @@ export class Orchestrator {
         vectorDb: VectorDB,
         processors: BaseProcessor[],
         mongoDb: MongoDb,
-        config?: LoggerConfig
+        config?: LoggerConfig,
     ) {
         this.vectorDb = vectorDb;
         this.processors = new Map(
             processors.map((p) => {
                 return [p.getName(), p];
-            })
+            }),
         );
         this.mongoDb = mongoDb;
 
@@ -60,7 +60,7 @@ export class Orchestrator {
                 level: LogLevel.ERROR,
                 enableColors: true,
                 enableTimestamp: true,
-            }
+            },
         );
 
         // Initialize userId to an empty string
@@ -89,7 +89,7 @@ export class Orchestrator {
             this.logger.warn(
                 "Orchestrator.registerIOHandler",
                 "Overwriting handler with same name",
-                { name: handler.name }
+                { name: handler.name },
             );
         }
 
@@ -102,7 +102,7 @@ export class Orchestrator {
                     "Starting stream",
                     {
                         data,
-                    }
+                    },
                 );
                 // Whenever data arrives, pass it into runAutonomousFlow
                 await this.runAutonomousFlow(data, handler.name, this.userId);
@@ -113,7 +113,7 @@ export class Orchestrator {
         this.logger.info(
             "Orchestrator.registerIOHandler",
             `Registered ${handler.role}`,
-            { name: handler.name }
+            { name: handler.name },
         );
     }
 
@@ -135,30 +135,42 @@ export class Orchestrator {
     }
 
     /**
-     * Executes a handler with role="output" by name, passing data to it.
-     * This is effectively "dispatchToOutput."
+     * Dispatches data to a registered output handler and returns its result.
+     *
+     * @param name - The name of the registered output handler to dispatch to
+     * @param data - The data to pass to the output handler
+     * @returns Promise resolving to the output handler's result
+     * @throws Error if no handler is found with the given name or if it's not an output handler
      */
     public async dispatchToOutput<T>(name: string, data: T): Promise<unknown> {
         const handler = this.ioHandlers.get(name);
-        if (!handler || !handler.execute) {
+        if (!handler) {
             throw new Error(`No IOHandler registered with name: ${name}`);
         }
 
-        if (handler.role !== "output") {
+        if (handler.role !== HandlerRole.OUTPUT) {
             throw new Error(`Handler "${name}" is not an output handler`);
         }
 
-        this.logger.debug("Orchestrator.dispatchToOutput", "Executing output", {
-            name,
-            data,
-        });
-
         try {
+            this.logger.debug(
+                "Orchestrator.dispatchToOutput",
+                "Executing output",
+                {
+                    name,
+                    data,
+                },
+            );
+
             const result = await handler.execute(data);
 
-            this.logger.info("Orchestrator.dispatchToOutput", "Output result", {
-                result,
-            });
+            this.logger.debug(
+                "Orchestrator.dispatchToOutput",
+                "Output result",
+                {
+                    result,
+                },
+            );
 
             return result;
         } catch (error) {
@@ -168,7 +180,7 @@ export class Orchestrator {
                 {
                     name,
                     error,
-                }
+                },
             );
             throw error;
         }
@@ -183,7 +195,7 @@ export class Orchestrator {
             this.logger.error(
                 "Orchestrator.processInputTask",
                 "Handler has no execute method",
-                { handler }
+                { handler },
             );
             return;
         }
@@ -197,7 +209,7 @@ export class Orchestrator {
                     await this.runAutonomousFlow(
                         item,
                         handler.name,
-                        this.userId
+                        this.userId,
                     );
                 }
             } else {
@@ -209,16 +221,15 @@ export class Orchestrator {
                 "Error processing input",
                 {
                     name: handler.name,
-                    error:
-                        error instanceof Error
-                            ? {
-                                  message: error.message,
-                                  stack: error.stack,
-                                  name: error.name,
-                              }
-                            : error,
+                    error: error instanceof Error
+                        ? {
+                            message: error.message,
+                            stack: error.stack,
+                            name: error.name,
+                        }
+                        : error,
                     handlerType: handler.role,
-                }
+                },
             );
         }
     }
@@ -251,18 +262,32 @@ export class Orchestrator {
      */
     public async dispatchToAction<T>(name: string, data: T): Promise<unknown> {
         const handler = this.ioHandlers.get(name);
-        if (!handler || !handler.execute) {
+        if (!handler) {
             throw new Error(`No IOHandler registered with name: ${name}`);
         }
-        if (handler.role !== "action") {
+        if (handler.role !== HandlerRole.ACTION) {
             throw new Error(`Handler "${name}" is not an action handler`);
         }
-        this.logger.debug("Orchestrator.dispatchToAction", "Executing action", {
-            name,
-            data,
-        });
         try {
+            this.logger.debug(
+                "Orchestrator.dispatchToAction",
+                "Executing action",
+                {
+                    name,
+                    data,
+                },
+            );
+
             const result = await handler.execute(data);
+
+            this.logger.debug(
+                "Orchestrator.dispatchToAction",
+                "Action result",
+                {
+                    result,
+                },
+            );
+
             return result;
         } catch (error) {
             this.logger.error(
@@ -271,7 +296,7 @@ export class Orchestrator {
                 {
                     name,
                     error,
-                }
+                },
             );
             throw error;
         }
@@ -285,7 +310,7 @@ export class Orchestrator {
         initialData: unknown,
         sourceName: string,
         userId: string,
-        orchestratorId?: ObjectId
+        orchestratorId?: ObjectId,
     ) {
         const queue: Array<{ data: unknown; source: string }> = [];
 
@@ -305,7 +330,7 @@ export class Orchestrator {
         if (orchestratorId) {
             // check if it exists in the db
             const existingOrchestrator = await this.mongoDb.getOrchestratorById(
-                new ObjectId(orchestratorId)
+                new ObjectId(orchestratorId),
             );
 
             if (!existingOrchestrator) {
@@ -321,7 +346,7 @@ export class Orchestrator {
                 orchestratorId,
                 HandlerRole.INPUT,
                 sourceName,
-                initialData
+                initialData,
             );
 
             this.logger.debug(
@@ -330,7 +355,7 @@ export class Orchestrator {
                 {
                     orchestratorId,
                     userId,
-                }
+                },
             );
         }
 
@@ -344,7 +369,7 @@ export class Orchestrator {
                     orchestratorId,
                     HandlerRole.INPUT,
                     source,
-                    data
+                    data,
                 );
 
                 this.logger.debug(
@@ -357,7 +382,7 @@ export class Orchestrator {
                             name: source,
                             data,
                         },
-                    }
+                    },
                 );
             }
 
@@ -365,7 +390,7 @@ export class Orchestrator {
             const processedResults = await this.processContent(
                 data,
                 source,
-                userId
+                userId,
             );
 
             // If there's nothing to process further, continue
@@ -387,7 +412,7 @@ export class Orchestrator {
                             userId,
                             task.name,
                             task.data,
-                            task.intervalMs
+                            task.intervalMs,
                         );
 
                         this.logger.debug(
@@ -395,7 +420,7 @@ export class Orchestrator {
                             "Scheduled task in DB",
                             {
                                 task,
-                            }
+                            },
                         );
                     }
                 }
@@ -406,7 +431,7 @@ export class Orchestrator {
                     if (!handler) {
                         this.logger.warn(
                             "No handler found for suggested output",
-                            output.name
+                            output.name,
                         );
                         continue;
                     }
@@ -422,7 +447,7 @@ export class Orchestrator {
                             {
                                 name: output.name,
                                 data: output.data,
-                            }
+                            },
                         );
 
                         // Record output in DB
@@ -431,14 +456,14 @@ export class Orchestrator {
                                 orchestratorId,
                                 HandlerRole.OUTPUT,
                                 output.name,
-                                output.data
+                                output.data,
                             );
                         }
                     } else if (handler.role === HandlerRole.ACTION) {
                         // e.g. fetch data from an external API
                         const actionResult = await this.dispatchToAction(
                             output.name,
-                            output.data
+                            output.data,
                         );
 
                         this.logger.debug(
@@ -447,7 +472,7 @@ export class Orchestrator {
                             {
                                 name: output.name,
                                 data: output.data,
-                            }
+                            },
                         );
 
                         // Record action in DB
@@ -459,7 +484,7 @@ export class Orchestrator {
                                 {
                                     input: output.data,
                                     result: actionResult,
-                                }
+                                },
                             );
                         }
 
@@ -483,7 +508,7 @@ export class Orchestrator {
                     } else {
                         this.logger.warn(
                             "Suggested output has an unrecognized role",
-                            handler.role
+                            handler.role,
                         );
                     }
                 }
@@ -530,14 +555,15 @@ export class Orchestrator {
         name: string,
         data: T,
         userId: string,
-        orchestratorId?: ObjectId
+        orchestratorId?: ObjectId,
     ): Promise<unknown> {
         const handler = this.ioHandlers.get(name);
-        if (!handler) throw new Error(`No IOHandler: ${name}`);
-        if (!handler.execute)
-            throw new Error(`Handler "${name}" has no execute method`);
-        if (handler.role !== "input") {
-            throw new Error(`Handler "${name}" is not role=input`);
+        if (!handler) {
+            throw new Error(`No IOHandler registered with name: ${name}`);
+        }
+
+        if (handler.role !== HandlerRole.INPUT) {
+            throw new Error(`Handler "${name}" is not an input handler`);
         }
 
         try {
@@ -548,7 +574,7 @@ export class Orchestrator {
                     result,
                     handler.name,
                     userId,
-                    orchestratorId
+                    orchestratorId,
                 );
             }
             return [];
@@ -557,7 +583,7 @@ export class Orchestrator {
                 "dispatchToInput Error",
                 `dispatchToInput Error: ${
                     error instanceof Error ? error.message : String(error)
-                }`
+                }`,
             );
         }
     }
@@ -566,7 +592,7 @@ export class Orchestrator {
         userId: string,
         handlerName: string,
         data: Record<string, unknown> = {},
-        intervalMs?: number
+        intervalMs?: number,
     ): Promise<ObjectId> {
         const now = Date.now();
         const nextRunAt = new Date(now + (intervalMs ?? 0));
@@ -577,7 +603,7 @@ export class Orchestrator {
             {
                 nextRunAt,
                 intervalMs,
-            }
+            },
         );
 
         return await this.mongoDb.createTask(
@@ -588,7 +614,7 @@ export class Orchestrator {
                 task_data: JSON.stringify(data),
             },
             nextRunAt,
-            intervalMs
+            intervalMs,
         );
     }
 
@@ -603,7 +629,7 @@ export class Orchestrator {
                 this.logger.error(
                     "Orchestrator.startPolling",
                     "Error in pollScheduledTasks",
-                    err
+                    err,
                 );
             });
         }, everyMs);
@@ -613,7 +639,7 @@ export class Orchestrator {
             "Started polling for scheduled tasks",
             {
                 intervalMs: everyMs,
-            }
+            },
         );
     }
 
@@ -623,7 +649,7 @@ export class Orchestrator {
             if (!this.mongoDb) {
                 this.logger.error(
                     "pollScheduledTasks error",
-                    "scheduledTaskDb is not initialized"
+                    "scheduledTaskDb is not initialized",
                 );
                 return;
             }
@@ -637,7 +663,7 @@ export class Orchestrator {
                 if (!task._id) {
                     this.logger.error(
                         "pollScheduledTasks error",
-                        "Task is missing _id"
+                        "Task is missing _id",
                     );
                     continue;
                 }
@@ -650,41 +676,48 @@ export class Orchestrator {
                     throw new Error(`No handler found: ${task.handlerName}`);
                 }
 
-                const taskData =
-                    typeof task.taskData.task_data === "string"
-                        ? JSON.parse(task.taskData.task_data)
-                        : task.taskData;
+                const taskData = typeof task.taskData.task_data === "string"
+                    ? JSON.parse(task.taskData.task_data)
+                    : task.taskData;
 
                 if (handler.role === HandlerRole.INPUT) {
                     try {
                         await this.dispatchToInput(
                             task.handlerName,
                             taskData,
-                            task.userId
+                            task.userId,
                         );
                     } catch (error) {
                         this.logger.error(
                             "Task execution failed",
-                            `Task ${task._id}: ${error instanceof Error ? error.message : String(error)}`
+                            `Task ${task._id}: ${
+                                error instanceof Error
+                                    ? error.message
+                                    : String(error)
+                            }`,
                         );
                     }
                 } else if (handler.role === HandlerRole.ACTION) {
                     try {
                         const actionResult = await this.dispatchToAction(
                             task.handlerName,
-                            taskData
+                            taskData,
                         );
                         if (actionResult) {
                             await this.runAutonomousFlow(
                                 actionResult,
                                 task.handlerName,
-                                task.userId
+                                task.userId,
                             );
                         }
                     } catch (error) {
                         this.logger.error(
                             "Task execution failed",
-                            `Task ${task._id}: ${error instanceof Error ? error.message : String(error)}`
+                            `Task ${task._id}: ${
+                                error instanceof Error
+                                    ? error.message
+                                    : String(error)
+                            }`,
                         );
                     }
                 } else if (handler.role === HandlerRole.OUTPUT) {
@@ -693,7 +726,11 @@ export class Orchestrator {
                     } catch (error) {
                         this.logger.error(
                             "Task execution failed",
-                            `Task ${task._id}: ${error instanceof Error ? error.message : String(error)}`
+                            `Task ${task._id}: ${
+                                error instanceof Error
+                                    ? error.message
+                                    : String(error)
+                            }`,
                         );
                     }
                 }
@@ -710,7 +747,7 @@ export class Orchestrator {
         } catch (err) {
             this.logger.error(
                 "pollScheduledTasks error",
-                err instanceof Error ? err.message : String(err)
+                err instanceof Error ? err.message : String(err),
             );
         }
     }
@@ -718,7 +755,7 @@ export class Orchestrator {
     public async processContent(
         content: any,
         source: string,
-        userId?: string
+        userId?: string,
     ): Promise<ProcessedResult[]> {
         if (Array.isArray(content)) {
             const allResults: ProcessedResult[] = [];
@@ -727,7 +764,7 @@ export class Orchestrator {
                 const result = await this.processContentItem(
                     item,
                     source,
-                    userId
+                    userId,
                 );
                 if (result) {
                     allResults.push(result);
@@ -739,7 +776,7 @@ export class Orchestrator {
         const singleResult = await this.processContentItem(
             content,
             source,
-            userId
+            userId,
         );
         return singleResult ? [singleResult] : [];
     }
@@ -747,15 +784,15 @@ export class Orchestrator {
     private async processContentItem(
         content: any,
         source: string,
-        userId?: string
+        userId?: string,
     ): Promise<ProcessedResult | null> {
         let memories: Memory[] = [];
 
         if (content.room) {
-            const hasProcessed =
-                await this.roomManager.hasProcessedContentInRoom(
+            const hasProcessed = await this.roomManager
+                .hasProcessedContentInRoom(
                     content.contentId,
-                    content.room
+                    content.room,
                 );
 
             if (hasProcessed) {
@@ -766,14 +803,14 @@ export class Orchestrator {
                         contentId: content.contentId,
                         roomId: content.room,
                         userId,
-                    }
+                    },
                 );
                 return null;
             }
             const room = await this.roomManager.ensureRoom(
                 content.room,
                 source,
-                userId
+                userId,
             );
             memories = await this.roomManager.getMemoriesFromRoom(room.id);
 
@@ -786,7 +823,7 @@ export class Orchestrator {
                     roomId: room.id,
                     userId,
                     relevantMemories: memories,
-                }
+                },
             );
         }
 
@@ -798,17 +835,17 @@ export class Orchestrator {
             this.logger.debug(
                 "Orchestrator.processContent",
                 "No suitable processor found for content",
-                { content }
+                { content },
             );
             return null;
         }
 
         const availableOutputs = Array.from(this.ioHandlers.values()).filter(
-            (h) => h.role === HandlerRole.OUTPUT
+            (h) => h.role === HandlerRole.OUTPUT,
         );
 
         const availableActions = Array.from(this.ioHandlers.values()).filter(
-            (h) => h.role === HandlerRole.ACTION
+            (h) => h.role === HandlerRole.ACTION,
         );
 
         const result = await processor.process(
@@ -817,7 +854,7 @@ export class Orchestrator {
             {
                 availableOutputs,
                 availableActions,
-            }
+            },
         );
 
         if (content.room) {
@@ -829,13 +866,13 @@ export class Orchestrator {
                     source,
                     ...result?.metadata,
                     ...result?.enrichedContext,
-                }
+                },
             );
 
             // Mark the content as processed
             await this.roomManager.markContentAsProcessed(
                 content.contentId,
-                content.room
+                content.room,
             );
         }
 
