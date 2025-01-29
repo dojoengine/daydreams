@@ -43,32 +43,19 @@ async function main() {
     const processor = new MessageProcessor(
         llmClient,
         defaultCharacter,
-        loglevel
+        loglevel,
     );
-
-    // Connect to MongoDB (for scheduled tasks, if you use them)
-    const scheduledTaskDb = new MongoDb(
-        "mongodb://localhost:27017",
-        "myApp",
-        "scheduled_tasks"
-    );
-    await scheduledTaskDb.connect();
-    console.log(chalk.green("✅ Scheduled task database connected"));
-
-    // Clear any existing tasks if you like
-    await scheduledTaskDb.deleteAll();
 
     // Create the Orchestrator
     const core = new Orchestrator(
         roomManager,
         vectorDb,
         [processor],
-        scheduledTaskDb,
         {
             level: loglevel,
             enableColors: true,
             enableTimestamp: true,
-        }
+        },
     );
 
     // Initialize the Discord client
@@ -77,7 +64,7 @@ async function main() {
             discord_token: env.DISCORD_TOKEN,
             discord_bot_name: "DeepLoaf",
         },
-        loglevel
+        loglevel,
     );
 
     // 1) REGISTER A STREAMING INPUT
@@ -86,6 +73,9 @@ async function main() {
     core.registerIOHandler({
         name: "discord_stream",
         role: HandlerRole.INPUT,
+        execute: async (data) => {
+            return data;
+        },
         subscribe: (onData) => {
             discord.startMessageStream((incomingMessage: Message) => {
                 onData(incomingMessage);
@@ -109,7 +99,7 @@ async function main() {
 
     console.log(chalk.cyan("🤖 Bot is now running and monitoring Discord..."));
     console.log(
-        chalk.cyan("You can also type messages in this console for debugging.")
+        chalk.cyan("You can also type messages in this console for debugging."),
     );
     console.log(chalk.cyan('Type "exit" to quit.'));
 
