@@ -3,61 +3,85 @@
 @tailwind utilities;
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 20 14.3% 4.1%;
-    --card: 0 0% 100%;
-    --card-foreground: 20 14.3% 4.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 14.3% 4.1%;
-    --primary: 43 62% 48%;
-    --primary-foreground: 26 83.3% 14.1%;
-    --secondary: 60 4.8% 95.9%;
-    --secondary-foreground: 24 9.8% 10%;
-    --muted: 60 4.8% 95.9%;
-    --muted-foreground: 25 5.3% 44.7%;
-    --accent: 60 4.8% 95.9%;
-    --accent-foreground: 24 9.8% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 20 5.9% 90%;
-    --input: 20 5.9% 90%;
-    --ring: 20 14.3% 4.1%;
+    /* Theme Light - Néon urbain */
+    --background: 220 33% 98%;
+    --foreground: 225 47% 15%;
+    --card: 220 33% 98%;
+    --card-foreground: 225 47% 15%;
+    --popover: 220 33% 98%;
+    --popover-foreground: 225 47% 15%;
+    --primary: 196 100% 45%;      /* Cyan électrique */
+    --primary-foreground: 220 33% 98%;
+    --secondary: 262 83% 58%;     /* Violet néon */
+    --secondary-foreground: 220 33% 98%;
+    --muted: 225 15% 92%;
+    --muted-foreground: 225 47% 35%;
+    --accent: 326 100% 60%;       /* Rose néon */
+    --accent-foreground: 220 33% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 220 33% 98%;
+    --border: 225 15% 85%;
+    --input: 225 15% 85%;
+    --ring: 196 100% 45%;
     --radius: 0rem;
-    --chart-1: 12 76% 61%;
+    --chart-1: 221 83% 53%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --chart-4: 221 83% 53%;
+    --chart-5: 221 83% 53%;
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 20 14.3% 4.1%;
-    --sidebar-primary: 47.9 95.8% 53.1%;
-    --sidebar-primary-foreground: 26 83.3% 14.1%;
-    --sidebar-accent: 60 4.8% 95.9%;
-    --sidebar-accent-foreground: 24 9.8% 10%;
-    --sidebar-border: 20 5.9% 90%;
-    --sidebar-ring: 20 14.3% 4.1%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 210 40% 96.1%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 221 83% 53%;
+    --message-user-from: 196 100% 45%;     /* Cyan électrique */
+    --message-user-to: 196 90% 40%;
+    --message-user-text: 255 100% 100%;    /* Blanc pur */
+    --message-assistant-from: 225 47% 15%;  /* Fond sombre */
+    --message-assistant-to: 225 47% 20%;
+    --message-assistant-text: 255 100% 100%;  /* Blanc pur */
+    --message-assistant-border: 214.3 31.8% 91.4%;
+    --message-system-from: 262 83% 58%;    /* Violet néon */
+    --message-system-to: 262 73% 53%;
+    --message-system-text: 255 100% 100%;  /* Blanc pur */
+    --message-system-border: 221 83% 85%;
+    --message-error-from: 0 84% 60%;       /* Rouge néon */
+    --message-error-to: 0 74% 55%;
+    --message-error-text: 255 100% 100%;   /* Blanc pur */
+    --message-error-border: 0 84.2% 85%;
+    --message-welcome-from: 156 100% 45%;  /* Vert néon */
+    --message-welcome-to: 156 90% 40%;
+    --message-welcome-text: 255 100% 100%; /* Blanc pur */
+    --message-welcome-border: 221 83% 85%;
+    --message-info-from: 196 100% 45%;     /* Cyan électrique */
+    --message-info-to: 196 90% 40%;
+    --message-info-text: 255 100% 100%;    /* Blanc pur */
+    --message-info-border: 221 83% 85%;
   }
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 60 9.1% 97.8%;
-    --card: 20 14.3% 4.1%;
-    --card-foreground: 60 9.1% 97.8%;
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 60 9.1% 97.8%;
-    --primary: 43 62% 48%;
-    --primary-foreground: 26 83.3% 14.1%;
-    --secondary: 12 6.5% 15.1%;
-    --secondary-foreground: 60 9.1% 97.8%;
-    --muted: 12 6.5% 15.1%;
-    --muted-foreground: 24 5.4% 63.9%;
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 60 9.1% 97.8%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 12 6.5% 15.1%;
-    --radius: 0rem;
-    --input: 12 6.5% 15.1%;
-    --ring: 35.5 91.7% 32.9%;
+    /* Theme Dark - Blade Runner */
+    --background: 225 47% 7%;
+    --foreground: 220 33% 98%;
+    --card: 225 47% 7%;
+    --card-foreground: 220 33% 98%;
+    --popover: 225 47% 7%;
+    --popover-foreground: 220 33% 98%;
+    --primary: 196 100% 50%;      /* Cyan néon */
+    --primary-foreground: 225 47% 7%;
+    --secondary: 262 83% 63%;     /* Violet néon */
+    --secondary-foreground: 225 47% 7%;
+    --muted: 225 47% 12%;
+    --muted-foreground: 220 33% 70%;
+    --accent: 326 100% 65%;       /* Rose néon */
+    --accent-foreground: 225 47% 7%;
+    --destructive: 0 84% 65%;
+    --destructive-foreground: 225 47% 7%;
+    --border: 225 47% 15%;
+    --input: 225 47% 15%;
+    --ring: 196 100% 50%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -71,6 +95,29 @@
     --sidebar-accent-foreground: 60 9.1% 97.8%;
     --sidebar-border: 12 6.5% 15.1%;
     --sidebar-ring: 35.5 91.7% 32.9%;
+    --message-user-from: 196 100% 50%;     /* Cyan néon */
+    --message-user-to: 196 90% 45%;
+    --message-user-text: 0 0% 0%;          /* Noir pur */
+    --message-assistant-from: 255 100% 100%;  /* Blanc pur */
+    --message-assistant-to: 0 0% 95%;         /* Blanc cassé */
+    --message-assistant-text: 0 0% 0%;        /* Noir pur */
+    --message-assistant-border: 222 47% 20%;
+    --message-system-from: 262 83% 63%;     /* Violet néon */
+    --message-system-to: 262 73% 58%;
+    --message-system-text: 0 0% 0%;         /* Noir pur */
+    --message-system-border: 221 83% 30%;
+    --message-error-from: 0 84% 65%;        /* Rouge néon */
+    --message-error-to: 0 74% 60%;
+    --message-error-text: 0 0% 0%;          /* Noir pur */
+    --message-error-border: 0 84.2% 30%;
+    --message-welcome-from: 156 100% 50%;   /* Vert néon */
+    --message-welcome-to: 156 90% 45%;
+    --message-welcome-text: 0 0% 0%;        /* Noir pur */
+    --message-welcome-border: 221 83% 30%;
+    --message-info-from: 196 100% 50%;      /* Cyan néon */
+    --message-info-to: 196 90% 45%;
+    --message-info-text: 0 0% 0%;           /* Noir pur */
+    --message-info-border: 221 83% 30%;
   }
 }
 @layer base {
@@ -162,7 +209,62 @@
       --border-angle: 1turn;
     }
   }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 }
 
+@layer components {
+  .message-user {
+    @apply bg-gradient-to-r from-[hsl(var(--message-user-from))] to-[hsl(var(--message-user-to))] 
+           text-[hsl(var(--message-user-text))] mr-2 self-end hover:brightness-110
+           shadow-lg shadow-[hsl(var(--message-user-from))]/20
+           border border-[hsl(var(--message-user-from))]/30 font-medium;
+  }
+
+  .message-assistant {
+    @apply bg-gradient-to-r from-[hsl(var(--message-assistant-from))] to-[hsl(var(--message-assistant-to))]
+           text-[hsl(var(--message-assistant-text))] ml-2
+           shadow-lg shadow-[hsl(var(--message-assistant-from))]/20
+           border border-[hsl(var(--message-assistant-from))]/30 font-medium;
+  }
+
+  .message-system {
+    @apply bg-gradient-to-r from-[hsl(var(--message-system-from))] to-[hsl(var(--message-system-to))]
+           text-[hsl(var(--message-system-text))]
+           shadow-lg shadow-[hsl(var(--message-system-from))]/20
+           border border-[hsl(var(--message-system-from))]/30 font-medium;
+  }
+
+  .message-error {
+    @apply bg-gradient-to-r from-[hsl(var(--message-error-from))] to-[hsl(var(--message-error-to))]
+           text-[hsl(var(--message-error-text))]
+           shadow-lg shadow-[hsl(var(--message-error-from))]/20
+           border border-[hsl(var(--message-error-from))]/30 font-medium;
+  }
+
+  .message-welcome {
+    @apply bg-gradient-to-r from-[hsl(var(--message-welcome-from))] to-[hsl(var(--message-welcome-to))]
+           text-[hsl(var(--message-welcome-text))]
+           shadow-lg shadow-[hsl(var(--message-welcome-from))]/20
+           border border-[hsl(var(--message-welcome-from))]/30 font-medium;
+  }
+
+  .message-info {
+    @apply bg-gradient-to-r from-[hsl(var(--message-info-from))] to-[hsl(var(--message-info-to))]
+           text-[hsl(var(--message-info-text))]
+           shadow-lg shadow-[hsl(var(--message-info-from))]/20
+           border border-[hsl(var(--message-info-from))]/30 font-medium;
+  }
+}
 
 

@@ -9,14 +9,7 @@ interface ServerMessage {
 // Helper function to generate a simple UUID
 // testing purposes only
 export function generateUserId() {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-        /[xy]/g,
-        function (c) {
-            const r = (0.1 * 16) | 0; // deterministic for testing
-            const v = c === "x" ? r : (r & 0x3) | 0x8;
-            return v.toString(16);
-        }
-    );
+    return "toto";
 }
 
 export function useDaydreamsWs() {
@@ -35,6 +28,7 @@ export function useDaydreamsWs() {
 
         ws.onmessage = (event) => {
             try {
+                console.log("REceived message from server", event.data);
                 const data = JSON.parse(event.data) as ServerMessage;
                 setMessages((prev) => [...prev, data]);
             } catch (err) {
@@ -55,12 +49,12 @@ export function useDaydreamsWs() {
         };
     }, []);
 
-    const sendGoal = useCallback((goal: string, orchestratorId?: string) => {
+    const sendGoal = useCallback((goal: string, orchestratorId?: string, userId?: string) => {
         if (wsRef.current?.readyState === WebSocket.OPEN) {
             wsRef.current.send(
                 JSON.stringify({
                     goal,
-                    userId: generateUserId(),
+                    userId: userId || generateUserId(),
                     orchestratorId,
                 })
             );

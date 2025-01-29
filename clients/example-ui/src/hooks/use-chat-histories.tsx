@@ -1,46 +1,86 @@
-import { useEffect, useState } from "react";
-import { useChatHistory } from "./use-chat-history";
+import { useEffect, useState, useCallback } from "react";
+import { useAppStore } from "@/store/use-app-store";
+import { generateUserId } from './use-daydreams';
 
 interface ChatHistoryItem {
     _id: string;
-    title: string; // We'll use the first message or a timestamp
+    title: string;
     lastMessage?: string;
     updatedAt: Date;
+    orchestratorId: string;
 }
 
 export function useChatHistories() {
-    const { histories, loading, error, refreshHistory } = useChatHistory();
     const [chatItems, setChatItems] = useState<ChatHistoryItem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const { currentOrchestratorId, setCurrentOrchestratorId } = useAppStore();
+
+
+    const selectFirstOrchestrator = useCallback((items: ChatHistoryItem[]) => {
+        if (items.length > 0 && !currentOrchestratorId) {
+            console.log('🎯 Auto-selecting first orchestrator:', items[0].orchestratorId);
+            setCurrentOrchestratorId(items[0].orchestratorId);
+        }
+    }, [currentOrchestratorId, setCurrentOrchestratorId]);
 
     useEffect(() => {
-        if (histories) {
-            const items = histories.map((history) => {
-                // Find the first user message to use as title
-                const firstUserMessage = history.messages.find(
-                    (msg) => msg.role === "input" && msg.name === "user_chat"
+        const fetchChatHistories = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                
+                const userId = generateUserId();
+                const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+                
+                const response = await fetch(
+                    `${apiUrl}/api/orchestrators?userId=${userId}`,
+                    {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                    }
                 );
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
 
-                // Find the last message for preview
-                const lastMessage =
-                    history.messages[history.messages.length - 1];
+                const data = await response.json();
 
-                return {
-                    _id: history._id,
-                    title:
-                        firstUserMessage?.data?.content ||
-                        new Date(history.createdAt).toLocaleString(),
-                    lastMessage:
-                        lastMessage?.data?.message ||
-                        lastMessage?.data?.content,
-                    updatedAt: new Date(history.updatedAt),
-                };
-            });
+                const formattedItems = data.map((item: any) => ({
+                    _id: item.id,
+                    title: item.name || `Chat ${new Date(item.createdAt).toLocaleString()}`,
+                    lastMessage: item.messages?.[item.messages.length - 1]?.data?.content,
+                    updatedAt: new Date(item.updatedAt),
+                    orchestratorId: item.id,
+                    messages: item.messages
+                }));
 
-            // Sort by most recent first
-            items.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
-            setChatItems(items);
+                setChatItems(formattedItems);
+                selectFirstOrchestrator(formattedItems);
+
+            } catch (err) {
+                console.error('❌ Error fetching chat histories:', err);
+                setError(err instanceof Error ? err.message : 'Failed to fetch chat histories');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchChatHistories();
+    }, [selectFirstOrchestrator]);
+
+    useEffect(() => {
+        if (!currentOrchestratorId) {
+            selectFirstOrchestrator(chatItems);
         }
-    }, [histories]);
+    }, [currentOrchestratorId, chatItems, selectFirstOrchestrator]);
+
+    const refreshHistory = () => {
+        setLoading(true);
+        setError(null);
+    };
 
     return {
         chatItems,

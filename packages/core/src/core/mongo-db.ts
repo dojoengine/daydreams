@@ -21,18 +21,20 @@ export interface OrchestratorMessage {
     timestamp: Date;
 }
 
-export interface OrchestratorChat {
+export interface OrchestratorData {
     _id?: ObjectId;
     userId: string;
     createdAt: Date;
     updatedAt: Date;
     messages: OrchestratorMessage[];
+    model: string;
+    temperature: number;
 }
 
 export class MongoDb {
     private client: MongoClient;
     private collection!: Collection<ScheduledTask>;
-    private orchestratorCollection!: Collection<OrchestratorChat>;
+    private orchestratorCollection!: Collection<OrchestratorData>;
 
     /**
      * @param uri   A MongoDB connection string
@@ -65,7 +67,7 @@ export class MongoDb {
         await this.collection.createIndex({ status: 1 });
 
         this.orchestratorCollection =
-            db.collection<OrchestratorChat>("orchestrators");
+            db.collection<OrchestratorData>("orchestrators");
 
         await this.orchestratorCollection.createIndex({
             userId: 1,
@@ -213,15 +215,15 @@ export class MongoDb {
      * Creates a new "orchestrator" document for a user, returning its generated _id.
      * This can represent a "new chat/session" with the agent.
      */
-    public async createOrchestrator(userId: string): Promise<ObjectId> {
-        const chat: OrchestratorChat = {
-            userId: userId,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            messages: [],
-        };
-        const result = await this.orchestratorCollection.insertOne(chat);
-        return result.insertedId;
+    public async createOrchestrator(orchestratorData: OrchestratorData): Promise<ObjectId> {
+        try {
+            const result = await this.orchestratorCollection.insertOne(orchestratorData);
+            console.log('✅ Orchestrator created:', result.insertedId);
+            return result.insertedId;
+        } catch (error) {
+            console.error('❌ Error creating orchestrator:', error);
+            throw error;
+        }
     }
 
     /**
@@ -238,22 +240,22 @@ export class MongoDb {
         name: string,
         data: unknown
     ): Promise<void> {
-        await this.orchestratorCollection.updateOne(
-            { _id: orchestratorId },
-            {
-                $push: {
-                    messages: {
-                        role,
-                        name,
-                        data,
-                        timestamp: new Date(),
+            await this.orchestratorCollection.updateOne(
+                { _id: orchestratorId },
+                {
+                    $push: {
+                        messages: {
+                            role,
+                            name,
+                            data,
+                            timestamp: new Date(),
+                        },
                     },
-                },
-                $set: {
-                    updatedAt: new Date(),
-                },
-            }
-        );
+                    $set: {
+                        updatedAt: new Date(),
+                    },
+                }
+            );
     }
 
     /**
@@ -274,35 +276,35 @@ export class MongoDb {
      */
     public async findOrchestratorsByUser(
         userId: string
-    ): Promise<OrchestratorChat[]> {
+    ): Promise<OrchestratorData[]> {
         return this.orchestratorCollection.find({ userId }).toArray();
     }
 
     /**
      * Retrieves a single orchestrator document by its ObjectId.
      */
-    public async getOrchestratorById(
-        orchestratorId: ObjectId
-    ): Promise<OrchestratorChat | null> {
-        return this.orchestratorCollection.findOne({ _id: orchestratorId });
+    public async getOrchestratorById(orchestratorId: string): Promise<OrchestratorData | null> {
+        try {
+            const orchestrator = await this.orchestratorCollection.findOne({
+                _id: new ObjectId(orchestratorId)
+            });
+            return orchestrator;
+        } catch (error) {
+            console.error('❌ Error fetching orchestrator:', error);
+            throw error;
+        }
     }
 
-    public async getOrchestratorsByUserId(userId: string) {
+    async getOrchestratorsByUserId(userId: string) {
         try {
-            const collection = this.client
-                .db(this.dbName)
-                .collection("orchestrators");
-
-            return await collection
-                .find({ userId })
-                .sort({ createdAt: -1 })
+            console.log('🔍 Fetching orchestrators for user:', userId);
+            const orchestrators = await this.orchestratorCollection
+                .find({ userId: userId.toString() })
                 .toArray();
+            //console.log('📦 Found orchestrators:', orchestrators);
+            return orchestrators;
         } catch (error) {
-            console.error(
-                "MongoDb.getOrchestratorsByUserId",
-                "Failed to fetch orchestrator records",
-                { userId, error }
-            );
+            console.error('❌ Error fetching orchestrators:', error);
             throw error;
         }
     }

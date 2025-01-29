@@ -1,11 +1,14 @@
-import ChatUI from "@/components/chat-ui";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router'
+import { lazy } from 'react'
+import type { ChatParams } from '@/types/chat'
 
-export const Route = createFileRoute("/chats/$chatId")({
-    component: RouteComponent,
-});
+const ChatUI = lazy(() => import('@/components/chat-ui'))
 
-function RouteComponent() {
-    const { chatId } = Route.useParams();
-    return <ChatUI chatId={chatId} />;
-}
+export const Route = createFileRoute('/chats/$chatId')({
+  component: ChatUI,
+  validateParams: (params): ChatParams => {
+    return {
+      chatId: params.chatId,
+    }
+  },
+})

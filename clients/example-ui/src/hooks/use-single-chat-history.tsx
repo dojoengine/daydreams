@@ -1,5 +1,9 @@
-import { useEffect, useState } from "react";
-import { generateUserId } from "./use-daydreams";
+import { useState, useEffect } from 'react';
+import { useAppStore } from '@/store/use-app-store';
+
+interface UseSingleChatHistoryProps {
+    userId: string;
+}
 
 interface ChatMessage {
     role: string;
@@ -7,36 +11,40 @@ interface ChatMessage {
     data: {
         content?: string;
         message?: string;
-        userId?: string;
+        userId: string;
     };
     timestamp: Date;
 }
 
 interface ChatHistory {
     _id: string;
-    messages: ChatMessage[];
+    name: string;
     userId: string;
+    messages: ChatMessage[];
     createdAt: Date;
     updatedAt: Date;
 }
 
-export function useSingleChatHistory({
-    chatId,
-    userId,
-}: {
-    chatId: string;
-    userId: string;
-}) {
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+export function useSingleChatHistory({ userId }: UseSingleChatHistoryProps) {
     const [history, setHistory] = useState<ChatHistory | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const { currentOrchestratorId, currentChatId } = useAppStore();
 
     useEffect(() => {
-        const fetchHistory = async () => {
+        async function fetchHistory() {
+            if (!currentOrchestratorId || !currentChatId || !userId) {
+                console.log('⏳ Waiting for IDs...', { currentOrchestratorId, currentChatId, userId });
+                return;
+            }
+
+            setLoading(true);
+            setError(null);
+
             try {
-                setLoading(true);
+                console.log('🔄 Fetching chat history...', { currentOrchestratorId, currentChatId });
                 const response = await fetch(
-                    `http://localhost:8081/api/history/${userId}/${chatId}`
+                    `${import.meta.env.VITE_API_URL}/api/history/${userId}?orchestratorId=${currentOrchestratorId}&chatId=${currentChatId}`
                 );
 
                 if (!response.ok) {
@@ -44,27 +52,18 @@ export function useSingleChatHistory({
                 }
 
                 const data = await response.json();
-
-                console.log(data);
+                console.log('📥 Received history:', data);
                 setHistory(data);
-                setError(null);
             } catch (err) {
-                setError(
-                    err instanceof Error
-                        ? err.message
-                        : "Failed to fetch chat history"
-                );
-                console.error("Error fetching chat history:", err);
+                console.error('❌ Error fetching history:', err);
+                setError(err instanceof Error ? err.message : 'Failed to fetch chat history');
             } finally {
                 setLoading(false);
             }
-        };
-
-        if (userId && chatId) {
-            fetchHistory();
         }
-    }, [userId, chatId]);
 
+        fetchHistory();
+    }, [userId, currentOrchestratorId, currentChatId]);
     const refreshHistory = async () => {
         setLoading(true);
         try {

@@ -3,8 +3,9 @@ import { Bot, MessageSquare, History, Bookmark, Settings } from "lucide-react";
 import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
-import { TeamSwitcher } from "@/components/team-switcher";
 import { useChatHistories } from "@/hooks/use-chat-histories";
+import { useNavigate } from "@tanstack/react-router";
+import { useAppStore } from "@/store/use-app-store";
 import {
     Sidebar,
     SidebarContent,
@@ -12,8 +13,6 @@ import {
     SidebarHeader,
     SidebarRail,
 } from "@/components/ui/sidebar";
-import { ModeToggle } from "./mode-toggle";
-import { Link } from "@tanstack/react-router";
 
 // This is sample data.
 const data = {
@@ -38,7 +37,7 @@ const data = {
             items: [
                 {
                     title: "My Agents",
-                    url: "#",
+                    url: "/my-agents",
                 },
                 {
                     title: "Create Agent",
@@ -80,6 +79,8 @@ const data = {
 // Create a new ChatHistory component
 function ChatHistoryList() {
     const { chatItems, loading, error } = useChatHistories();
+    const navigate = useNavigate();
+    const { setCurrentOrchestratorId } = useAppStore();
 
     if (loading) {
         return <div className="px-4 py-2 text-sm">Loading histories...</div>;
@@ -89,24 +90,30 @@ function ChatHistoryList() {
         return <div className="px-4 py-2 text-sm text-red-500">{error}</div>;
     }
 
-    console.log(chatItems);
+    const handleChatSelect = (chat: any) => {
+        console.log('Selected chat:', chat);
+        setCurrentOrchestratorId(chat.orchestratorId);
+        navigate({
+            to: '/chats/$chatId',
+            params: { chatId: chat._id }
+        });
+    };
 
     return (
         <div className="space-y-1">
             {chatItems.map((chat) => (
-                <Link to={"/chats/$chatId"} params={{ chatId: chat._id }}>
-                    <button
-                        key={chat._id}
-                        className="w-full px-4 py-2 text-left text-sm hover:bg-accent/50 rounded-lg"
-                    >
-                        <div className="font-medium truncate">{chat.title}</div>
-                        {chat.lastMessage && (
-                            <div className="text-xs text-muted-foreground truncate">
-                                {chat.lastMessage}
-                            </div>
-                        )}
-                    </button>
-                </Link>
+                <div
+                    key={chat._id}
+                    onClick={() => handleChatSelect(chat)}
+                    className="w-full px-4 py-2 text-left text-sm hover:bg-accent/50 rounded-lg cursor-pointer"
+                >
+                    <div className="font-medium truncate">{chat.title}</div>
+                    {chat.lastMessage && (
+                        <div className="text-xs text-muted-foreground truncate">
+                            {chat.lastMessage}
+                        </div>
+                    )}
+                </div>
             ))}
         </div>
     );

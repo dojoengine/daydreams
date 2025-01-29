@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useAppStore } from "@/store/use-app-store";
 import { generateUserId } from "./use-daydreams";
 
 interface ChatMessage {
@@ -7,7 +8,7 @@ interface ChatMessage {
     data: {
         content?: string;
         message?: string;
-        userId?: string;
+        userId: string;
     };
     timestamp: Date;
 }
@@ -16,84 +17,59 @@ interface ChatHistory {
     _id: string;
     messages: ChatMessage[];
     userId: string;
+    name: string;
     createdAt: Date;
     updatedAt: Date;
 }
 
-export function useChatHistory() {
+export function useChatHistory(chatId?: string) {
+    const [history, setHistory] = useState<ChatHistory | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [histories, setHistories] = useState<ChatHistory[]>([]);
+    const { currentOrchestratorId } = useAppStore();
+    const userId = generateUserId();
 
-    useEffect(() => {
-        const fetchHistory = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch(
-                    `http://localhost:8081/api/history/${generateUserId()}`
-                );
-
-                console.log(response);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                setHistories(data);
-                setError(null);
-            } catch (err) {
-                setError(
-                    err instanceof Error
-                        ? err.message
-                        : "Failed to fetch chat history"
-                );
-                console.error("Error fetching chat history:", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (generateUserId()) {
-            fetchHistory();
+    const fetchHistory = useCallback(async () => {
+        if (!chatId || !currentOrchestratorId) {
+            console.log('⏳ Waiting for IDs...', { chatId, currentOrchestratorId });
+            setLoading(false);
+            return;
         }
-    }, []);
 
-    const refreshHistory = async () => {
-        setLoading(true);
         try {
-            const response = await fetch(
-                `http://localhost:8081/api/history/${generateUserId()}`
-            );
+            setLoading(true);
+            setError(null);
+
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+            const url = `${apiUrl}/api/orchestrators/${currentOrchestratorId}`;
+
+            const response = await fetch(url);
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorText = await response.text();
+                console.error('❌ Server error:', errorText);
+                throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
             }
 
             const data = await response.json();
-            setHistories(data);
-            setError(null);
+            setHistory(data);
+
         } catch (err) {
-            setError(
-                err instanceof Error
-                    ? err.message
-                    : "Failed to fetch chat history"
-            );
-            console.error("Error fetching chat history:", err);
+            console.error('❌ Error fetching chat history:', err);
+            setError(err instanceof Error ? err.message : 'Failed to fetch chat history');
         } finally {
             setLoading(false);
         }
-    };
+    }, [chatId, currentOrchestratorId, userId]);
 
-    const getHistory = (chatId: string) => {
-        return histories.find((history) => history._id === chatId);
-    };
+    useEffect(() => {
+        fetchHistory();
+    }, [fetchHistory]);
 
     return {
-        histories,
+        history,
         loading,
         error,
-        refreshHistory,
-        getHistory,
+        refreshHistory: fetchHistory,
     };
 }

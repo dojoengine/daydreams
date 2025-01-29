@@ -1,9 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
+import ChatUI from '@/components/chat-ui'
 
 export const Route = createFileRoute('/chats/')({
-  component: RouteComponent,
+  component: ChatUI,
 })
 
 function RouteComponent() {
-  return <div>Hello "/chats/"!</div>
+  const { chatId } = Route.useParams();
+  return <ChatUI chatId={chatId} />
 }
