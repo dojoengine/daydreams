@@ -1,14 +1,17 @@
 import {
     Client,
-    Events,
     GatewayIntentBits,
+    Events,
     Message,
+    ChannelType,
     Partials,
+    TextChannel,
+    GuildMember,
 } from "discord.js";
-import { Logger } from "../../core/logger";
-import { HandlerRole, LogLevel, type IOHandler } from "../types";
-import { env } from "../../core/env";
 import { z } from "zod";
+import { HandlerRole, LogLevel, type IOHandler } from "../types";
+import { Logger } from "../../core/logger";
+import { env } from "../../core/env";
 
 export interface DiscordCredentials {
     discord_token: string;
@@ -22,6 +25,32 @@ export interface MessageData {
     sendBy?: string;
 }
 
+export interface ReactionData {
+    emoji: string;
+    messageId: string;
+    userId: string;
+}
+
+export interface GuildMemberData {
+    userId: string;
+    username: string;
+    action: "join" | "leave";
+}
+
+export interface RoleData {
+    guildId: string;
+    userId: string;
+    roleId: string;
+    action: "add" | "remove";
+}
+
+export interface VoiceStateData {
+    userId: string;
+    channelId: string;
+    action: "join" | "leave" | "move";
+}
+
+// Schema for message output validation
 export const messageSchema = z.object({
     content: z.string().describe("The content of the message"),
     channelId: z.string().describe("The channel ID where the message is sent"),
@@ -125,6 +154,24 @@ export class DiscordClient {
     }
 
     /**
+     * Create an output for monitoring joining or leaving of guild members
+     */
+    public createGuildMemberInput() {
+        return {
+            name: "discord_guild_members",
+            handler: async () => {
+                return this.monitorGuildMembers();
+            },
+            response: {
+                type: "string",
+                userId: "string",
+                username: "string",
+                action: "string",
+            },
+        };
+    }
+
+    /**
      *  Create an output for sending messages (useful for Orchestrator OUTPUT handlers).
      */
     public createMessageOutput<T>(): IOHandler {
@@ -132,9 +179,43 @@ export class DiscordClient {
             role: HandlerRole.OUTPUT,
             name: "discord_message",
             execute: async (data: T) => {
-                return await this.sendMessage(data as MessageData);
+                const parsed = messageSchema.parse(data);
+                return await this.sendMessage(parsed);
             },
             outputSchema: messageSchema,
+        };
+    }
+
+    /**
+     *  Create an output for managing reactions on messages
+     */
+    public createRoleOutput() {
+        return {
+            name: "discord_role",
+            handler: async (data: RoleData) => {
+                return await this.manageRole(data);
+            },
+            response: {
+                success: "boolean",
+            },
+        };
+    }
+
+    /**
+     * Create an output for monitoring voice states
+     */
+    public createVoiceStateInput() {
+        return {
+            name: "discord_voice_states",
+            handler: async () => {
+                return this.monitorVoiceStates();
+            },
+            response: {
+                type: "string",
+                userId: "string",
+                channelId: "string",
+                action: "string",
+            },
         };
     }
 
@@ -186,8 +267,9 @@ export class DiscordClient {
                 throw error;
             }
 
-            // @ts-ignore - no idea why this is chucking error and i cannot be bothered to fix it
-            const sentMessage = await channel.send(data.content);
+            const sentMessage = await (channel as TextChannel).send(
+                data.content
+            );
 
             return {
                 success: true,
@@ -209,4 +291,136 @@ export class DiscordClient {
             };
         }
     }
+
+    private async monitorGuildMembers(): Promise<GuildMemberData> {
+        return new Promise((resolve, reject) => {
+            try {
+                this.logger.debug(
+                    "DiscordClient.monitorGuildMembers",
+                    "Monitoring guild members"
+                );
+
+                const handleMemberEvent = (
+                    member: GuildMember,
+                    action: "join" | "leave"
+                ) => {
+                    const memberData: GuildMemberData = {
+                        userId: member.id,
+                        username: member.user.username,
+                        action,
+                    };
+                    resolve(memberData);
+                };
+
+                this.client?.on("guildMemberAdd", (member) =>
+                    handleMemberEvent(member as GuildMember, "join")
+                );
+                this.client?.on("guildMemberRemove", (member) =>
+                    handleMemberEvent(member as GuildMember, "leave")
+                );
+            } catch (error) {
+                this.logger.error(
+                    "DiscordClient.monitorGuildMembers",
+                    "Error monitoring guild members",
+                    { error }
+                );
+                reject(error);
+            }
+        });
+    }
+
+    private async manageRole(data: RoleData) {
+        try {
+            this.logger.info("DiscordClient.manageRole", "Would manage role", {
+                data,
+            });
+
+            if (env.DRY_RUN) {
+                return {
+                    success: true,
+                };
+            }
+
+            const guild = this.client.guilds.cache.get(data.guildId);
+            if (!guild) {
+                throw new Error("Guild not found");
+            }
+
+            const member = await guild.members.fetch(data.userId);
+            const role = await guild.roles.fetch(data.roleId);
+
+            if (!role) {
+                throw new Error("Role not found");
+            }
+
+            if (data.action === "add") {
+                await member.roles.add(role);
+            } else if (data.action === "remove") {
+                await member.roles.remove(role);
+            }
+
+            return {
+                success: true,
+            };
+        } catch (error) {
+            this.logger.error(
+                "DiscordClient.manageRole",
+                "Error managing role",
+                {
+                    error,
+                }
+            );
+            throw error;
+        }
+    }
+
+    private async monitorVoiceStates() {
+        try {
+            this.logger.debug(
+                "DiscordClient.monitorVoiceStates",
+                "Monitoring voice states"
+            );
+
+            const voiceStates: VoiceStateData[] = [];
+
+            this.client.on("voiceStateUpdate", (oldState, newState) => {
+                if (oldState.channelId !== newState.channelId) {
+                    voiceStates.push({
+                        userId: newState.id,
+                        channelId: newState.channelId || "unknown",
+                        action: oldState.channelId
+                            ? newState.channelId
+                                ? "move"
+                                : "leave"
+                            : "join",
+                    });
+                }
+            });
+
+            return voiceStates;
+        } catch (error) {
+            this.logger.error(
+                "DiscordClient.monitorVoiceStates",
+                "Error monitoring voice states",
+                {
+                    error,
+                }
+            );
+            throw error;
+        }
+    }
 }
+
+// Example usage:
+/*
+const discord = new DiscordClient({
+    discord_token: process.env.DISCORD_TOKEN || "",
+});
+
+// Register inputs
+core.createMessageInput("CHANNEL_ID");
+core.createGuildMemberInput();
+
+// Register output
+core.registerOutput(discord.createMessageOutput());
+*/
