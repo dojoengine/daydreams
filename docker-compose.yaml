@@ -13,6 +13,8 @@ services:
     restart: always
     ports:
       - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
@@ -27,3 +29,6 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
       ME_CONFIG_MONGODB_URL: mongodb://admin:password@mongo:27017/
       ME_CONFIG_BASICAUTH: false
+
+volumes:
+  mongo-data:
