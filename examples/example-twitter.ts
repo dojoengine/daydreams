@@ -21,7 +21,6 @@ import { defaultCharacter } from "../packages/core/src/core/character";
 import { Consciousness } from "../packages/core/src/core/consciousness";
 import { z } from "zod";
 import readline from "readline";
-import { MongoDb } from "../packages/core/src/core/mongo-db";
 
 async function main() {
     const loglevel = LogLevel.DEBUG;
@@ -44,31 +43,19 @@ async function main() {
     const processor = new MessageProcessor(
         llmClient,
         defaultCharacter,
-        loglevel
+        loglevel,
     );
-
-    const scheduledTaskDb = new MongoDb(
-        "mongodb://localhost:27017",
-        "myApp",
-        "scheduled_tasks"
-    );
-
-    await scheduledTaskDb.connect();
-    console.log(chalk.green("✅ Scheduled task database connected"));
-
-    await scheduledTaskDb.deleteAll();
 
     // Initialize core system
     const core = new Orchestrator(
         roomManager,
         vectorDb,
         [processor],
-        scheduledTaskDb,
         {
             level: loglevel,
             enableColors: true,
             enableTimestamp: true,
-        }
+        },
     );
 
     // Set up Twitter client with credentials
@@ -78,7 +65,7 @@ async function main() {
             password: env.TWITTER_PASSWORD,
             email: env.TWITTER_EMAIL,
         },
-        loglevel
+        loglevel,
     );
 
     // Initialize autonomous thought generation
@@ -88,48 +75,36 @@ async function main() {
         logLevel: loglevel,
     });
 
-    //   Register input handler for Twitter mentions
-    core.registerIOHandler({
-        name: "twitter_mentions",
-        role: HandlerRole.INPUT,
-        execute: async () => {
-            console.log(chalk.blue("🔍 Checking Twitter mentions..."));
-            // Create a static mentions input handler
-            const mentionsInput = twitter.createMentionsInput(60000);
-            const mentions = await mentionsInput.handler();
+    // Check Twitter mentions every minute
+    const t1 = setInterval(async () => {
+        console.log(chalk.blue("🔍 Checking Twitter mentions..."));
+        // Create a static mentions input handler
+        const mentionsInput = twitter.createMentionsInput(60000);
+        const mentions = await mentionsInput.handler();
 
-            // If no new mentions, return null to skip processing
-            if (!mentions || mentions.length === 0) {
-                return null;
-            }
+        if (mentions) {
+            const input = mentions.map((mention) => (
+                {
+                    type: "tweet",
+                    room: mention.metadata.conversationId,
+                    contentId: mention.metadata.tweetId,
+                    user: mention.metadata.username,
+                    content: mention.content,
+                    metadata: mention,
+                }
+            ));
+            core.runAutonomousFlow(input, "twitter_mentions");
+        }
+    }, 6000);
 
-            return mentions.map((mention) => ({
-                type: "tweet",
-                room: mention.metadata.conversationId,
-                contentId: mention.metadata.tweetId,
-                user: mention.metadata.username,
-                content: mention.content,
-                metadata: mention,
-            }));
-        },
-    });
-
-    // Register input handler for autonomous thoughts
-    core.registerIOHandler({
-        name: "consciousness_thoughts",
-        role: HandlerRole.INPUT,
-        execute: async () => {
-            console.log(chalk.blue("🧠 Generating thoughts..."));
-            const thought = await consciousness.start();
-
-            // If no thought was generated or it was already processed, skip
-            if (!thought || !thought.content) {
-                return null;
-            }
-
-            return thought;
-        },
-    });
+    // Think every 5 minutes
+    const t2 = setInterval(async () => {
+        console.log(chalk.blue("🧠 Generating thoughts..."));
+        const thought = await consciousness.start();
+        if (thought) {
+            core.runAutonomousFlow(thought, "consciousness_thoughts");
+        }
+    }, 30000);
 
     // Register output handler for posting thoughts to Twitter
     core.registerIOHandler({
@@ -148,17 +123,13 @@ async function main() {
                     .string()
                     .regex(
                         /^[\x20-\x7E]*$/,
-                        "No emojis or non-ASCII characters allowed"
+                        "No emojis or non-ASCII characters allowed",
                     ),
             })
             .describe(
-                "This is the content of the tweet you are posting. It should be a string of text that is 280 characters or less. Use this to post a tweet on the timeline."
+                "This is the content of the tweet you are posting. It should be a string of text that is 280 characters or less. Use this to post a tweet on the timeline.",
             ),
     });
-
-    // Schedule a task to run every minute
-    await core.scheduleTaskInDb("sleever", "twitter_mentions", {}, 6000); // Check mentions every minute
-    await core.scheduleTaskInDb("sleever", "consciousness_thoughts", {}, 30000); // Think every 5 minutes
 
     // Register output handler for Twitter replies
     core.registerIOHandler({
@@ -178,7 +149,7 @@ async function main() {
                     .describe("The tweet ID to reply to, if any"),
             })
             .describe(
-                "If you have been tagged or mentioned in the tweet, use this. This is for replying to tweets."
+                "If you have been tagged or mentioned in the tweet, use this. This is for replying to tweets.",
             ),
     });
 
@@ -196,6 +167,9 @@ async function main() {
     // Handle graceful shutdown
     process.on("SIGINT", async () => {
         console.log(chalk.yellow("\n\nShutting down..."));
+
+        clearInterval(t1);
+        clearInterval(t2);
 
         // Clean up resources
         await consciousness.stop();

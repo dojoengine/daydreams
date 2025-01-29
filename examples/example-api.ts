@@ -49,38 +49,26 @@ async function main() {
         researchClient,
         defaultCharacter,
         loglevel,
-        1000 // chunk size, depends
+        1000, // chunk size, depends
     );
 
     // Initialize processor with default character personality
     const processor = new MessageProcessor(
         llmClient,
         defaultCharacter,
-        loglevel
+        loglevel,
     );
-
-    const scheduledTaskDb = new MongoDb(
-        "mongodb://localhost:27017",
-        "myApp",
-        "scheduled_tasks"
-    );
-
-    await scheduledTaskDb.connect();
-    console.log(chalk.green("✅ Scheduled task database connected"));
-
-    await scheduledTaskDb.deleteAll();
 
     // Initialize core system
     const orchestrator = new Orchestrator(
         roomManager,
         vectorDb,
         [processor, researchProcessor],
-        scheduledTaskDb,
         {
             level: loglevel,
             enableColors: true,
             enableTimestamp: true,
-        }
+        },
     );
 
     // Initialize autonomous thought generation
@@ -102,7 +90,7 @@ async function main() {
             //    to the next step in the chain.
             const { repo } = payload as { repo: string };
             const response = await fetch(
-                `https://api.github.com/repos/${repo}/issues`
+                `https://api.github.com/repos/${repo}/issues`,
             );
             const issues = await response.json();
             // The data returned here is fed back into the Orchestrator's chain flow.
@@ -122,7 +110,7 @@ async function main() {
                 body: z.union([z.string(), z.record(z.any())]).optional(),
             })
             .describe(
-                "Use this to fetch data from an API. It should include the method, url, headers, and body."
+                "Use this to fetch data from an API. It should include the method, url, headers, and body.",
             ),
         execute: async (payload) => {
             const { method, url, headers, body } = payload as {
@@ -220,7 +208,7 @@ async function main() {
                         content: userMessage,
                         userId,
                     },
-                    userId
+                    userId,
                 );
 
                 // Now `outputs` is an array of suggestions with role=output that got triggered
@@ -229,7 +217,7 @@ async function main() {
                         if (out.name === "ui_chat_reply") {
                             // Our "ui_chat_reply" handler data has { userId, message }
                             console.log(
-                                chalk.green(`AI says: ${out.data.message}`)
+                                chalk.green(`AI says: ${out.data.message}`),
                             );
                         }
                     }
@@ -237,7 +225,7 @@ async function main() {
 
                 // Continue prompting
                 promptUser();
-            }
+            },
         );
     };
 

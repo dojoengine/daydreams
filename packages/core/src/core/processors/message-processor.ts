@@ -1,12 +1,6 @@
 import { LLMClient } from "../llm-client";
 
-import type {
-    ActionIOHandler,
-    Character,
-    OutputIOHandler,
-    ProcessedResult,
-    SuggestedOutput,
-} from "../types";
+import type { Character, ProcessedResult, SuggestedOutput } from "../types";
 import { LogLevel } from "../types";
 
 import { getTimeContext, validateLLMResponseSchema } from "../utils";
@@ -33,25 +27,17 @@ export class MessageProcessor extends BaseProcessor {
         );
     }
 
-    /**
-     * Logic to decide if this processor can handle the given content.
-     * This processor is designed to handle shorter messages and text content.
-     */
+    // TODO: fix this
     public canHandle(content: any): boolean {
-        // Convert content to string for length check
-        const contentStr =
-            typeof content === "string" ? content : JSON.stringify(content);
-
-        // Check if content is short enough for message processing (<1000 chars)
-        return contentStr.length < this.contentLimit;
+        return true;
     }
 
     async process(
         content: any,
         otherContext: string,
         ioContext?: {
-            availableOutputs: OutputIOHandler[];
-            availableActions: ActionIOHandler[];
+            availableOutputs: IOHandler[];
+            availableActions: IOHandler[];
         }
     ): Promise<ProcessedResult> {
         this.logger.debug("Processor.process", "Processing content", {
@@ -63,19 +49,19 @@ export class MessageProcessor extends BaseProcessor {
 
         const outputsSchemaPart = ioContext?.availableOutputs
             .map((handler) => {
-                return `${handler.name}: ${JSON.stringify(zodToJsonSchema(handler.outputSchema!, handler.name))}`;
+                return `${handler.name}: ${JSON.stringify(zodToJsonSchema(handler.schema, handler.name))}`;
             })
             .join("\n");
 
         const actionsSchemaPart = ioContext?.availableActions
             .map((handler) => {
-                return `${handler.name}: ${JSON.stringify(zodToJsonSchema(handler.outputSchema!, handler.name))}`;
+                return `${handler.name}: ${JSON.stringify(zodToJsonSchema(handler.schema, handler.name))}`;
             })
             .join("\n");
 
         const prompt = `Analyze the following content and provide a complete analysis:
 
-        # New Content to process: 
+        # New Content to process:
         ${contentStr}
 
         # Other context:
@@ -93,24 +79,17 @@ export class MessageProcessor extends BaseProcessor {
         </thinking>
 
         <thinking id="output_suggestion">
-        1. Suggested outputs/actions based on the available handlers based on the content and the available handlers. 
+        1. Suggested outputs/actions based on the available handlers based on the content and the available handlers.
         2. If the content is a message, use the personality of the character to determine if the output was successful.
         3. If possible you should include summary of the content in the output for the user to avoid more processing.
         </thinking>
 
         <thinking id="task_suggestion">
-        1. Suggested tasks based on the available handlers based on the content and the available handlers. 
+        1. Suggested tasks based on the available handlers based on the content and the available handlers.
         2. Only make tasks if you have been told, based off what you think is possible.
         </thinking>
 
-        <thinking id="should_reply">
-        1. Should you reply to the message?
-        2. You should only reply if you have been mentioned in the message or you think you can help deeply.
-        3. You should never respond to yourself.
-        </thinking>
-
         <thinking id="message_personality">
-
         # Speak in the following voice:
         ${JSON.stringify(this.character.voice)}
 

@@ -5,12 +5,10 @@ import type { BaseProcessor } from "./processor";
 import type { Memory, ProcessedResult, VectorDB } from "./types";
 import { HandlerRole, type LoggerConfig, LogLevel } from "./types";
 import type { IOHandler } from "./types";
-import type { MongoDb } from "./mongo-db";
-import { ObjectId } from "mongodb";
 
 /**
- * Orchestrator system that manages both "input" and "output" handlers
- * in a unified manner, along with scheduling recurring inputs.
+ * Orchestrator system that manages handlers in a unified manner. It passes
+ * inputs to processors and deals with outputs.
  */
 export class Orchestrator {
     /**
@@ -19,22 +17,9 @@ export class Orchestrator {
      */
     private readonly ioHandlers = new Map<string, IOHandler>();
 
-    private pollIntervalId?: ReturnType<typeof setInterval>;
-
     private processors: Map<string, BaseProcessor> = new Map();
 
-    /**
-     * A TaskScheduler that only schedules and runs input handlers
-     */
-    private readonly inputScheduler: TaskScheduler<
-        IOHandler & { nextRun: number }
-    >;
-
     private readonly logger: Logger;
-
-    private readonly mongoDb: MongoDb;
-
-    public userId: string;
 
     /**
      * Other references in your system. Adjust as needed.
@@ -44,7 +29,6 @@ export class Orchestrator {
         private readonly roomManager: RoomManager,
         vectorDb: VectorDB,
         processors: BaseProcessor[],
-        mongoDb: MongoDb,
         config?: LoggerConfig,
     ) {
         this.vectorDb = vectorDb;
@@ -53,7 +37,6 @@ export class Orchestrator {
                 return [p.getName(), p];
             }),
         );
-        this.mongoDb = mongoDb;
 
         this.logger = new Logger(
             config ?? {
@@ -62,20 +45,6 @@ export class Orchestrator {
                 enableTimestamp: true,
             },
         );
-
-        // Initialize userId to an empty string
-        this.userId = "";
-
-        // Our TaskScheduler will handle only input-type IOHandlers
-        this.inputScheduler = new TaskScheduler(async (handler) => {
-            await this.processInputTask(handler);
-        });
-
-        this.startPolling();
-    }
-
-    public initializeOrchestrator(userId: string) {
-        this.userId = userId;
     }
 
     private unsubscribers = new Map<string, () => void>();
@@ -105,7 +74,7 @@ export class Orchestrator {
                     },
                 );
                 // Whenever data arrives, pass it into runAutonomousFlow
-                await this.runAutonomousFlow(data, handler.name, this.userId);
+                await this.runAutonomousFlow(data, handler.name);
             });
             this.unsubscribers.set(handler.name, unsubscribe);
         }
@@ -209,11 +178,10 @@ export class Orchestrator {
                     await this.runAutonomousFlow(
                         item,
                         handler.name,
-                        this.userId,
                     );
                 }
             } else {
-                await this.runAutonomousFlow(result, handler.name, this.userId);
+                await this.runAutonomousFlow(result, handler.name);
             }
         } catch (error) {
             this.logger.error(
@@ -306,12 +274,11 @@ export class Orchestrator {
      * Takes some incoming piece of data, processes it through the system,
      * and handles any follow-on "action" or "output" suggestions in a chain.
      */
-    private async runAutonomousFlow(
+    public async runAutonomousFlow(
         initialData: unknown,
         sourceName: string,
-        userId: string,
-        orchestratorId?: ObjectId,
     ) {
+        // TODO: this queue is weird, initialData should have a structure, not guessing if it's an array
         const queue: Array<{ data: unknown; source: string }> = [];
 
         // If the initial data is already an array, enqueue each item
@@ -326,71 +293,14 @@ export class Orchestrator {
         // You can keep track of any "outputs" you need to return or do something with
         const outputs: Array<{ name: string; data: any }> = [];
 
-        // check if we have an orchestratorId
-        if (orchestratorId) {
-            // check if it exists in the db
-            const existingOrchestrator = await this.mongoDb.getOrchestratorById(
-                new ObjectId(orchestratorId),
-            );
-
-            if (!existingOrchestrator) {
-                orchestratorId = await this.mongoDb.createOrchestrator(userId);
-            }
-        }
-
-        // Create a new orchestrator record if we have a userId
-
-        if (orchestratorId) {
-            // Record the initial input
-            await this.mongoDb.addMessage(
-                orchestratorId,
-                HandlerRole.INPUT,
-                sourceName,
-                initialData,
-            );
-
-            this.logger.debug(
-                "Orchestrator.runAutonomousFlow",
-                "Created orchestrator record",
-                {
-                    orchestratorId,
-                    userId,
-                },
-            );
-        }
-
         // Keep processing while there is something in the queue
         while (queue.length > 0) {
             const { data, source } = queue.shift()!;
-
-            // Record any action results if we have an orchestratorId
-            if (orchestratorId) {
-                await this.mongoDb.addMessage(
-                    orchestratorId,
-                    HandlerRole.INPUT,
-                    source,
-                    data,
-                );
-
-                this.logger.debug(
-                    "Orchestrator.runAutonomousFlow",
-                    "Added message to orchestrator record",
-                    {
-                        orchestratorId,
-                        message: {
-                            role: HandlerRole.INPUT,
-                            name: source,
-                            data,
-                        },
-                    },
-                );
-            }
 
             // processContent now returns an array of ProcessedResult
             const processedResults = await this.processContent(
                 data,
                 source,
-                userId,
             );
 
             // If there's nothing to process further, continue
@@ -401,28 +311,8 @@ export class Orchestrator {
             // Now handle each ProcessedResult
             for (const processed of processedResults) {
                 // If the processor says it's already been handled, skip
-                if (processed.alreadyProcessed) {
+                if (processed.alreadyProcessed) { // TODO: where is this set to true?
                     continue;
-                }
-
-                // If any tasks need to be scheduled in the DB, do so
-                if (processed.updateTasks) {
-                    for (const task of processed.updateTasks) {
-                        await this.scheduleTaskInDb(
-                            userId,
-                            task.name,
-                            task.data,
-                            task.intervalMs,
-                        );
-
-                        this.logger.debug(
-                            "Orchestrator.runAutonomousFlow",
-                            "Scheduled task in DB",
-                            {
-                                task,
-                            },
-                        );
-                    }
                 }
 
                 // For each suggested output
@@ -449,16 +339,6 @@ export class Orchestrator {
                                 data: output.data,
                             },
                         );
-
-                        // Record output in DB
-                        if (orchestratorId) {
-                            await this.mongoDb.addMessage(
-                                orchestratorId,
-                                HandlerRole.OUTPUT,
-                                output.name,
-                                output.data,
-                            );
-                        }
                     } else if (handler.role === HandlerRole.ACTION) {
                         // e.g. fetch data from an external API
                         const actionResult = await this.dispatchToAction(
@@ -474,19 +354,6 @@ export class Orchestrator {
                                 data: output.data,
                             },
                         );
-
-                        // Record action in DB
-                        if (orchestratorId) {
-                            await this.mongoDb.addMessage(
-                                orchestratorId,
-                                HandlerRole.ACTION,
-                                output.name,
-                                {
-                                    input: output.data,
-                                    result: actionResult,
-                                },
-                            );
-                        }
 
                         // If the action returns new data (array or single),
                         // feed it back into the queue to continue the flow
@@ -554,8 +421,6 @@ export class Orchestrator {
     public async dispatchToInput<T>(
         name: string,
         data: T,
-        userId: string,
-        orchestratorId?: ObjectId,
     ): Promise<unknown> {
         const handler = this.ioHandlers.get(name);
         if (!handler) {
@@ -573,8 +438,6 @@ export class Orchestrator {
                 return await this.runAutonomousFlow(
                     result,
                     handler.name,
-                    userId,
-                    orchestratorId,
                 );
             }
             return [];
@@ -588,183 +451,17 @@ export class Orchestrator {
         }
     }
 
-    public async scheduleTaskInDb(
-        userId: string,
-        handlerName: string,
-        data: Record<string, unknown> = {},
-        intervalMs?: number,
-    ): Promise<ObjectId> {
-        const now = Date.now();
-        const nextRunAt = new Date(now + (intervalMs ?? 0));
-
-        this.logger.info(
-            "Orchestrator.scheduleTaskInDb",
-            `Scheduling task ${handlerName}`,
-            {
-                nextRunAt,
-                intervalMs,
-            },
-        );
-
-        return await this.mongoDb.createTask(
-            userId,
-            handlerName,
-            {
-                request: handlerName,
-                task_data: JSON.stringify(data),
-            },
-            nextRunAt,
-            intervalMs,
-        );
-    }
-
-    public startPolling(everyMs = 10_000): void {
-        // Stop existing polling if it exists
-        if (this.pollIntervalId) {
-            clearInterval(this.pollIntervalId);
-        }
-
-        this.pollIntervalId = setInterval(() => {
-            this.pollScheduledTasks().catch((err) => {
-                this.logger.error(
-                    "Orchestrator.startPolling",
-                    "Error in pollScheduledTasks",
-                    err,
-                );
-            });
-        }, everyMs);
-
-        this.logger.info(
-            "Orchestrator.startPolling",
-            "Started polling for scheduled tasks",
-            {
-                intervalMs: everyMs,
-            },
-        );
-    }
-
-    private async pollScheduledTasks() {
-        try {
-            // Guard against undefined collection
-            if (!this.mongoDb) {
-                this.logger.error(
-                    "pollScheduledTasks error",
-                    "scheduledTaskDb is not initialized",
-                );
-                return;
-            }
-
-            const tasks = await this.mongoDb.findDueTasks();
-            if (!tasks) {
-                return;
-            }
-
-            for (const task of tasks) {
-                if (!task._id) {
-                    this.logger.error(
-                        "pollScheduledTasks error",
-                        "Task is missing _id",
-                    );
-                    continue;
-                }
-
-                // 2. Mark them as 'running' (or handle concurrency the way you want)
-                await this.mongoDb.markRunning(task._id);
-
-                const handler = this.ioHandlers.get(task.handlerName);
-                if (!handler) {
-                    throw new Error(`No handler found: ${task.handlerName}`);
-                }
-
-                const taskData = typeof task.taskData.task_data === "string"
-                    ? JSON.parse(task.taskData.task_data)
-                    : task.taskData;
-
-                if (handler.role === HandlerRole.INPUT) {
-                    try {
-                        await this.dispatchToInput(
-                            task.handlerName,
-                            taskData,
-                            task.userId,
-                        );
-                    } catch (error) {
-                        this.logger.error(
-                            "Task execution failed",
-                            `Task ${task._id}: ${
-                                error instanceof Error
-                                    ? error.message
-                                    : String(error)
-                            }`,
-                        );
-                    }
-                } else if (handler.role === HandlerRole.ACTION) {
-                    try {
-                        const actionResult = await this.dispatchToAction(
-                            task.handlerName,
-                            taskData,
-                        );
-                        if (actionResult) {
-                            await this.runAutonomousFlow(
-                                actionResult,
-                                task.handlerName,
-                                task.userId,
-                            );
-                        }
-                    } catch (error) {
-                        this.logger.error(
-                            "Task execution failed",
-                            `Task ${task._id}: ${
-                                error instanceof Error
-                                    ? error.message
-                                    : String(error)
-                            }`,
-                        );
-                    }
-                } else if (handler.role === HandlerRole.OUTPUT) {
-                    try {
-                        await this.dispatchToOutput(task.handlerName, taskData);
-                    } catch (error) {
-                        this.logger.error(
-                            "Task execution failed",
-                            `Task ${task._id}: ${
-                                error instanceof Error
-                                    ? error.message
-                                    : String(error)
-                            }`,
-                        );
-                    }
-                }
-
-                // 4. If the task is recurring (interval_ms), update next_run_at
-                if (task.intervalMs) {
-                    const nextRunAt = new Date(Date.now() + task.intervalMs);
-                    await this.mongoDb.updateNextRun(task._id, nextRunAt);
-                } else {
-                    // Otherwise, mark completed
-                    await this.mongoDb.markCompleted(task._id);
-                }
-            }
-        } catch (err) {
-            this.logger.error(
-                "pollScheduledTasks error",
-                err instanceof Error ? err.message : String(err),
-            );
-        }
-    }
-
     public async processContent(
         content: any,
         source: string,
-        userId?: string,
     ): Promise<ProcessedResult[]> {
         if (Array.isArray(content)) {
             const allResults: ProcessedResult[] = [];
             for (const item of content) {
-                await new Promise((resolve) => setTimeout(resolve, 5000));
+                await new Promise((resolve) => setTimeout(resolve, 5000)); // TODO: why?
                 const result = await this.processContentItem(
                     item,
                     source,
-                    userId,
                 );
                 if (result) {
                     allResults.push(result);
@@ -776,7 +473,6 @@ export class Orchestrator {
         const singleResult = await this.processContentItem(
             content,
             source,
-            userId,
         );
         return singleResult ? [singleResult] : [];
     }
@@ -784,7 +480,6 @@ export class Orchestrator {
     private async processContentItem(
         content: any,
         source: string,
-        userId?: string,
     ): Promise<ProcessedResult | null> {
         let memories: Memory[] = [];
 
@@ -802,7 +497,6 @@ export class Orchestrator {
                     {
                         contentId: content.contentId,
                         roomId: content.room,
-                        userId,
                     },
                 );
                 return null;
@@ -810,7 +504,6 @@ export class Orchestrator {
             const room = await this.roomManager.ensureRoom(
                 content.room,
                 source,
-                userId,
             );
             memories = await this.roomManager.getMemoriesFromRoom(room.id);
 
@@ -821,7 +514,6 @@ export class Orchestrator {
                     content,
                     source,
                     roomId: room.id,
-                    userId,
                     relevantMemories: memories,
                 },
             );
@@ -877,16 +569,5 @@ export class Orchestrator {
         }
 
         return result;
-    }
-
-    /**
-     * Stops all scheduled tasks and shuts down the orchestrator.
-     */
-    public stop(): void {
-        this.inputScheduler.stop();
-        if (this.pollIntervalId) {
-            clearInterval(this.pollIntervalId);
-        }
-        this.logger.info("Orchestrator.stop", "All scheduled inputs stopped.");
     }
 }

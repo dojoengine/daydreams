@@ -1,4 +1,4 @@
-import { WebSocketServer, WebSocket } from "ws";
+import { WebSocket, WebSocketServer } from "ws";
 import chalk from "chalk";
 import { z } from "zod";
 import express from "express";
@@ -22,7 +22,7 @@ import { MongoDb } from "../packages/core/src/core/mongo-db";
 const scheduledTaskDb = new MongoDb(
     "mongodb://localhost:27017",
     "myApp",
-    "scheduled_tasks"
+    "scheduled_tasks",
 );
 
 await scheduledTaskDb.connect();
@@ -55,7 +55,7 @@ async function createDaydreamsAgent() {
     const processor = new MessageProcessor(
         llmClient,
         defaultCharacter,
-        loglevel
+        loglevel,
     );
 
     // 1.5. Initialize core system
@@ -63,18 +63,17 @@ async function createDaydreamsAgent() {
         roomManager,
         vectorDb,
         [processor],
-        scheduledTaskDb,
         {
             level: loglevel,
             enableColors: true,
             enableTimestamp: true,
-        }
+        },
     );
 
     // 1.6. Register handlers
     orchestrator.registerIOHandler({
         name: "user_chat",
-        role: HandlerRole.INPUT,
+        role: HandlerRole.OUTPUT,
         outputSchema: z.object({
             content: z.string(),
             userId: z.string().optional(),
@@ -112,7 +111,7 @@ const orchestrator = await createDaydreamsAgent();
 // ------------------------------------------------------
 const wss = new WebSocketServer({ port: 8080 });
 console.log(
-    chalk.green("[WS] WebSocket server listening on ws://localhost:8080")
+    chalk.green("[WS] WebSocket server listening on ws://localhost:8080"),
 );
 
 function sendJSON(ws: WebSocket, data: unknown) {
@@ -137,15 +136,13 @@ wss.on("connection", (ws) => {
 
             if (!userMessage || typeof userMessage !== "string") {
                 throw new Error(
-                    "Invalid message format. Expected { goal: string, userId: string }"
+                    "Invalid message format. Expected { goal: string, userId: string }",
                 );
             }
 
             if (!userId || typeof userId !== "string") {
                 throw new Error("userId is required");
             }
-
-            orchestrator.initializeOrchestrator(userId);
 
             // Process the message using the orchestrator with the provided userId
             const outputs = await orchestrator.dispatchToInput(
@@ -154,8 +151,6 @@ wss.on("connection", (ws) => {
                     content: userMessage,
                     userId: userId,
                 },
-                userId,
-                orchestratorId ? new ObjectId(orchestratorId) : undefined
             );
 
             // Send responses back through WebSocket
@@ -207,8 +202,9 @@ app.get("/api/history/:userId", async (req, res) => {
         console.log("Fetching history for userId:", userId);
 
         // Get all orchestrator records for this user
-        const histories =
-            await scheduledTaskDb.getOrchestratorsByUserId(userId);
+        const histories = await scheduledTaskDb.getOrchestratorsByUserId(
+            userId,
+        );
 
         if (!histories || histories.length === 0) {
             console.log("No histories found");
@@ -258,7 +254,7 @@ const API_PORT = 8081;
 app.listen(API_PORT, () => {
     console.log(
         chalk.green(
-            `[API] REST API server listening on http://localhost:${API_PORT}`
-        )
+            `[API] REST API server listening on http://localhost:${API_PORT}`,
+        ),
     );
 });
