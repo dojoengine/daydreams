@@ -490,6 +490,24 @@ Remember to replace placeholders like <adventurer_id>, <limit>, and other variab
 Now, please wait for a user query about the Loot Survivor game, and respond according to the steps outlined above.
 
 </query_guide>
+
+<CONTRACT_RESPONSES>
+All contract responses will be returned as hex values that need to be decoded to integers before mapping to the appropriate struct.
+
+For example:
+- A beast encounter returns hex that decodes to an integer (1-75) mapping to BEASTS
+- An obstacle returns hex that decodes to an integer (1-75) mapping to OBSTACLES
+- An item discovery returns hex that decodes to an integer (1-101) mapping to ITEMS
+- A status check returns hex that decodes to an integer (0-4) mapping to ADVENTURER_STATUS
+
+The decoded integer should be used as a key to look up values in the corresponding struct based on the action that was taken:
+
+- explore() -> DISCOVERY_TYPES to determine what was found
+- get_attacking_beast() -> BEASTS to identify the beast
+- get_adventurer() -> ADVENTURER_STATUS for current state
+- get_last_obstacle() -> OBSTACLES for obstacle details
+- get_market() -> ITEMS for available items
+</CONTRACT_RESPONSES>
 `;
 
 // API DOCs etc
