@@ -366,7 +366,7 @@ export interface VectorDB {
     findSimilar(
         content: string,
         limit?: number,
-        metadata?: Record<string, any>
+        metadata?: Record<string, any>,
     ): Promise<SearchResult[]>;
 
     store(content: string, metadata?: Record<string, any>): Promise<void>;
@@ -376,14 +376,14 @@ export interface VectorDB {
     storeInRoom(
         content: string,
         roomId: string,
-        metadata?: Record<string, any>
+        metadata?: Record<string, any>,
     ): Promise<void>;
 
     findSimilarInRoom(
         content: string,
         roomId: string,
         limit?: number,
-        metadata?: Record<string, any>
+        metadata?: Record<string, any>,
     ): Promise<SearchResult[]>;
 
     storeSystemMetadata(key: string, value: Record<string, any>): Promise<void>;
@@ -392,18 +392,18 @@ export interface VectorDB {
     storeEpisode(memory: Omit<EpisodicMemory, "id">): Promise<string>;
     findSimilarEpisodes(
         action: string,
-        limit?: number
+        limit?: number,
     ): Promise<EpisodicMemory[]>;
     getRecentEpisodes(limit?: number): Promise<EpisodicMemory[]>;
 
     storeDocument(doc: Omit<Documentation, "id">): Promise<string>;
     findSimilarDocuments(
         query: string,
-        limit?: number
+        limit?: number,
     ): Promise<Documentation[]>;
     searchDocumentsByTag(
         tags: string[],
-        limit?: number
+        limit?: number,
     ): Promise<Documentation[]>;
     updateDocument(id: string, updates: Partial<Documentation>): Promise<void>;
 
@@ -551,7 +551,7 @@ export interface InputIOHandler extends BaseIOHandler {
     /** Identifies this as an input handler */
     role: HandlerRole.INPUT;
     /** Function to process input data */
-    execute?: (data: any) => Promise<unknown>;
+    execute: (data: any) => Promise<unknown>;
     /** Sets up a subscription to receive streaming data */
     subscribe?: (onData: (data: any) => void) => () => void;
 }
@@ -579,7 +579,7 @@ export interface OutputIOHandler extends BaseIOHandler {
     /** Required schema to validate output data */
     outputSchema: z.ZodType<any>;
     /** Function to process and send output */
-    execute?: (data: any) => Promise<unknown>;
+    execute: (data: any) => Promise<unknown>;
     /** Sets up a subscription to handle output streams */
     subscribe?: (onData: (data: any) => void) => () => void;
 }
@@ -604,7 +604,7 @@ export interface ActionIOHandler extends BaseIOHandler {
     /** Optional schema to validate action parameters */
     outputSchema?: z.ZodType<any>;
     /** Function to execute the action */
-    execute?: (data: any) => Promise<unknown>;
+    execute: (data: any) => Promise<unknown>;
 }
 
 /** Union type of all possible IO handler types */
