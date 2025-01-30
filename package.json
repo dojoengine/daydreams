@@ -3,6 +3,7 @@
     "version": "0.0.0",
     "scripts": {
         "goal": "bun run examples/example-goal.ts",
+        "loot-survivor-goal": "bun run examples/example-loot-survivor-goal.ts",
         "task": "bun run examples/example-basic.ts",
         "twitter": "bun run examples/example-twitter.ts",
         "server": "bun run examples/example-server.ts",
