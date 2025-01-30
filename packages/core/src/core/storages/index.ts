@@ -1,0 +1,1 @@
+export { MemoryStorage } from "./memory";
