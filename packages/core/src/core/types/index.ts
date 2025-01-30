@@ -609,30 +609,3 @@ export interface ActionIOHandler extends BaseIOHandler {
 
 /** Union type of all possible IO handler types */
 export type IOHandler = InputIOHandler | OutputIOHandler | ActionIOHandler;
-
-export interface ScheduledTask {
-    _id?: string;
-    userId: string;
-    handlerName: string; // Which IOHandler to invoke
-    taskData: Record<string, any>; // Arbitrary data passed to the handler
-    nextRunAt: Date; // When the task is next due
-    intervalMs?: number; // If present, re-schedule after each run
-    status: "pending" | "running" | "completed" | "failed";
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-export interface OrchestratorMessage {
-    role: HandlerRole; // "input" | "output" | "action"
-    name: string; // The IOHandler name
-    data: unknown; // Arbitrary data your orchestrator is processing
-    timestamp: Date;
-}
-
-export interface OrchestratorChat {
-    _id?: string;
-    userId: string;
-    createdAt: Date;
-    updatedAt: Date;
-    messages: OrchestratorMessage[];
-}
