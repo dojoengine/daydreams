@@ -285,7 +285,7 @@ export class Orchestrator {
         initialData: unknown,
         sourceName: string,
         userId: string,
-        orchestratorId?: string
+        orchestratorId?: ObjectId
     ) {
         const queue: Array<{ data: unknown; source: string }> = [];
 
@@ -304,8 +304,9 @@ export class Orchestrator {
         // check if we have an orchestratorId
         if (orchestratorId) {
             // check if it exists in the db
-            const existingOrchestrator =
-                await this.mongoDb.getOrchestratorById(orchestratorId);
+            const existingOrchestrator = await this.mongoDb.getOrchestratorById(
+                new ObjectId(orchestratorId)
+            );
 
             if (!existingOrchestrator) {
                 orchestratorId = await this.mongoDb.createOrchestrator(userId);
@@ -529,7 +530,7 @@ export class Orchestrator {
         name: string,
         data: T,
         userId: string,
-        orchestratorId?: string
+        orchestratorId?: ObjectId
     ): Promise<unknown> {
         const handler = this.ioHandlers.get(name);
         if (!handler) throw new Error(`No IOHandler: ${name}`);
@@ -566,7 +567,7 @@ export class Orchestrator {
         handlerName: string,
         data: Record<string, unknown> = {},
         intervalMs?: number
-    ): Promise<string> {
+    ): Promise<ObjectId> {
         const now = Date.now();
         const nextRunAt = new Date(now + (intervalMs ?? 0));
 
