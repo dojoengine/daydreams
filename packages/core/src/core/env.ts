@@ -12,6 +12,9 @@ const envSchema = z.object({
     OPENROUTER_API_KEY: z.string(),
     GRAPHQL_URL: z.string(),
     DISCORD_TOKEN: z.string(),
+    HYPERLIQUID_MAIN_ADDRESS: z.string(),
+    HYPERLIQUID_WALLET_ADDRESS: z.string(),
+    HYPERLIQUID_PRIVATE_KEY: z.string(),
     WEBSOCKET_URL: z.string().default("ws://localhost:8080"),
     DRY_RUN: z
         .preprocess((val) => val === "1" || val === "true", z.boolean())

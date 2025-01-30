@@ -16,8 +16,9 @@ import chalk from "chalk";
 import { defaultCharacter } from "../packages/core/src/core/character";
 import { z } from "zod";
 import readline from "readline";
-import { MongoDb } from "../packages/core/src/core/mongo-db";
+import { MongoDb } from "../packages/core/src/core/db/mongo-db";
 import { Message } from "discord.js";
+import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
 
 async function main() {
     // Set logging level as you see fit
@@ -39,12 +40,20 @@ async function main() {
         temperature: 0.3,
     });
 
-    // Use a sample message processor with a default "character" config
-    const processor = new MessageProcessor(
+    const masterProcessor = new MasterProcessor(
         llmClient,
         defaultCharacter,
         loglevel
     );
+
+    // Initialize processor with default character personality
+    const messageProcessor = new MessageProcessor(
+        llmClient,
+        defaultCharacter,
+        loglevel
+    );
+
+    masterProcessor.addProcessor(messageProcessor);
 
     // Connect to MongoDB (for scheduled tasks, if you use them)
     const scheduledTaskDb = new MongoDb(
@@ -62,7 +71,7 @@ async function main() {
     const core = new Orchestrator(
         roomManager,
         vectorDb,
-        [processor],
+        masterProcessor,
         scheduledTaskDb,
         {
             level: loglevel,

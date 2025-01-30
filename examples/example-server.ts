@@ -17,7 +17,8 @@ import { MessageProcessor } from "../packages/core/src/core/processors/message-p
 import { defaultCharacter } from "../packages/core/src/core/character";
 
 import { LogLevel } from "../packages/core/src/core/types";
-import { MongoDb } from "../packages/core/src/core/mongo-db";
+import { MongoDb } from "../packages/core/src/core/db/mongo-db";
+import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
 
 const scheduledTaskDb = new MongoDb(
     "mongodb://localhost:27017",
@@ -51,18 +52,26 @@ async function createDaydreamsAgent() {
     // 1.3. Room manager initialization
     const roomManager = new RoomManager(vectorDb);
 
-    // 1.4. Initialize processor with default character
-    const processor = new MessageProcessor(
+    const masterProcessor = new MasterProcessor(
         llmClient,
         defaultCharacter,
         loglevel
     );
 
+    // Initialize processor with default character personality
+    const messageProcessor = new MessageProcessor(
+        llmClient,
+        defaultCharacter,
+        loglevel
+    );
+
+    masterProcessor.addProcessor(messageProcessor);
+
     // 1.5. Initialize core system
     const orchestrator = new Orchestrator(
         roomManager,
         vectorDb,
-        [processor],
+        masterProcessor,
         scheduledTaskDb,
         {
             level: loglevel,
@@ -75,10 +84,6 @@ async function createDaydreamsAgent() {
     orchestrator.registerIOHandler({
         name: "user_chat",
         role: HandlerRole.INPUT,
-        outputSchema: z.object({
-            content: z.string(),
-            userId: z.string().optional(),
-        }),
         execute: async (payload) => {
             return payload;
         },
@@ -145,17 +150,16 @@ wss.on("connection", (ws) => {
                 throw new Error("userId is required");
             }
 
-            orchestrator.initializeOrchestrator(userId);
-
             // Process the message using the orchestrator with the provided userId
             const outputs = await orchestrator.dispatchToInput(
                 "user_chat",
                 {
-                    content: userMessage,
-                    userId: userId,
+                    headers: {
+                        "x-user-id": userId,
+                    },
                 },
-                userId,
-                orchestratorId ? new ObjectId(orchestratorId) : undefined
+                userMessage,
+                orchestratorId ? orchestratorId : undefined
             );
 
             // Send responses back through WebSocket

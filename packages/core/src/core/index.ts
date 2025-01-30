@@ -5,7 +5,6 @@ import { ChromaVectorDB } from "./vector-db";
 import { BaseProcessor } from "./processor";
 import { GoalManager } from "./goal-manager";
 import { ChainOfThought } from "./chain-of-thought";
-import { TaskScheduler } from "./task-scheduler";
 import { Logger } from "./logger";
 import { Consciousness } from "./consciousness";
 import { LLMClient } from "./llm-client";
@@ -17,6 +16,7 @@ import * as Chains from "./chains";
 import * as IO from "./io";
 import * as Types from "./types";
 import * as Processors from "./processors";
+import { SchedulerService } from "./schedule-service";
 
 export {
     BaseProcessor,
@@ -35,7 +35,7 @@ export {
     Room,
     RoomManager,
     StepManager,
-    TaskScheduler,
     Types,
     Utils,
+    SchedulerService,
 };

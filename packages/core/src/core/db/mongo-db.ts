@@ -1,35 +1,13 @@
 import { MongoClient, Collection, ObjectId } from "mongodb";
-import type { HandlerRole } from "./types";
+import type { HandlerRole } from "../types";
+import type {
+    OrchestratorChat,
+    OrchestratorDb,
+    OrchestratorMessage,
+    ScheduledTask,
+} from "../memory";
 
-// Define the shape of a scheduled task document in Mongo
-export interface ScheduledTask {
-    _id?: ObjectId;
-    userId: string;
-    handlerName: string; // Which IOHandler to invoke
-    taskData: Record<string, any>; // Arbitrary data passed to the handler
-    nextRunAt: Date; // When the task is next due
-    intervalMs?: number; // If present, re-schedule after each run
-    status: "pending" | "running" | "completed" | "failed";
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-export interface OrchestratorMessage {
-    role: HandlerRole; // "input" | "output" | "action"
-    name: string; // The IOHandler name
-    data: unknown; // Arbitrary data your orchestrator is processing
-    timestamp: Date;
-}
-
-export interface OrchestratorChat {
-    _id?: ObjectId;
-    userId: string;
-    createdAt: Date;
-    updatedAt: Date;
-    messages: OrchestratorMessage[];
-}
-
-export class MongoDb {
+export class MongoDb implements OrchestratorDb {
     private client: MongoClient;
     private collection!: Collection<ScheduledTask>;
     private orchestratorCollection!: Collection<OrchestratorChat>;
@@ -94,9 +72,10 @@ export class MongoDb {
         taskData: Record<string, any> = {},
         nextRunAt: Date,
         intervalMs?: number
-    ): Promise<ObjectId> {
+    ): Promise<string> {
         const now = new Date();
         const doc: ScheduledTask = {
+            _id: new ObjectId().toString(),
             userId,
             handlerName,
             taskData,
@@ -135,7 +114,7 @@ export class MongoDb {
     /**
      * Marks a task's status as "running". Typically called right before invoking it.
      */
-    public async markRunning(taskId: ObjectId): Promise<void> {
+    public async markRunning(taskId: string): Promise<void> {
         const now = new Date();
         await this.collection.updateOne(
             { _id: taskId },
@@ -151,10 +130,7 @@ export class MongoDb {
     /**
      * Marks a task as completed (or failed).
      */
-    public async markCompleted(
-        taskId: ObjectId,
-        failed = false
-    ): Promise<void> {
+    public async markCompleted(taskId: string, failed = false): Promise<void> {
         const now = new Date();
         await this.collection.updateOne(
             { _id: taskId },
@@ -171,7 +147,7 @@ export class MongoDb {
      * Updates a task to run again in the future (if intervalMs is present).
      */
     public async updateNextRun(
-        taskId: ObjectId,
+        taskId: string,
         newRunTime: Date
     ): Promise<void> {
         const now = new Date();
@@ -213,7 +189,7 @@ export class MongoDb {
      * Creates a new "orchestrator" document for a user, returning its generated _id.
      * This can represent a "new chat/session" with the agent.
      */
-    public async createOrchestrator(userId: string): Promise<ObjectId> {
+    public async createOrchestrator(userId: string): Promise<string> {
         const chat: OrchestratorChat = {
             userId: userId,
             createdAt: new Date(),
@@ -221,7 +197,7 @@ export class MongoDb {
             messages: [],
         };
         const result = await this.orchestratorCollection.insertOne(chat);
-        return result.insertedId;
+        return result.insertedId.toString();
     }
 
     /**
@@ -233,7 +209,7 @@ export class MongoDb {
      * @param data - The data payload to store (e.g., text, JSON from APIs, etc).
      */
     public async addMessage(
-        orchestratorId: ObjectId,
+        orchestratorId: string,
         role: HandlerRole,
         name: string,
         data: unknown
@@ -260,7 +236,7 @@ export class MongoDb {
      * Retrieves all messages in a specific orchestrator's conversation.
      */
     public async getMessages(
-        orchestratorId: ObjectId
+        orchestratorId: string
     ): Promise<OrchestratorMessage[]> {
         const doc = await this.orchestratorCollection.findOne({
             _id: orchestratorId,
@@ -282,21 +258,29 @@ export class MongoDb {
      * Retrieves a single orchestrator document by its ObjectId.
      */
     public async getOrchestratorById(
-        orchestratorId: ObjectId
+        orchestratorId: string
     ): Promise<OrchestratorChat | null> {
-        return this.orchestratorCollection.findOne({ _id: orchestratorId });
+        return this.orchestratorCollection.findOne({
+            _id: orchestratorId,
+        });
     }
 
-    public async getOrchestratorsByUserId(userId: string) {
+    public async getOrchestratorsByUserId(
+        userId: string
+    ): Promise<OrchestratorChat[]> {
         try {
-            const collection = this.client
-                .db(this.dbName)
-                .collection("orchestrators");
-
-            return await collection
+            const documents = await this.orchestratorCollection
                 .find({ userId })
                 .sort({ createdAt: -1 })
                 .toArray();
+
+            return documents.map((doc) => ({
+                _id: doc._id.toString(),
+                userId: doc.userId,
+                createdAt: doc.createdAt,
+                updatedAt: doc.updatedAt,
+                messages: doc.messages,
+            }));
         } catch (error) {
             console.error(
                 "MongoDb.getOrchestratorsByUserId",

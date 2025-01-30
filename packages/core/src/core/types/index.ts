@@ -285,6 +285,7 @@ export interface ProcessedResult {
     suggestedOutputs: SuggestedOutput<any>[];
     isOutputSuccess?: boolean;
     alreadyProcessed?: boolean;
+    nextProcessor?: string;
     updateTasks?: {
         name: string;
         data?: any;
@@ -609,3 +610,7 @@ export interface ActionIOHandler extends BaseIOHandler {
 
 /** Union type of all possible IO handler types */
 export type IOHandler = InputIOHandler | OutputIOHandler | ActionIOHandler;
+
+export interface AgentRequest {
+    headers: Record<string, string>;
+}

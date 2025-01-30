@@ -26,6 +26,9 @@ importers:
       express:
         specifier: ^4.21.2
         version: 4.21.2
+      hyperliquid:
+        specifier: ^1.5.8
+        version: 1.5.8(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       lerna:
         specifier: ^8.1.9
         version: 8.1.9(encoding@0.1.13)
@@ -1291,6 +1294,10 @@ packages:
 
   '@mongodb-js/saslprep@1.1.9':
     resolution: {integrity: sha512-tVkljjeEaAhCqTzajSdgbQ6gE6f3oneVwa3iXR6csiEwXXOFsiC6Uh9iAjAhXPtqa/XMDHWjjeNH/77m/Yq2dw==}
+
+  '@msgpack/msgpack@3.0.0-beta3':
+    resolution: {integrity: sha512-LZYWBmrkKO0quyjnJCeSaqHOcsuZUvE+hlIYRqFc0qI27dLnsOdnv8Fsj2cyitzQTJZmCPm53vZ/P8QTH7E84A==}
+    engines: {node: '>= 18'}
 
   '@napi-rs/wasm-runtime@0.2.4':
     resolution: {integrity: sha512-9zESzOO5aDByvhIAsOy9TbpZ0Ur2AJbUI7UT73kcUTS2mxAMHOBaa1st/jAymNoCtvrit99kkzT1FZuXVcgfIQ==}
@@ -3878,6 +3885,10 @@ packages:
 
   humanize-ms@1.2.1:
     resolution: {integrity: sha512-Fl70vYtsAFb/C06PTS9dZBo7ihau+Tu/DNCk/OyHhea07S+aeMWpFFkUaXRa8fI+ScZbEI8dfSxwY7gxZ9SAVQ==}
+
+  hyperliquid@1.5.8:
+    resolution: {integrity: sha512-y3gJ8Z77UZYlJov234EQXGajTzKhFd+Vp9vL96sIogFeylkObh1ut7/hpznDlEBDgZi3ij0dIf8dYrRZ1DzW2g==}
+    engines: {node: '>=16.0.0'}
 
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -7422,6 +7433,8 @@ snapshots:
     dependencies:
       sparse-bitfield: 3.0.3
 
+  '@msgpack/msgpack@3.0.0-beta3': {}
+
   '@napi-rs/wasm-runtime@0.2.4':
     dependencies:
       '@emnapi/core': 1.3.1
@@ -10353,6 +10366,19 @@ snapshots:
   humanize-ms@1.2.1:
     dependencies:
       ms: 2.1.3
+
+  hyperliquid@1.5.8(bufferutil@4.0.9)(utf-8-validate@5.0.10):
+    dependencies:
+      '@msgpack/msgpack': 3.0.0-beta3
+      '@types/ws': 8.5.13
+      axios: 1.7.9
+      ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      typescript: 5.6.3
+      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - utf-8-validate
 
   iconv-lite@0.4.24:
     dependencies:
