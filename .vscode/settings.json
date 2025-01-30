@@ -2,11 +2,13 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "files.exclude": {
+        "**/dist": true,
         "**/node_modules": true
     },
     "prettier.configPath": "prettier.config.cjs",
     "prettier.singleQuote": false,
     "search.exclude": {
+        "**/dist": true,
         "**/node_modules": true
     },
     "typescript.tsdk": "node_modules/typescript/lib"
