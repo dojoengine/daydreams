@@ -7,6 +7,7 @@
         "twitter": "bun run examples/example-twitter.ts",
         "server": "bun run examples/example-server.ts",
         "discord": "bun run examples/example-discord.ts",
+        "telegram": "bun run examples/example-telegram.ts",
         "hyperliquid": "bun run examples/example-hyperliquid.ts",
         "api": "bun run examples/example-api.ts",
         "ui": "pnpm --dir clients/example-ui run dev",
@@ -29,6 +30,7 @@
         "mongodb": "^6.12.0",
         "prettier": "^3.4.2",
         "readline": "^1.3.0",
+        "telegram": "^2.26.16",
         "ws": "^8.18.0",
         "zod": "^3.24.1"
     },

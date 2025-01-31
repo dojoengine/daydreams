@@ -3,6 +3,7 @@
     "module": "index.ts",
     "version": "0.0.3",
     "type": "module",
+    "main": "dist/index.js",
     "devDependencies": {
         "@types/bun": "latest"
     },

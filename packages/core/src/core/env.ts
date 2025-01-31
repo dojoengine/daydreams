@@ -12,6 +12,9 @@ const envSchema = z.object({
     OPENROUTER_API_KEY: z.string(),
     GRAPHQL_URL: z.string(),
     DISCORD_TOKEN: z.string(),
+    TELEGRAM_TOKEN: z.string(),
+    TELEGRAM_API_ID: z.string(),
+    TELEGRAM_API_HASH: z.string(),
     HYPERLIQUID_MAIN_ADDRESS: z.string(),
     HYPERLIQUID_WALLET_ADDRESS: z.string(),
     HYPERLIQUID_PRIVATE_KEY: z.string(),
@@ -19,5 +22,7 @@ const envSchema = z.object({
     DRY_RUN: z
         .preprocess((val) => val === "1" || val === "true", z.boolean())
         .default(true),
+    TELEGRAM_STARTUP_CHAT_ID: z.string().optional(),
+    TELEGRAM_USER_SESSION: z.string().optional(),
 });
 export const env = envSchema.parse(process.env);
