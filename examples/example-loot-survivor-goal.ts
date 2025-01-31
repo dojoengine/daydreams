@@ -3,26 +3,33 @@
  * This example creates an agent that can plan and execute hierarchical goals.
  *
  * To customize:
- * 1. Define a new context for the agent (similar to LOOT_SURVIVOR_CONTEXT)
+ * 1. Define a new context for the agent (similar to ETERNUM_CONTEXT)
  * 2. Inject the context into the agent initialization
  */
 
-import { LLMClient } from "../packages/core/src/core/llm-client";
-import { ChainOfThought } from "../packages/core/src/core/chain-of-thought";
-import { LOOT_SURVIVOR_CONTEXT, PROVIDER_GUIDE } from "./loot-survivor-context";
-import * as readline from "readline";
 import chalk from "chalk";
+import * as readline from "readline";
+import { ChainOfThought } from "../packages/core/src/core/chain-of-thought";
+import { LLMClient } from "../packages/core/src/core/llm-client";
+import {
+    BASE_CONTEXT,
+    CHARACTER_STATS,
+    COMBAT_INFO,
+    CONTRACT_INFO,
+    CORE_MECHANICS,
+    DECISION_RULES,
+    EQUIPMENT_INFO,
+} from "./loot-survivor-context";
 
-import { ChromaVectorDB } from "../packages/core/src/core/vector-db";
+import { z } from "zod";
+import { StarknetChain } from "../packages/core/src/core/chains/starknet";
+import { env } from "../packages/core/src/core/env";
 import {
     GoalStatus,
     HandlerRole,
     LogLevel,
 } from "../packages/core/src/core/types";
-import { fetchGraphQL } from "../packages/core/src/core/providers";
-import { StarknetChain } from "../packages/core/src/core/chains/starknet";
-import { z } from "zod";
-import { env } from "../packages/core/src/core/env";
+import { ChromaVectorDB } from "../packages/core/src/core/vector-db";
 
 /**
  * Helper function to get user input from CLI
@@ -59,7 +66,10 @@ function printGoalStatus(status: GoalStatus): string {
 async function main() {
     // Initialize core components
     const llmClient = new LLMClient({
-        model: "openrouter:deepseek/deepseek-r1", // High performance model
+        model: "anthropic/claude-3-5-sonnet-latest", // More stable, faster model
+        timeout: 30000, // 30 second timeout
+        maxRetries: 3, // Increase retries
+        temperature: 0.3, // Lower temperature for more consistent outputs
     });
 
     const starknetChain = new StarknetChain({
@@ -70,47 +80,108 @@ async function main() {
 
     const memory = new ChromaVectorDB("agent_memory");
     await memory.purge(); // Clear previous session data
+    // Store modular contexts with specific tags for targeted retrieval
 
-    // Load initial context documents
     await memory.storeDocument({
-        title: "Game Rules",
-        content: LOOT_SURVIVOR_CONTEXT,
-        category: "rules",
-        tags: ["game-mechanics", "rules"],
+        title: "Core-Game-Mechanics",
+        content: CORE_MECHANICS,
+        category: "game-mechanics",
+        tags: ["mechanics", "rules"],
         lastUpdated: new Date(),
     });
 
     await memory.storeDocument({
-        title: "Provider Guide",
-        content: PROVIDER_GUIDE,
-        category: "rules",
-        tags: ["provider-guide"],
+        title: "Equipment-Information",
+        content: EQUIPMENT_INFO,
+        category: "equipment",
+        tags: ["items", "gear", "equipment-ids"],
         lastUpdated: new Date(),
     });
 
-    // Initialize the main reasoning engine
+    await memory.storeDocument({
+        title: "Combat-Information",
+        content: COMBAT_INFO,
+        category: "combat",
+        tags: ["combat", "strategy", "beasts"],
+        lastUpdated: new Date(),
+    });
+
+    await memory.storeDocument({
+        title: "Character-Stats",
+        content: CHARACTER_STATS,
+        category: "character",
+        tags: ["stats", "attributes"],
+        lastUpdated: new Date(),
+    });
+
+    await memory.storeDocument({
+        title: "Contract-Interface",
+        content: CONTRACT_INFO,
+        category: "technical",
+        tags: ["contract", "functions", "api"],
+        lastUpdated: new Date(),
+    });
+
+    await memory.storeDocument({
+        title: "Decision-Rules",
+        content: DECISION_RULES,
+        category: "strategy",
+        tags: ["decision-making", "principles"],
+        lastUpdated: new Date(),
+    }); // Initialize the main reasoning engine with minimal base context
+
     const dreams = new ChainOfThought(
         llmClient,
         memory,
         {
-            worldState: LOOT_SURVIVOR_CONTEXT,
+            worldState: BASE_CONTEXT, // Only load the minimal context initially
         },
         {
             logLevel: LogLevel.DEBUG,
         }
-    );
+    ); // Register available actions
 
-    // Register available actions
+    dreams.registerOutput({
+        name: "READ_CONTRACT",
+        role: HandlerRole.OUTPUT,
+        execute: async (data: any) => {
+            const result = await starknetChain.read(data.payload);
+            return `Read contract successfully: ${JSON.stringify(result, null, 2)}`;
+        },
+        outputSchema: z
+            .object({
+                contractAddress: z
+                    .string()
+                    .describe(
+                        "The address of the contract to read the data from"
+                    ),
+                entrypoint: z
+                    .string()
+                    .describe("The entrypoint to call on the contract"),
+                calldata: z
+                    .array(z.number().or(z.string()))
+                    .describe("The calldata to pass to the entrypoint"),
+            })
+            .describe("The payload to read the data from the contract"),
+    });
+
     dreams.registerOutput({
         name: "EXECUTE_TRANSACTION",
         role: HandlerRole.OUTPUT,
         execute: async (data: any) => {
+            // Convert boolean values in calldata to numbers
+            if (data.payload.calldata) {
+                data.payload.calldata = data.payload.calldata.map(
+                    (item: any) => {
+                        if (typeof item === "boolean") {
+                            return item ? 1 : 0;
+                        }
+                        return item;
+                    }
+                );
+            }
             const result = await starknetChain.write(data.payload);
-            return `Transaction executed successfully: ${JSON.stringify(
-                result,
-                null,
-                2
-            )}`;
+            return `Transaction executed successfully: ${JSON.stringify(result, null, 2)}`;
         },
         outputSchema: z
             .object({
@@ -123,45 +194,86 @@ async function main() {
                     .string()
                     .describe("The entrypoint to call on the contract"),
                 calldata: z
-                    .array(z.union([z.number(), z.string()]))
+                    .array(z.number().or(z.string()))
                     .describe("The calldata to pass to the entrypoint"),
             })
-            .describe(
-                "The payload to execute the transaction, never include slashes or comments"
-            ),
+            .describe("The payload to execute the transaction"),
+    }); // Register data retrieval actions
+
+    dreams.registerOutput({
+        name: "RETRIEVE_MEMORY",
+        role: HandlerRole.OUTPUT,
+        execute: async (data: any) => {
+            const { content, limit = 5 } = data.payload;
+            const results = await memory.findSimilar(content, limit);
+            return `Retrieved memories: ${JSON.stringify(results, null, 2)}`;
+        },
+        outputSchema: z
+            .object({
+                content: z.string().describe("The content to search for"),
+                limit: z
+                    .number()
+                    .optional()
+                    .describe("Maximum number of results to return"),
+            })
+            .describe("Parameters for retrieving memories"),
     });
 
-    // TODO: update for loot-survivor gql
-    // dreams.registerOutput({
-    //     name: "GRAPHQL_FETCH",
-    //     role: HandlerRole.OUTPUT,
-    //     execute: async (data: any) => {
-    //         const { query, variables } = data.payload ?? {};
-    //         const result = await fetchGraphQL(
-    //             env.GRAPHQL_URL + "/graphql",
-    //             query,
-    //             variables
-    //         );
-    //         const resultStr = [
-    //             `query: ${query}`,
-    //             `result: ${JSON.stringify(result, null, 2)}`,
-    //         ].join("\n\n");
-    //         return `GraphQL data fetched successfully: ${resultStr}`;
-    //     },
-    //     outputSchema: z
-    //         .object({
-    //             query: z.string()
-    //                 .describe(`"query GetRealmInfo { eternumRealmModels(where: { realm_id: 42 }) { edges { node { ... on eternum_Realm {
-    //       entity_id level } } } }"`),
-    //         })
-    //         .describe(
-    //             "The payload to fetch data from the Eternum GraphQL API, never include slashes or comments"
-    //         ),
-    // });
+    dreams.registerOutput({
+        name: "STORE_MEMORY",
+        role: HandlerRole.OUTPUT,
+        execute: async (data: any) => {
+            const { content, metadata = {} } = data.payload;
+            await memory.store(content, metadata);
+            return `Memory stored successfully`;
+        },
+        outputSchema: z
+            .object({
+                content: z.string().describe("The content to store"),
+                metadata: z
+                    .record(z.any())
+                    .optional()
+                    .describe("Additional metadata to store"),
+            })
+            .describe("Parameters for storing memories"),
+    });
 
-    // Set up event logging
+    dreams.registerOutput({
+        name: "PEEK_RECENT",
+        role: HandlerRole.OUTPUT,
+        execute: async (data: any) => {
+            const { limit = 5 } = data.payload;
+            const items = await memory.peek(limit);
+            return `Retrieved recent items: ${JSON.stringify(items, null, 2)}`;
+        },
+        outputSchema: z
+            .object({
+                limit: z
+                    .number()
+                    .optional()
+                    .describe("Maximum number of items to return"),
+            })
+            .describe("Parameters for retrieving recent items"),
+    });
 
-    // Thought process events
+    dreams.registerOutput({
+        name: "GET_RECENT_EPISODES",
+        role: HandlerRole.OUTPUT,
+        execute: async (data: any) => {
+            const { limit } = data.payload;
+            const episodes = await memory.getRecentEpisodes(limit);
+            return `Retrieved recent episodes: ${JSON.stringify(episodes, null, 2)}`;
+        },
+        outputSchema: z
+            .object({
+                limit: z
+                    .number()
+                    .optional()
+                    .describe("Maximum number of episodes to return"),
+            })
+            .describe("Parameters for retrieving recent episodes"),
+    }); // Thought process events
+
     dreams.on("step", (step) => {
         if (step.type === "system") {
             console.log("\n💭 System prompt:", step.content);
@@ -171,14 +283,12 @@ async function main() {
                 tags: step.tags,
             });
         }
-    });
-
-    // Uncomment to log token usage
+    }); // Uncomment to log token usage
     // llmClient.on("trace:tokens", ({ input, output }) => {
-    //   console.log("\n💡 Tokens used:", { input, output });
+    //   console.log("\n💡 Tokens used:", { input, output });
     // });
-
     // Action execution events
+
     dreams.on("action:start", (action) => {
         console.log("\n🎬 Starting action:", {
             type: action.type,
@@ -198,9 +308,8 @@ async function main() {
             type: action.type,
             error,
         });
-    });
+    }); // Thinking process events
 
-    // Thinking process events
     dreams.on("think:start", ({ query }) => {
         console.log("\n🧠 Starting to think about:", query);
     });
@@ -215,9 +324,8 @@ async function main() {
 
     dreams.on("think:error", ({ query, error }) => {
         console.log("\n💥 Error while thinking about:", query, error);
-    });
+    }); // Goal management events
 
-    // Goal management events
     dreams.on("goal:created", ({ id, description }) => {
         console.log(chalk.cyan("\n🎯 New goal created:"), {
             id,
@@ -244,9 +352,8 @@ async function main() {
             id,
             error: error instanceof Error ? error.message : String(error),
         });
-    });
+    }); // Memory management events
 
-    // Memory management events
     dreams.on("memory:experience_stored", ({ experience }) => {
         console.log(chalk.blue("\n💾 New experience stored:"), {
             action: experience.action,
@@ -277,11 +384,11 @@ async function main() {
         console.log(chalk.yellow("\n🔍 Relevant past experiences found:"));
         experiences.forEach((exp, index) => {
             console.log(chalk.yellow(`\n${index + 1}. Previous Experience:`));
-            console.log(`   Action: ${exp.action}`);
-            console.log(`   Outcome: ${exp.outcome}`);
-            console.log(`   Importance: ${exp.importance || "N/A"}`);
+            console.log(`   Action: ${exp.action}`);
+            console.log(`   Outcome: ${exp.outcome}`);
+            console.log(`   Importance: ${exp.importance || "N/A"}`);
             if (exp.emotions?.length) {
-                console.log(`   Emotions: ${exp.emotions.join(", ")}`);
+                console.log(`   Emotions: ${exp.emotions.join(", ")}`);
             }
         });
     });
@@ -290,14 +397,13 @@ async function main() {
         console.log(chalk.green("\n📖 Relevant knowledge retrieved:"));
         documents.forEach((doc, index) => {
             console.log(chalk.green(`\n${index + 1}. Knowledge Entry:`));
-            console.log(`   Title: ${doc.title}`);
-            console.log(`   Category: ${doc.category}`);
-            console.log(`   Tags: ${doc.tags.join(", ")}`);
-            console.log(`   Content: ${doc.content}`);
+            console.log(`   Title: ${doc.title}`);
+            console.log(`   Category: ${doc.category}`);
+            console.log(`   Tags: ${doc.tags.join(", ")}`);
+            console.log(`   Content: ${doc.content}`);
         });
-    });
+    }); // Main interaction loop
 
-    // Main interaction loop
     while (true) {
         console.log(chalk.cyan("\n🤖 Enter your goal (or 'exit' to quit):"));
         const userInput = await getCliInput("> ");
@@ -318,9 +424,8 @@ async function main() {
                 completed: 0,
                 failed: 0,
                 total: 0,
-            };
+            }; // Execute goals until completion
 
-            // Execute goals until completion
             while (true) {
                 const readyGoals = dreams.goalManager.getReadyGoals();
                 const activeGoals = dreams.goalManager
@@ -328,17 +433,15 @@ async function main() {
                     .filter((g) => g.status === "active");
                 const pendingGoals = dreams.goalManager
                     .getGoalsByHorizon("short")
-                    .filter((g) => g.status === "pending");
+                    .filter((g) => g.status === "pending"); // Status update
 
-                // Status update
                 console.log(chalk.cyan("\n📊 Current Progress:"));
                 console.log(`Ready goals: ${readyGoals.length}`);
                 console.log(`Active goals: ${activeGoals.length}`);
                 console.log(`Pending goals: ${pendingGoals.length}`);
                 console.log(`Completed: ${stats.completed}`);
-                console.log(`Failed: ${stats.failed}`);
+                console.log(`Failed: ${stats.failed}`); // Check if all goals are complete
 
-                // Check if all goals are complete
                 if (
                     readyGoals.length === 0 &&
                     activeGoals.length === 0 &&
@@ -346,9 +449,8 @@ async function main() {
                 ) {
                     console.log(chalk.green("\n✨ All goals completed!"));
                     break;
-                }
+                } // Handle blocked goals
 
-                // Handle blocked goals
                 if (readyGoals.length === 0 && activeGoals.length === 0) {
                     console.log(
                         chalk.yellow(
@@ -365,21 +467,20 @@ async function main() {
                         );
                         console.log(
                             chalk.yellow(
-                                `   Blocked by: ${blockingGoals.length} goals`
+                                `   Blocked by: ${blockingGoals.length} goals`
                             )
                         );
                         blockingGoals.forEach((blocking) => {
                             console.log(
                                 chalk.yellow(
-                                    `   - ${blocking.description} (${blocking.status})`
+                                    `   - ${blocking.description} (${blocking.status})`
                                 )
                             );
                         });
                     });
                     break;
-                }
+                } // Execute next goal
 
-                // Execute next goal
                 try {
                     await dreams.processHighestPriorityGoal();
                     stats.completed++;
@@ -388,9 +489,8 @@ async function main() {
                         chalk.red("\n❌ Goal execution failed:"),
                         error
                     );
-                    stats.failed++;
+                    stats.failed++; // Ask to continue
 
-                    // Ask to continue
                     const shouldContinue = await getCliInput(
                         chalk.yellow(
                             "\nContinue executing remaining goals? (y/n): "
@@ -404,18 +504,17 @@ async function main() {
                 }
 
                 stats.total++;
-            }
+            } // Learning summary
 
-            // Learning summary
             console.log(chalk.cyan("\n📊 Learning Summary:"));
 
             const recentExperiences = await dreams.memory.getRecentEpisodes(5);
             console.log(chalk.blue("\n🔄 Recent Experiences:"));
             recentExperiences.forEach((exp, index) => {
                 console.log(chalk.blue(`\n${index + 1}. Experience:`));
-                console.log(`   Action: ${exp.action}`);
-                console.log(`   Outcome: ${exp.outcome}`);
-                console.log(`   Importance: ${exp.importance || "N/A"}`);
+                console.log(`   Action: ${exp.action}`);
+                console.log(`   Outcome: ${exp.outcome}`);
+                console.log(`   Importance: ${exp.importance || "N/A"}`);
             });
 
             const relevantDocs = await dreams.memory.findSimilarDocuments(
@@ -425,12 +524,11 @@ async function main() {
             console.log(chalk.magenta("\n📚 Accumulated Knowledge:"));
             relevantDocs.forEach((doc, index) => {
                 console.log(chalk.magenta(`\n${index + 1}. Knowledge Entry:`));
-                console.log(`   Title: ${doc.title}`);
-                console.log(`   Category: ${doc.category}`);
-                console.log(`   Tags: ${doc.tags.join(", ")}`);
-            });
+                console.log(`   Title: ${doc.title}`);
+                console.log(`   Category: ${doc.category}`);
+                console.log(`   Tags: ${doc.tags.join(", ")}`);
+            }); // Final execution summary
 
-            // Final execution summary
             console.log(chalk.cyan("\n📊 Final Execution Summary:"));
             console.log(chalk.green(`✅ Completed Goals: ${stats.completed}`));
             console.log(chalk.red(`❌ Failed Goals: ${stats.failed}`));
@@ -449,9 +547,8 @@ async function main() {
         } catch (error) {
             console.error(chalk.red("Error processing goal:"), error);
         }
-    }
+    } // Graceful shutdown handler
 
-    // Graceful shutdown handler
     process.on("SIGINT", async () => {
         console.log(chalk.yellow("\nShutting down..."));
         process.exit(0);

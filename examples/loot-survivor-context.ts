@@ -1040,3 +1040,328 @@ Be sure to check the error messages returned by the functions. They are very hel
 </PROVIDER_GUIDE>
 </LOOT_SURVIVOR_CONTEXT>
 `;
+
+// Core game mechanics and rules
+export const CORE_MECHANICS = `
+GAME MECHANICS:
+Combat: Magic/Cloth beats Bludgeon/Metal beats Blade/Hide beats Magic/Cloth
+Equipment Tiers: T1-T5 (T1 best, T5 basic) with tier multipliers T1=5x,T2=4x,T3=3x,T4=2x,T5=1x
+Base Power Calculation: Level/Greatness × (6 - Tier)
+
+Elemental Weapon vs. Armor Type Multipliers:
+Weak: 50% damage
+Fair: 100% damage
+Strong: 150% damage
+
+CRITICAL RULES:
+1. Must complete beast encounters before exploring again
+2. Cannot explore with pending stat upgrades
+3. Market purchases only available during level ups
+4. Reading current state from contract works too
+`;
+
+// Equipment and inventory related information
+export const EQUIPMENT_INFO = `
+Equipment Slots: 1=Weapon, 2=Chest, 3=Head, 4=Waist, 5=Foot, 6=Hand, 7=Neck, 8=Ring
+
+EQUIPMENT IDs:
+Jewelry:
+- Neck(1-3): Pendant(1),Necklace(2),Amulet(3)
+- Ring(4-8): Gold(8),Platinum(6),Titanium(7),Silver(4),Bronze(5)
+
+Weapons:
+- Magic(9-16): GhostWand(9),Grimoire(13),GraveWand(10),Chronicle(14),BoneWand(11),Tome(15),Wand(12),Book(16)
+- Blade(42-46): Katana(42),Falchion(43),Scimitar(44),LongSword(45),ShortSword(46)
+- Bludgeon(72-76): Warhammer(72),Quarterstaff(73),Maul(74),Mace(75),Club(76)
+
+Armor Types:
+1. Magic/Cloth(Base IDs): Chest(17-21),Head(22-26),Waist(27-31),Foot(32-36),Hand(37-41)
+2. Blade/Hide(+30 to base): Chest(47-51),Head(52-56),Waist(57-61),Foot(62-66),Hand(67-71)
+3. Bludgeon/Metal(+60 to base): Chest(77-81),Head(82-86),Waist(87-91),Foot(92-96),Hand(97-101)
+`;
+
+// Combat and strategy information
+export const COMBAT_INFO = `
+Combat Strategy:
+- Blade: Strong vs Cloth, Fair vs Hide, Weak vs Metal
+- Bludgeon: Strong vs Hide, Fair vs Metal, Weak vs Cloth
+- Magic: Strong vs Metal, Fair vs Cloth, Weak vs Hide
+
+Beast Battles:
+- 75 different beasts in game
+- Dynamic health and attack locations
+- Locked in battle upon discovery
+- Options: attack or flee
+- Ambush chance on discovery
+- Random armor slot targeting
+`;
+
+// Character stats and attributes
+export const CHARACTER_STATS = `
+ADVENTURER STATS:
+STR: Damage coefficient
+DEX: Flee chance
+VIT: Max health
+INT: Obstacle dodge chance
+WIS: Beast ambush dodge chance
+CHA: Item cost reduction
+LUCK: Critical hit chance and critical damage
+
+Additional Bonuses:
+Critical hits: Chance = Luck/100, damage bonus = 20-100%
+`;
+
+// Contract interface information
+export const CONTRACT_INFO = `
+LOOT SURVIVOR CONTRACT ADDRESS (ALWAYS USE THIS EXACT ADDRESS):
+0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4
+
+AVAILABLE FUNCTIONS AND USAGE:
+
+1. Reading State:
+   get_adventurer(adventurer_id: 10026):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "get_adventurer",
+     calldata: [10026]
+   }
+   Returns: [health, xp, gold, beast_health, stats, equipment]
+
+   get_bag(adventurer_id: 10026):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "get_bag",
+     calldata: [10026]
+   }
+   Returns: Array of item IDs
+
+   get_market(adventurer_id: 10026):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "get_market",
+     calldata: [10026]
+   }
+   Returns: Array of purchasable items
+
+2. Actions:
+   explore(adventurer_id: 10026, till_beast: boolean):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "explore",
+     calldata: [10026, 1]  // 1 for true, 0 for false
+   }
+
+   attack(adventurer_id: 10026, to_the_death: boolean):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "attack",
+     calldata: [10026, 1]  // 1 for true, 0 for false
+   }
+
+   flee(adventurer_id: 10026, to_the_death: boolean):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "flee",
+     calldata: [10026, 0]  // 1 for true, 0 for false
+   }
+
+   upgrade(adventurer_id: 10026, potions: number, stat_upgrades: Stats, items: ItemPurchase[]):
+   Description: Allows an adventurer to upgrade stats, buy potions, and purchase items in one transaction
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "upgrade",
+     calldata: [
+       10026,  // adventurer_id
+       2,      // potions (0-255)
+       1,      // stat_upgrades.strength
+       2,      // stat_upgrades.dexterity
+       1,      // stat_upgrades.vitality
+       0,      // stat_upgrades.intelligence
+       1,      // stat_upgrades.wisdom
+       0,      // stat_upgrades.charisma
+       2,      // stat_upgrades.luck
+       1,      // items array length
+       42,     // item_id to purchase
+       1       // quantity to purchase
+     ]
+   }
+
+   IMPORTANT UPGRADE RULES:
+   - Cannot upgrade while dead
+   - Cannot upgrade during battle
+   - Must have available stat points
+   - Cannot upgrade if awaiting item specials
+   - Game must not be expired
+   - Vitality upgrades boost health
+   - Items are purchased and equipped in order
+   - Potions are processed after item purchases
+   - Bag changes are saved if mutated
+
+3. Equipment:
+   equip(adventurer_id: 10026, items: number[]):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "equip",
+     calldata: [10026, ...items]
+   }
+
+   drop(adventurer_id: 10026, items: number[]):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "drop",
+     calldata: [10026, ...items]
+   }
+
+IMPORTANT NOTES:
+- ALWAYS use the exact contract address shown above
+- Boolean parameters must be converted to numbers (1 for true, 0 for false)
+- Read current state before taking actions
+- Complete beast encounters before exploring again
+- Cannot explore with pending stat upgrades
+- Market only available during level ups
+`;
+
+// Decision making principles
+export const DECISION_RULES = `
+DECISION_MAKING:
+1. TAKE ACTION - You must act with the information and options currently available
+2. NO PERFECT CHOICES - Every decision has tradeoffs, choose the best available option
+3. ADAPT AND SURVIVE - Change strategy based on current equipment, stats, and situation
+4. IMMEDIATE ACTION > PERFECT PLANNING - Better to take reasonable action now than wait for perfect conditions
+5. USE WHAT YOU HAVE - Work with currently available equipment and stats
+6. BALANCE RISK/REWARD - Consider both immediate survival and long-term growth
+7. LEARN FROM OUTCOMES - Each action provides information for future decisions
+
+Remember: In Loot Survivor, you must keep moving forward. Inaction leads to death. Make the best choice you can with what you have right now.
+`;
+
+// Minimal base context that gets loaded initially
+export const BASE_CONTEXT = `
+Your adventurer ID is 10026.
+Loot Survivor is an on-chain dungeon crawler where you must explore, fight beasts, and survive using your equipment and stats wisely.
+Use the available contract functions to read state and take actions.
+LOOT SURVIVOR CONTRACT ADDRESS (ALWAYS USE THIS EXACT ADDRESS):
+0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4
+
+AVAILABLE FUNCTIONS AND USAGE:
+
+1. Reading State:
+   get_adventurer(adventurer_id: 10026):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "get_adventurer",
+     calldata: [10026]
+   }
+   Returns: [health, xp, gold, beast_health, stats, equipment]
+
+   get_bag(adventurer_id: 10026):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "get_bag",
+     calldata: [10026]
+   }
+   Returns: Array of item IDs
+
+   get_market(adventurer_id: 10026):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "get_market",
+     calldata: [10026]
+   }
+   Returns: Array of purchasable items
+
+2. Actions:
+   explore(adventurer_id: 10026, till_beast: boolean):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "explore",
+     calldata: [10026, 1]  // 1 for true, 0 for false
+   }
+
+   attack(adventurer_id: 10026, to_the_death: boolean):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "attack",
+     calldata: [10026, 1]  // 1 for true, 0 for false
+   }
+
+   flee(adventurer_id: 10026, to_the_death: boolean):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "flee",
+     calldata: [10026, 0]  // 1 for true, 0 for false
+   }
+
+   upgrade(adventurer_id: 10026, potions: number, stat_upgrades: Stats, items: ItemPurchase[]):
+   Description: Allows an adventurer to upgrade stats, buy potions, and purchase items in one transaction
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "upgrade",
+     calldata: [
+       10026,  // adventurer_id
+       2,      // potions (0-255)
+       1,      // stat_upgrades.strength
+       2,      // stat_upgrades.dexterity
+       1,      // stat_upgrades.vitality
+       0,      // stat_upgrades.intelligence
+       1,      // stat_upgrades.wisdom
+       0,      // stat_upgrades.charisma
+       2,      // stat_upgrades.luck
+       1,      // items array length
+       42,     // item_id to purchase
+       1       // quantity to purchase
+     ]
+   }
+
+   IMPORTANT UPGRADE RULES:
+   - Cannot upgrade while dead
+   - Cannot upgrade during battle
+   - Must have available stat points
+   - Cannot upgrade if awaiting item specials
+   - Game must not be expired
+   - Vitality upgrades boost health
+   - Items are purchased and equipped in order
+   - Potions are processed after item purchases
+   - Bag changes are saved if mutated
+
+3. Equipment:
+   equip(adventurer_id: 10026, items: number[]):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "equip",
+     calldata: [10026, ...items]
+   }
+
+   drop(adventurer_id: 10026, items: number[]):
+   Example:
+   {
+     contractAddress: "0x018108b32cea514a78ef1b0e4a0753e855cdf620bc0565202c02456f618c4dc4",
+     entrypoint: "drop",
+     calldata: [10026, ...items]
+   }
+
+IMPORTANT NOTES:
+- ALWAYS use the exact contract address shown above
+- Boolean parameters must be converted to numbers (1 for true, 0 for false)
+- Read current state before taking actions
+- Complete beast encounters before exploring again
+- Cannot explore with pending stat upgrades
+- Market only available during level ups
+`;
