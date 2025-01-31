@@ -6,7 +6,7 @@
 
 > **fetchGraphQL**\<`DataType`\>(`endpoint`, `query`, `variables`?): `Promise`\<`DataType` \| `Error`\>
 
-Defined in: [packages/core/src/core/providers/api.ts:59](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/providers/api.ts#L59)
+Defined in: [packages/core/src/core/providers/api.ts:59](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/providers/api.ts#L59)
 
 A helper function to perform GraphQL queries.
 - `endpoint`: the GraphQL endpoint URL.

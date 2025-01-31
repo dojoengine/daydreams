@@ -1,9 +1,12 @@
 import {
+    ChannelType,
     Client,
     Events,
     GatewayIntentBits,
-    Message,
     Partials,
+    TextChannel,
+    Message,
+    type Channel,
 } from "discord.js";
 import { Logger } from "../../core/logger";
 import { HandlerRole, LogLevel, type IOHandler } from "../types";
@@ -138,6 +141,10 @@ export class DiscordClient {
         };
     }
 
+    private getIsValidTextChannel(channel?: Channel): channel is TextChannel {
+        return channel?.type === ChannelType.GuildText;
+    }
+
     private async sendMessage(data: MessageData): Promise<{
         success: boolean;
         messageId?: string;
@@ -172,7 +179,7 @@ export class DiscordClient {
             }
 
             const channel = this.client.channels.cache.get(data?.channelId);
-            if (!channel?.isTextBased()) {
+            if (!this.getIsValidTextChannel(channel)) {
                 const error = new Error(
                     `Invalid or unsupported channel: ${data.channelId}`
                 );
@@ -186,7 +193,6 @@ export class DiscordClient {
                 throw error;
             }
 
-            // @ts-ignore - no idea why this is chucking error and i cannot be bothered to fix it
             const sentMessage = await channel.send(data.content);
 
             return {

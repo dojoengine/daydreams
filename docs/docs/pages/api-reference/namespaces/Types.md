@@ -4,7 +4,7 @@
 
 ### HandlerRole
 
-Defined in: [packages/core/src/core/types/index.ts:547](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L547)
+Defined in: [packages/core/src/core/types/index.ts:505](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L505)
 
 #### Enumeration Members
 
@@ -12,25 +12,25 @@ Defined in: [packages/core/src/core/types/index.ts:547](https://github.com/daydr
 
 > **ACTION**: `"action"`
 
-Defined in: [packages/core/src/core/types/index.ts:550](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L550)
+Defined in: [packages/core/src/core/types/index.ts:508](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L508)
 
 ##### INPUT
 
 > **INPUT**: `"input"`
 
-Defined in: [packages/core/src/core/types/index.ts:548](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L548)
+Defined in: [packages/core/src/core/types/index.ts:506](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L506)
 
 ##### OUTPUT
 
 > **OUTPUT**: `"output"`
 
-Defined in: [packages/core/src/core/types/index.ts:549](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L549)
+Defined in: [packages/core/src/core/types/index.ts:507](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L507)
 
 ***
 
 ### LogLevel
 
-Defined in: [packages/core/src/core/types/index.ts:50](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L50)
+Defined in: [packages/core/src/core/types/index.ts:51](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L51)
 
 #### Enumeration Members
 
@@ -38,37 +38,37 @@ Defined in: [packages/core/src/core/types/index.ts:50](https://github.com/daydre
 
 > **DEBUG**: `3`
 
-Defined in: [packages/core/src/core/types/index.ts:54](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L54)
+Defined in: [packages/core/src/core/types/index.ts:55](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L55)
 
 ##### ERROR
 
 > **ERROR**: `0`
 
-Defined in: [packages/core/src/core/types/index.ts:51](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L51)
+Defined in: [packages/core/src/core/types/index.ts:52](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L52)
 
 ##### INFO
 
 > **INFO**: `2`
 
-Defined in: [packages/core/src/core/types/index.ts:53](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L53)
+Defined in: [packages/core/src/core/types/index.ts:54](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L54)
 
 ##### TRACE
 
 > **TRACE**: `4`
 
-Defined in: [packages/core/src/core/types/index.ts:55](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L55)
+Defined in: [packages/core/src/core/types/index.ts:56](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L56)
 
 ##### WARN
 
 > **WARN**: `1`
 
-Defined in: [packages/core/src/core/types/index.ts:52](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L52)
+Defined in: [packages/core/src/core/types/index.ts:53](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L53)
 
 ## Interfaces
 
 ### ActionStep
 
-Defined in: [packages/core/src/core/types/index.ts:85](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L85)
+Defined in: [packages/core/src/core/types/index.ts:86](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L86)
 
 #### Extends
 
@@ -80,13 +80,13 @@ Defined in: [packages/core/src/core/types/index.ts:85](https://github.com/daydre
 
 > `optional` **actionOutput**: `any`
 
-Defined in: [packages/core/src/core/types/index.ts:95](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L95)
+Defined in: [packages/core/src/core/types/index.ts:96](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L96)
 
 ##### content
 
 > **content**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:87](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L87)
+Defined in: [packages/core/src/core/types/index.ts:88](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L88)
 
 ###### Overrides
 
@@ -96,19 +96,19 @@ Defined in: [packages/core/src/core/types/index.ts:87](https://github.com/daydre
 
 > `optional` **duration**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:96](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L96)
+Defined in: [packages/core/src/core/types/index.ts:97](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L97)
 
 ##### error?
 
 > `optional` **error**: `Error`
 
-Defined in: [packages/core/src/core/types/index.ts:93](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L93)
+Defined in: [packages/core/src/core/types/index.ts:94](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L94)
 
 ##### id
 
 > **id**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:77](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L77)
+Defined in: [packages/core/src/core/types/index.ts:78](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L78)
 
 ###### Inherited from
 
@@ -118,7 +118,7 @@ Defined in: [packages/core/src/core/types/index.ts:77](https://github.com/daydre
 
 > `optional` **meta**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L82)
+Defined in: [packages/core/src/core/types/index.ts:83](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L83)
 
 ###### Inherited from
 
@@ -128,13 +128,13 @@ Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydre
 
 > `optional` **observations**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:94](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L94)
+Defined in: [packages/core/src/core/types/index.ts:95](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L95)
 
 ##### tags?
 
 > `optional` **tags**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L81)
+Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L82)
 
 ###### Inherited from
 
@@ -144,7 +144,7 @@ Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydre
 
 > **timestamp**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L80)
+Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L81)
 
 ###### Inherited from
 
@@ -154,7 +154,7 @@ Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydre
 
 > `optional` **toolCall**: `object`
 
-Defined in: [packages/core/src/core/types/index.ts:88](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L88)
+Defined in: [packages/core/src/core/types/index.ts:89](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L89)
 
 ###### arguments
 
@@ -172,7 +172,7 @@ Defined in: [packages/core/src/core/types/index.ts:88](https://github.com/daydre
 
 > **type**: `"action"`
 
-Defined in: [packages/core/src/core/types/index.ts:86](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L86)
+Defined in: [packages/core/src/core/types/index.ts:87](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L87)
 
 ###### Overrides
 
@@ -182,7 +182,7 @@ Defined in: [packages/core/src/core/types/index.ts:86](https://github.com/daydre
 
 ### AnalysisOptions
 
-Defined in: [packages/core/src/core/types/index.ts:179](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L179)
+Defined in: [packages/core/src/core/types/index.ts:180](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L180)
 
 #### Properties
 
@@ -190,37 +190,37 @@ Defined in: [packages/core/src/core/types/index.ts:179](https://github.com/daydr
 
 > `optional` **formatResponse**: `boolean`
 
-Defined in: [packages/core/src/core/types/index.ts:184](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L184)
+Defined in: [packages/core/src/core/types/index.ts:185](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L185)
 
 ##### maxTokens?
 
 > `optional` **maxTokens**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:183](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L183)
+Defined in: [packages/core/src/core/types/index.ts:184](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L184)
 
 ##### role?
 
 > `optional` **role**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:181](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L181)
+Defined in: [packages/core/src/core/types/index.ts:182](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L182)
 
 ##### system?
 
 > `optional` **system**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:180](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L180)
+Defined in: [packages/core/src/core/types/index.ts:181](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L181)
 
 ##### temperature?
 
 > `optional` **temperature**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:182](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L182)
+Defined in: [packages/core/src/core/types/index.ts:183](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L183)
 
 ***
 
 ### BaseStep
 
-Defined in: [packages/core/src/core/types/index.ts:76](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L76)
+Defined in: [packages/core/src/core/types/index.ts:77](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L77)
 
 #### Extended by
 
@@ -235,43 +235,43 @@ Defined in: [packages/core/src/core/types/index.ts:76](https://github.com/daydre
 
 > **content**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:79](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L79)
+Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L80)
 
 ##### id
 
 > **id**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:77](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L77)
+Defined in: [packages/core/src/core/types/index.ts:78](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L78)
 
 ##### meta?
 
 > `optional` **meta**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L82)
+Defined in: [packages/core/src/core/types/index.ts:83](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L83)
 
 ##### tags?
 
 > `optional` **tags**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L81)
+Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L82)
 
 ##### timestamp
 
 > **timestamp**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L80)
+Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L81)
 
 ##### type
 
 > **type**: [`StepType`](Types.md#steptype)
 
-Defined in: [packages/core/src/core/types/index.ts:78](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L78)
+Defined in: [packages/core/src/core/types/index.ts:79](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L79)
 
 ***
 
 ### ChainOfThoughtContext
 
-Defined in: [packages/core/src/core/types/index.ts:9](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L9)
+Defined in: [packages/core/src/core/types/index.ts:9](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L9)
 
 ChainOfThoughtContext can hold any relevant data
 the LLM or game might need to keep track of during reasoning.
@@ -282,31 +282,31 @@ the LLM or game might need to keep track of during reasoning.
 
 > `optional` **actionHistory**: `Record`\<`number`, \{ `action`: [`CoTAction`](Types.md#cotaction); `result`: `string`; \}\>
 
-Defined in: [packages/core/src/core/types/index.ts:12](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L12)
+Defined in: [packages/core/src/core/types/index.ts:12](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L12)
 
 ##### pastExperiences?
 
 > `optional` **pastExperiences**: [`EpisodicMemory`](Types.md#episodicmemory)[]
 
-Defined in: [packages/core/src/core/types/index.ts:19](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L19)
+Defined in: [packages/core/src/core/types/index.ts:19](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L19)
 
 ##### relevantKnowledge?
 
 > `optional` **relevantKnowledge**: [`Documentation`](Types.md#documentation)[]
 
-Defined in: [packages/core/src/core/types/index.ts:20](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L20)
+Defined in: [packages/core/src/core/types/index.ts:20](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L20)
 
 ##### worldState
 
 > **worldState**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:11](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L11)
+Defined in: [packages/core/src/core/types/index.ts:11](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L11)
 
 ***
 
 ### ChainOfThoughtEvents
 
-Defined in: [packages/core/src/core/types/index.ts:196](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L196)
+Defined in: [packages/core/src/core/types/index.ts:197](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L197)
 
 #### Properties
 
@@ -314,7 +314,7 @@ Defined in: [packages/core/src/core/types/index.ts:196](https://github.com/daydr
 
 > **action:complete**: (`data`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:199](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L199)
+Defined in: [packages/core/src/core/types/index.ts:200](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L200)
 
 ###### Parameters
 
@@ -336,7 +336,7 @@ Defined in: [packages/core/src/core/types/index.ts:199](https://github.com/daydr
 
 > **action:error**: (`data`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:200](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L200)
+Defined in: [packages/core/src/core/types/index.ts:201](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L201)
 
 ###### Parameters
 
@@ -358,7 +358,7 @@ Defined in: [packages/core/src/core/types/index.ts:200](https://github.com/daydr
 
 > **action:start**: (`action`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:198](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L198)
+Defined in: [packages/core/src/core/types/index.ts:199](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L199)
 
 ###### Parameters
 
@@ -374,7 +374,7 @@ Defined in: [packages/core/src/core/types/index.ts:198](https://github.com/daydr
 
 > **goal:blocked**: (`goal`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:213](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L213)
+Defined in: [packages/core/src/core/types/index.ts:214](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L214)
 
 ###### Parameters
 
@@ -396,7 +396,7 @@ Defined in: [packages/core/src/core/types/index.ts:213](https://github.com/daydr
 
 > **goal:completed**: (`goal`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:210](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L210)
+Defined in: [packages/core/src/core/types/index.ts:211](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L211)
 
 ###### Parameters
 
@@ -418,7 +418,7 @@ Defined in: [packages/core/src/core/types/index.ts:210](https://github.com/daydr
 
 > **goal:created**: (`goal`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:208](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L208)
+Defined in: [packages/core/src/core/types/index.ts:209](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L209)
 
 ###### Parameters
 
@@ -440,7 +440,7 @@ Defined in: [packages/core/src/core/types/index.ts:208](https://github.com/daydr
 
 > **goal:failed**: (`goal`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:211](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L211)
+Defined in: [packages/core/src/core/types/index.ts:212](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L212)
 
 ###### Parameters
 
@@ -462,7 +462,7 @@ Defined in: [packages/core/src/core/types/index.ts:211](https://github.com/daydr
 
 > **goal:started**: (`goal`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:212](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L212)
+Defined in: [packages/core/src/core/types/index.ts:213](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L213)
 
 ###### Parameters
 
@@ -484,7 +484,7 @@ Defined in: [packages/core/src/core/types/index.ts:212](https://github.com/daydr
 
 > **goal:updated**: (`goal`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:209](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L209)
+Defined in: [packages/core/src/core/types/index.ts:210](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L210)
 
 ###### Parameters
 
@@ -506,7 +506,7 @@ Defined in: [packages/core/src/core/types/index.ts:209](https://github.com/daydr
 
 > **memory:experience\_retrieved**: (`data`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:216](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L216)
+Defined in: [packages/core/src/core/types/index.ts:217](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L217)
 
 ###### Parameters
 
@@ -524,7 +524,7 @@ Defined in: [packages/core/src/core/types/index.ts:216](https://github.com/daydr
 
 > **memory:experience\_stored**: (`data`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:214](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L214)
+Defined in: [packages/core/src/core/types/index.ts:215](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L215)
 
 ###### Parameters
 
@@ -542,7 +542,7 @@ Defined in: [packages/core/src/core/types/index.ts:214](https://github.com/daydr
 
 > **memory:knowledge\_retrieved**: (`data`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:219](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L219)
+Defined in: [packages/core/src/core/types/index.ts:220](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L220)
 
 ###### Parameters
 
@@ -560,7 +560,7 @@ Defined in: [packages/core/src/core/types/index.ts:219](https://github.com/daydr
 
 > **memory:knowledge\_stored**: (`data`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:215](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L215)
+Defined in: [packages/core/src/core/types/index.ts:216](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L216)
 
 ###### Parameters
 
@@ -578,7 +578,7 @@ Defined in: [packages/core/src/core/types/index.ts:215](https://github.com/daydr
 
 > **step**: (`step`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:197](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L197)
+Defined in: [packages/core/src/core/types/index.ts:198](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L198)
 
 ###### Parameters
 
@@ -594,7 +594,7 @@ Defined in: [packages/core/src/core/types/index.ts:197](https://github.com/daydr
 
 > **think:complete**: (`data`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:205](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L205)
+Defined in: [packages/core/src/core/types/index.ts:206](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L206)
 
 ###### Parameters
 
@@ -612,7 +612,7 @@ Defined in: [packages/core/src/core/types/index.ts:205](https://github.com/daydr
 
 > **think:error**: (`data`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:207](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L207)
+Defined in: [packages/core/src/core/types/index.ts:208](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L208)
 
 ###### Parameters
 
@@ -634,7 +634,7 @@ Defined in: [packages/core/src/core/types/index.ts:207](https://github.com/daydr
 
 > **think:start**: (`data`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:204](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L204)
+Defined in: [packages/core/src/core/types/index.ts:205](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L205)
 
 ###### Parameters
 
@@ -652,7 +652,7 @@ Defined in: [packages/core/src/core/types/index.ts:204](https://github.com/daydr
 
 > **think:timeout**: (`data`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:206](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L206)
+Defined in: [packages/core/src/core/types/index.ts:207](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L207)
 
 ###### Parameters
 
@@ -670,7 +670,7 @@ Defined in: [packages/core/src/core/types/index.ts:206](https://github.com/daydr
 
 > **trace:tokens**: (`data`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:222](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L222)
+Defined in: [packages/core/src/core/types/index.ts:223](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L223)
 
 ###### Parameters
 
@@ -692,7 +692,7 @@ Defined in: [packages/core/src/core/types/index.ts:222](https://github.com/daydr
 
 ### Character
 
-Defined in: [packages/core/src/core/types/index.ts:266](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L266)
+Defined in: [packages/core/src/core/types/index.ts:267](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L267)
 
 #### Properties
 
@@ -700,25 +700,25 @@ Defined in: [packages/core/src/core/types/index.ts:266](https://github.com/daydr
 
 > **bio**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:268](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L268)
+Defined in: [packages/core/src/core/types/index.ts:269](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L269)
 
 ##### instructions
 
 > **instructions**: [`CharacterInstructions`](Types.md#characterinstructions)
 
-Defined in: [packages/core/src/core/types/index.ts:271](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L271)
+Defined in: [packages/core/src/core/types/index.ts:272](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L272)
 
 ##### name
 
 > **name**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:267](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L267)
+Defined in: [packages/core/src/core/types/index.ts:268](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L268)
 
 ##### templates?
 
 > `optional` **templates**: `object`
 
-Defined in: [packages/core/src/core/types/index.ts:273](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L273)
+Defined in: [packages/core/src/core/types/index.ts:274](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L274)
 
 ###### replyTemplate?
 
@@ -736,19 +736,19 @@ Defined in: [packages/core/src/core/types/index.ts:273](https://github.com/daydr
 
 > **traits**: [`CharacterTrait`](Types.md#charactertrait)[]
 
-Defined in: [packages/core/src/core/types/index.ts:269](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L269)
+Defined in: [packages/core/src/core/types/index.ts:270](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L270)
 
 ##### voice
 
 > **voice**: [`CharacterVoice`](Types.md#charactervoice)
 
-Defined in: [packages/core/src/core/types/index.ts:270](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L270)
+Defined in: [packages/core/src/core/types/index.ts:271](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L271)
 
 ***
 
 ### CharacterInstructions
 
-Defined in: [packages/core/src/core/types/index.ts:258](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L258)
+Defined in: [packages/core/src/core/types/index.ts:259](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L259)
 
 #### Properties
 
@@ -756,37 +756,37 @@ Defined in: [packages/core/src/core/types/index.ts:258](https://github.com/daydr
 
 > **constraints**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:260](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L260)
+Defined in: [packages/core/src/core/types/index.ts:261](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L261)
 
 ##### contextRules
 
 > **contextRules**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:263](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L263)
+Defined in: [packages/core/src/core/types/index.ts:264](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L264)
 
 ##### goals
 
 > **goals**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:259](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L259)
+Defined in: [packages/core/src/core/types/index.ts:260](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L260)
 
 ##### responseStyle
 
 > **responseStyle**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:262](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L262)
+Defined in: [packages/core/src/core/types/index.ts:263](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L263)
 
 ##### topics
 
 > **topics**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:261](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L261)
+Defined in: [packages/core/src/core/types/index.ts:262](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L262)
 
 ***
 
 ### CharacterTrait
 
-Defined in: [packages/core/src/core/types/index.ts:243](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L243)
+Defined in: [packages/core/src/core/types/index.ts:244](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L244)
 
 #### Properties
 
@@ -794,31 +794,31 @@ Defined in: [packages/core/src/core/types/index.ts:243](https://github.com/daydr
 
 > **description**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:245](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L245)
+Defined in: [packages/core/src/core/types/index.ts:246](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L246)
 
 ##### examples
 
 > **examples**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:247](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L247)
+Defined in: [packages/core/src/core/types/index.ts:248](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L248)
 
 ##### name
 
 > **name**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:244](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L244)
+Defined in: [packages/core/src/core/types/index.ts:245](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L245)
 
 ##### strength
 
 > **strength**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:246](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L246)
+Defined in: [packages/core/src/core/types/index.ts:247](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L247)
 
 ***
 
 ### CharacterVoice
 
-Defined in: [packages/core/src/core/types/index.ts:250](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L250)
+Defined in: [packages/core/src/core/types/index.ts:251](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L251)
 
 #### Properties
 
@@ -826,37 +826,37 @@ Defined in: [packages/core/src/core/types/index.ts:250](https://github.com/daydr
 
 > **commonPhrases**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:254](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L254)
+Defined in: [packages/core/src/core/types/index.ts:255](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L255)
 
 ##### emojis
 
 > **emojis**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:255](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L255)
+Defined in: [packages/core/src/core/types/index.ts:256](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L256)
 
 ##### style
 
 > **style**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:252](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L252)
+Defined in: [packages/core/src/core/types/index.ts:253](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L253)
 
 ##### tone
 
 > **tone**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:251](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L251)
+Defined in: [packages/core/src/core/types/index.ts:252](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L252)
 
 ##### vocabulary
 
 > **vocabulary**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:253](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L253)
+Defined in: [packages/core/src/core/types/index.ts:254](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L254)
 
 ***
 
 ### Cluster
 
-Defined in: [packages/core/src/core/types/index.ts:476](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L476)
+Defined in: [packages/core/src/core/types/index.ts:434](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L434)
 
 #### Extended by
 
@@ -868,49 +868,49 @@ Defined in: [packages/core/src/core/types/index.ts:476](https://github.com/daydr
 
 > `optional` **centroid**: `number`[]
 
-Defined in: [packages/core/src/core/types/index.ts:480](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L480)
+Defined in: [packages/core/src/core/types/index.ts:438](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L438)
 
 ##### description
 
 > **description**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:479](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L479)
+Defined in: [packages/core/src/core/types/index.ts:437](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L437)
 
 ##### documentCount
 
 > **documentCount**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:482](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L482)
+Defined in: [packages/core/src/core/types/index.ts:440](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L440)
 
 ##### id
 
 > **id**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:477](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L477)
+Defined in: [packages/core/src/core/types/index.ts:435](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L435)
 
 ##### lastUpdated
 
 > **lastUpdated**: `Date`
 
-Defined in: [packages/core/src/core/types/index.ts:483](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L483)
+Defined in: [packages/core/src/core/types/index.ts:441](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L441)
 
 ##### name
 
 > **name**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:478](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L478)
+Defined in: [packages/core/src/core/types/index.ts:436](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L436)
 
 ##### topics
 
 > **topics**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:481](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L481)
+Defined in: [packages/core/src/core/types/index.ts:439](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L439)
 
 ***
 
 ### ClusterMetadata
 
-Defined in: [packages/core/src/core/types/index.ts:486](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L486)
+Defined in: [packages/core/src/core/types/index.ts:444](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L444)
 
 #### Extended by
 
@@ -923,25 +923,25 @@ Defined in: [packages/core/src/core/types/index.ts:486](https://github.com/daydr
 
 > **clusterId**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:487](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L487)
+Defined in: [packages/core/src/core/types/index.ts:445](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L445)
 
 ##### confidence
 
 > **confidence**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:488](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L488)
+Defined in: [packages/core/src/core/types/index.ts:446](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L446)
 
 ##### topics
 
 > **topics**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:489](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L489)
+Defined in: [packages/core/src/core/types/index.ts:447](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L447)
 
 ***
 
 ### ClusterStats
 
-Defined in: [packages/core/src/core/types/index.ts:492](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L492)
+Defined in: [packages/core/src/core/types/index.ts:450](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L450)
 
 #### Properties
 
@@ -949,25 +949,25 @@ Defined in: [packages/core/src/core/types/index.ts:492](https://github.com/daydr
 
 > **averageDistance**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:495](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L495)
+Defined in: [packages/core/src/core/types/index.ts:453](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L453)
 
 ##### memberCount
 
 > **memberCount**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:494](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L494)
+Defined in: [packages/core/src/core/types/index.ts:452](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L452)
 
 ##### variance
 
 > **variance**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:493](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L493)
+Defined in: [packages/core/src/core/types/index.ts:451](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L451)
 
 ***
 
 ### ClusterUpdate
 
-Defined in: [packages/core/src/core/types/index.ts:498](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L498)
+Defined in: [packages/core/src/core/types/index.ts:456](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L456)
 
 #### Properties
 
@@ -975,54 +975,60 @@ Defined in: [packages/core/src/core/types/index.ts:498](https://github.com/daydr
 
 > **documentCount**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:500](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L500)
+Defined in: [packages/core/src/core/types/index.ts:458](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L458)
 
 ##### newCentroid?
 
 > `optional` **newCentroid**: `number`[]
 
-Defined in: [packages/core/src/core/types/index.ts:499](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L499)
+Defined in: [packages/core/src/core/types/index.ts:457](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L457)
 
 ##### topics
 
 > **topics**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:501](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L501)
+Defined in: [packages/core/src/core/types/index.ts:459](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L459)
 
 ##### variance?
 
 > `optional` **variance**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:502](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L502)
+Defined in: [packages/core/src/core/types/index.ts:460](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L460)
 
 ***
 
 ### CoTAction
 
-Defined in: [packages/core/src/core/types/index.ts:27](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L27)
+Defined in: [packages/core/src/core/types/index.ts:27](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L27)
 
 Data necessary for a particular action type.
 Extend this to fit your actual logic.
 
 #### Properties
 
+##### context
+
+> **context**: `string`
+
+Defined in: [packages/core/src/core/types/index.ts:29](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L29)
+
 ##### payload
 
 > **payload**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:29](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L29)
+Defined in: [packages/core/src/core/types/index.ts:30](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L30)
 
 ##### type
 
 > **type**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:28](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L28)
+Defined in: [packages/core/src/core/types/index.ts:28](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L28)
 
 ***
 
 ### Documentation
 
-Defined in: [packages/core/src/core/types/index.ts:465](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L465)
+Defined in: [packages/core/src/core/types/index.ts:423](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L423)
 
 #### Properties
 
@@ -1030,55 +1036,55 @@ Defined in: [packages/core/src/core/types/index.ts:465](https://github.com/daydr
 
 > **category**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:469](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L469)
+Defined in: [packages/core/src/core/types/index.ts:427](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L427)
 
 ##### content
 
 > **content**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:468](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L468)
+Defined in: [packages/core/src/core/types/index.ts:426](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L426)
 
 ##### id
 
 > **id**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:466](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L466)
+Defined in: [packages/core/src/core/types/index.ts:424](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L424)
 
 ##### lastUpdated
 
 > **lastUpdated**: `Date`
 
-Defined in: [packages/core/src/core/types/index.ts:471](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L471)
+Defined in: [packages/core/src/core/types/index.ts:429](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L429)
 
 ##### relatedIds?
 
 > `optional` **relatedIds**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:473](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L473)
+Defined in: [packages/core/src/core/types/index.ts:431](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L431)
 
 ##### source?
 
 > `optional` **source**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:472](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L472)
+Defined in: [packages/core/src/core/types/index.ts:430](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L430)
 
 ##### tags
 
 > **tags**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:470](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L470)
+Defined in: [packages/core/src/core/types/index.ts:428](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L428)
 
 ##### title
 
 > **title**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:467](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L467)
+Defined in: [packages/core/src/core/types/index.ts:425](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L425)
 
 ***
 
 ### DocumentClusterMetadata
 
-Defined in: [packages/core/src/core/types/index.ts:505](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L505)
+Defined in: [packages/core/src/core/types/index.ts:463](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L463)
 
 #### Extends
 
@@ -1090,13 +1096,13 @@ Defined in: [packages/core/src/core/types/index.ts:505](https://github.com/daydr
 
 > **category**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:506](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L506)
+Defined in: [packages/core/src/core/types/index.ts:464](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L464)
 
 ##### clusterId
 
 > **clusterId**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:487](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L487)
+Defined in: [packages/core/src/core/types/index.ts:445](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L445)
 
 ###### Inherited from
 
@@ -1106,13 +1112,13 @@ Defined in: [packages/core/src/core/types/index.ts:487](https://github.com/daydr
 
 > **commonTags**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:507](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L507)
+Defined in: [packages/core/src/core/types/index.ts:465](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L465)
 
 ##### confidence
 
 > **confidence**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:488](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L488)
+Defined in: [packages/core/src/core/types/index.ts:446](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L446)
 
 ###### Inherited from
 
@@ -1122,7 +1128,7 @@ Defined in: [packages/core/src/core/types/index.ts:488](https://github.com/daydr
 
 > **topics**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:489](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L489)
+Defined in: [packages/core/src/core/types/index.ts:447](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L447)
 
 ###### Inherited from
 
@@ -1132,7 +1138,7 @@ Defined in: [packages/core/src/core/types/index.ts:489](https://github.com/daydr
 
 ### DomainMetadata
 
-Defined in: [packages/core/src/core/types/index.ts:523](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L523)
+Defined in: [packages/core/src/core/types/index.ts:481](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L481)
 
 #### Properties
 
@@ -1140,25 +1146,25 @@ Defined in: [packages/core/src/core/types/index.ts:523](https://github.com/daydr
 
 > **confidence**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:526](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L526)
+Defined in: [packages/core/src/core/types/index.ts:484](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L484)
 
 ##### domain
 
 > **domain**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:524](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L524)
+Defined in: [packages/core/src/core/types/index.ts:482](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L482)
 
 ##### subDomain?
 
 > `optional` **subDomain**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:525](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L525)
+Defined in: [packages/core/src/core/types/index.ts:483](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L483)
 
 ***
 
 ### EnrichedContent
 
-Defined in: [packages/core/src/core/types/index.ts:315](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L315)
+Defined in: [packages/core/src/core/types/index.ts:316](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L316)
 
 #### Properties
 
@@ -1166,25 +1172,25 @@ Defined in: [packages/core/src/core/types/index.ts:315](https://github.com/daydr
 
 > **context**: [`EnrichedContext`](Types.md#enrichedcontext)
 
-Defined in: [packages/core/src/core/types/index.ts:318](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L318)
+Defined in: [packages/core/src/core/types/index.ts:319](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L319)
 
 ##### originalContent
 
 > **originalContent**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:316](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L316)
+Defined in: [packages/core/src/core/types/index.ts:317](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L317)
 
 ##### timestamp
 
 > **timestamp**: `Date`
 
-Defined in: [packages/core/src/core/types/index.ts:317](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L317)
+Defined in: [packages/core/src/core/types/index.ts:318](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L318)
 
 ***
 
 ### EnrichedContext
 
-Defined in: [packages/core/src/core/types/index.ts:302](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L302)
+Defined in: [packages/core/src/core/types/index.ts:303](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L303)
 
 #### Properties
 
@@ -1192,67 +1198,67 @@ Defined in: [packages/core/src/core/types/index.ts:302](https://github.com/daydr
 
 > `optional` **availableOutputs**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:312](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L312)
+Defined in: [packages/core/src/core/types/index.ts:313](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L313)
 
 ##### entities?
 
 > `optional` **entities**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:308](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L308)
+Defined in: [packages/core/src/core/types/index.ts:309](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L309)
 
 ##### intent?
 
 > `optional` **intent**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:309](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L309)
+Defined in: [packages/core/src/core/types/index.ts:310](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L310)
 
 ##### metadata?
 
 > `optional` **metadata**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:311](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L311)
+Defined in: [packages/core/src/core/types/index.ts:312](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L312)
 
 ##### relatedMemories
 
 > **relatedMemories**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:306](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L306)
+Defined in: [packages/core/src/core/types/index.ts:307](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L307)
 
 ##### sentiment?
 
 > `optional` **sentiment**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:307](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L307)
+Defined in: [packages/core/src/core/types/index.ts:308](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L308)
 
 ##### similarMessages?
 
 > `optional` **similarMessages**: `any`[]
 
-Defined in: [packages/core/src/core/types/index.ts:310](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L310)
+Defined in: [packages/core/src/core/types/index.ts:311](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L311)
 
 ##### summary
 
 > **summary**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:304](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L304)
+Defined in: [packages/core/src/core/types/index.ts:305](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L305)
 
 ##### timeContext
 
 > **timeContext**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:303](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L303)
+Defined in: [packages/core/src/core/types/index.ts:304](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L304)
 
 ##### topics
 
 > **topics**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:305](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L305)
+Defined in: [packages/core/src/core/types/index.ts:306](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L306)
 
 ***
 
 ### EpisodeClusterMetadata
 
-Defined in: [packages/core/src/core/types/index.ts:510](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L510)
+Defined in: [packages/core/src/core/types/index.ts:468](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L468)
 
 #### Extends
 
@@ -1264,13 +1270,13 @@ Defined in: [packages/core/src/core/types/index.ts:510](https://github.com/daydr
 
 > **averageImportance**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:512](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L512)
+Defined in: [packages/core/src/core/types/index.ts:470](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L470)
 
 ##### clusterId
 
 > **clusterId**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:487](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L487)
+Defined in: [packages/core/src/core/types/index.ts:445](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L445)
 
 ###### Inherited from
 
@@ -1280,13 +1286,13 @@ Defined in: [packages/core/src/core/types/index.ts:487](https://github.com/daydr
 
 > **commonEmotions**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:511](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L511)
+Defined in: [packages/core/src/core/types/index.ts:469](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L469)
 
 ##### confidence
 
 > **confidence**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:488](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L488)
+Defined in: [packages/core/src/core/types/index.ts:446](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L446)
 
 ###### Inherited from
 
@@ -1296,7 +1302,7 @@ Defined in: [packages/core/src/core/types/index.ts:488](https://github.com/daydr
 
 > **topics**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:489](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L489)
+Defined in: [packages/core/src/core/types/index.ts:447](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L447)
 
 ###### Inherited from
 
@@ -1306,7 +1312,7 @@ Defined in: [packages/core/src/core/types/index.ts:489](https://github.com/daydr
 
 ### EpisodicMemory
 
-Defined in: [packages/core/src/core/types/index.ts:455](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L455)
+Defined in: [packages/core/src/core/types/index.ts:413](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L413)
 
 #### Properties
 
@@ -1314,49 +1320,49 @@ Defined in: [packages/core/src/core/types/index.ts:455](https://github.com/daydr
 
 > **action**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:458](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L458)
+Defined in: [packages/core/src/core/types/index.ts:416](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L416)
 
 ##### context?
 
 > `optional` **context**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:460](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L460)
+Defined in: [packages/core/src/core/types/index.ts:418](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L418)
 
 ##### emotions?
 
 > `optional` **emotions**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:461](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L461)
+Defined in: [packages/core/src/core/types/index.ts:419](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L419)
 
 ##### id
 
 > **id**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:456](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L456)
+Defined in: [packages/core/src/core/types/index.ts:414](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L414)
 
 ##### importance?
 
 > `optional` **importance**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:462](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L462)
+Defined in: [packages/core/src/core/types/index.ts:420](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L420)
 
 ##### outcome
 
 > **outcome**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:459](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L459)
+Defined in: [packages/core/src/core/types/index.ts:417](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L417)
 
 ##### timestamp
 
 > **timestamp**: `Date`
 
-Defined in: [packages/core/src/core/types/index.ts:457](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L457)
+Defined in: [packages/core/src/core/types/index.ts:415](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L415)
 
 ***
 
 ### Goal
 
-Defined in: [packages/core/src/core/types/index.ts:127](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L127)
+Defined in: [packages/core/src/core/types/index.ts:128](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L128)
 
 #### Properties
 
@@ -1364,49 +1370,49 @@ Defined in: [packages/core/src/core/types/index.ts:127](https://github.com/daydr
 
 > `optional` **completed\_at**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:138](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L138)
+Defined in: [packages/core/src/core/types/index.ts:139](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L139)
 
 ##### created\_at
 
 > **created\_at**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:137](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L137)
+Defined in: [packages/core/src/core/types/index.ts:138](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L138)
 
 ##### dependencies?
 
 > `optional` **dependencies**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:133](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L133)
+Defined in: [packages/core/src/core/types/index.ts:134](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L134)
 
 ##### description
 
 > **description**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:130](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L130)
+Defined in: [packages/core/src/core/types/index.ts:131](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L131)
 
 ##### horizon
 
 > **horizon**: [`HorizonType`](Types.md#horizontype)
 
-Defined in: [packages/core/src/core/types/index.ts:129](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L129)
+Defined in: [packages/core/src/core/types/index.ts:130](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L130)
 
 ##### id
 
 > **id**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:128](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L128)
+Defined in: [packages/core/src/core/types/index.ts:129](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L129)
 
 ##### meta?
 
 > `optional` **meta**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:140](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L140)
+Defined in: [packages/core/src/core/types/index.ts:141](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L141)
 
 ##### outcomeScore?
 
 > `optional` **outcomeScore**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:146](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L146)
+Defined in: [packages/core/src/core/types/index.ts:147](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L147)
 
 A numeric measure of how successful this goal was completed.
 You can define any scale you like: e.g. 0-1, or 0-100, or a positive/negative integer.
@@ -1415,25 +1421,25 @@ You can define any scale you like: e.g. 0-1, or 0-100, or a positive/negative in
 
 > `optional` **parentGoal**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:135](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L135)
+Defined in: [packages/core/src/core/types/index.ts:136](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L136)
 
 ##### priority
 
 > **priority**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:132](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L132)
+Defined in: [packages/core/src/core/types/index.ts:133](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L133)
 
 ##### progress?
 
 > `optional` **progress**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:139](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L139)
+Defined in: [packages/core/src/core/types/index.ts:140](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L140)
 
 ##### scoreHistory?
 
 > `optional` **scoreHistory**: `object`[]
 
-Defined in: [packages/core/src/core/types/index.ts:151](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L151)
+Defined in: [packages/core/src/core/types/index.ts:152](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L152)
 
 Optional history of scores over time, if you want to track multiple attempts or partial runs.
 
@@ -1453,25 +1459,25 @@ Optional history of scores over time, if you want to track multiple attempts or 
 
 > **status**: [`GoalStatus`](Types.md#goalstatus)
 
-Defined in: [packages/core/src/core/types/index.ts:131](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L131)
+Defined in: [packages/core/src/core/types/index.ts:132](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L132)
 
 ##### subgoals?
 
 > `optional` **subgoals**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:134](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L134)
+Defined in: [packages/core/src/core/types/index.ts:135](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L135)
 
 ##### success\_criteria
 
 > **success\_criteria**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:136](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L136)
+Defined in: [packages/core/src/core/types/index.ts:137](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L137)
 
 ***
 
 ### HierarchicalCluster
 
-Defined in: [packages/core/src/core/types/index.ts:515](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L515)
+Defined in: [packages/core/src/core/types/index.ts:473](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L473)
 
 #### Extends
 
@@ -1483,7 +1489,7 @@ Defined in: [packages/core/src/core/types/index.ts:515](https://github.com/daydr
 
 > `optional` **centroid**: `number`[]
 
-Defined in: [packages/core/src/core/types/index.ts:480](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L480)
+Defined in: [packages/core/src/core/types/index.ts:438](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L438)
 
 ###### Inherited from
 
@@ -1493,13 +1499,13 @@ Defined in: [packages/core/src/core/types/index.ts:480](https://github.com/daydr
 
 > **childIds**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:517](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L517)
+Defined in: [packages/core/src/core/types/index.ts:475](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L475)
 
 ##### description
 
 > **description**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:479](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L479)
+Defined in: [packages/core/src/core/types/index.ts:437](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L437)
 
 ###### Inherited from
 
@@ -1509,7 +1515,7 @@ Defined in: [packages/core/src/core/types/index.ts:479](https://github.com/daydr
 
 > **documentCount**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:482](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L482)
+Defined in: [packages/core/src/core/types/index.ts:440](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L440)
 
 ###### Inherited from
 
@@ -1519,13 +1525,13 @@ Defined in: [packages/core/src/core/types/index.ts:482](https://github.com/daydr
 
 > **domain**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:519](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L519)
+Defined in: [packages/core/src/core/types/index.ts:477](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L477)
 
 ##### id
 
 > **id**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:477](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L477)
+Defined in: [packages/core/src/core/types/index.ts:435](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L435)
 
 ###### Inherited from
 
@@ -1535,7 +1541,7 @@ Defined in: [packages/core/src/core/types/index.ts:477](https://github.com/daydr
 
 > **lastUpdated**: `Date`
 
-Defined in: [packages/core/src/core/types/index.ts:483](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L483)
+Defined in: [packages/core/src/core/types/index.ts:441](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L441)
 
 ###### Inherited from
 
@@ -1545,13 +1551,13 @@ Defined in: [packages/core/src/core/types/index.ts:483](https://github.com/daydr
 
 > **level**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:518](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L518)
+Defined in: [packages/core/src/core/types/index.ts:476](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L476)
 
 ##### name
 
 > **name**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:478](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L478)
+Defined in: [packages/core/src/core/types/index.ts:436](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L436)
 
 ###### Inherited from
 
@@ -1561,19 +1567,19 @@ Defined in: [packages/core/src/core/types/index.ts:478](https://github.com/daydr
 
 > `optional` **parentId**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:516](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L516)
+Defined in: [packages/core/src/core/types/index.ts:474](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L474)
 
 ##### subDomain?
 
 > `optional` **subDomain**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:520](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L520)
+Defined in: [packages/core/src/core/types/index.ts:478](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L478)
 
 ##### topics
 
 > **topics**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:481](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L481)
+Defined in: [packages/core/src/core/types/index.ts:439](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L439)
 
 ###### Inherited from
 
@@ -1583,7 +1589,7 @@ Defined in: [packages/core/src/core/types/index.ts:481](https://github.com/daydr
 
 ### IChain
 
-Defined in: [packages/core/src/core/types/index.ts:529](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L529)
+Defined in: [packages/core/src/core/types/index.ts:487](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L487)
 
 #### Properties
 
@@ -1591,7 +1597,7 @@ Defined in: [packages/core/src/core/types/index.ts:529](https://github.com/daydr
 
 > **chainId**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:533](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L533)
+Defined in: [packages/core/src/core/types/index.ts:491](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L491)
 
 A unique identifier for the chain (e.g., "starknet", "ethereum", "solana", etc.)
 
@@ -1601,7 +1607,7 @@ A unique identifier for the chain (e.g., "starknet", "ethereum", "solana", etc.)
 
 > **read**(`call`): `Promise`\<`any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:539](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L539)
+Defined in: [packages/core/src/core/types/index.ts:497](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L497)
 
 Read (call) a contract or perform a query on this chain.
 The `call` parameter can be chain-specific data.
@@ -1620,7 +1626,7 @@ The `call` parameter can be chain-specific data.
 
 > **write**(`call`): `Promise`\<`any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:544](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L544)
+Defined in: [packages/core/src/core/types/index.ts:502](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L502)
 
 Write (execute a transaction) on this chain, typically requiring signatures, etc.
 
@@ -1636,84 +1642,9 @@ Write (execute a transaction) on this chain, typically requiring signatures, etc
 
 ***
 
-### Input\<T\>
-
-Defined in: [packages/core/src/core/types/index.ts:350](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L350)
-
-Interface for defining input handlers that can be registered with the Core system.
-
-#### Type Parameters
-
-• **T** = `unknown`
-
-The type of data returned by the input handler
-
-#### Properties
-
-##### handler()
-
-> **handler**: (...`args`) => `Promise`\<`T`\>
-
-Defined in: [packages/core/src/core/types/index.ts:354](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L354)
-
-Handler function that processes the input and returns a Promise of type T
-
-###### Parameters
-
-###### args
-
-...`unknown`[]
-
-###### Returns
-
-`Promise`\<`T`\>
-
-##### interval?
-
-> `optional` **interval**: `number`
-
-Defined in: [packages/core/src/core/types/index.ts:367](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L367)
-
-Optional interval in milliseconds for recurring inputs.
-If set, the input will run repeatedly at this interval.
-
-###### Example
-
-```ts
-// Run every minute
-interval: 60000
-```
-
-##### name
-
-> **name**: `string`
-
-Defined in: [packages/core/src/core/types/index.ts:352](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L352)
-
-Unique identifier for this input
-
-##### nextRun?
-
-> `optional` **nextRun**: `number`
-
-Defined in: [packages/core/src/core/types/index.ts:373](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L373)
-
-Optional timestamp for when this input should next run.
-If omitted, defaults to immediate execution (Date.now()).
-
-##### response
-
-> **response**: `ZodType`\<`T`, `T`\>
-
-Defined in: [packages/core/src/core/types/index.ts:356](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L356)
-
-Zod schema for validating the response
-
-***
-
 ### IOHandler
 
-Defined in: [packages/core/src/core/types/index.ts:556](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L556)
+Defined in: [packages/core/src/core/types/index.ts:514](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L514)
 
 A single interface for all Inputs, Outputs.
 
@@ -1723,7 +1654,7 @@ A single interface for all Inputs, Outputs.
 
 > **handler**: (`payload`?) => `Promise`\<`unknown`\>
 
-Defined in: [packages/core/src/core/types/index.ts:567](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L567)
+Defined in: [packages/core/src/core/types/index.ts:525](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L525)
 
 The main function. For inputs, no payload is typically passed. For outputs, pass the data.
 
@@ -1741,7 +1672,7 @@ The main function. For inputs, no payload is typically passed. For outputs, pass
 
 > **name**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:558](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L558)
+Defined in: [packages/core/src/core/types/index.ts:516](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L516)
 
 Unique name for this handler
 
@@ -1749,7 +1680,7 @@ Unique name for this handler
 
 > **role**: [`HandlerRole`](Types.md#handlerrole)
 
-Defined in: [packages/core/src/core/types/index.ts:561](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L561)
+Defined in: [packages/core/src/core/types/index.ts:519](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L519)
 
 "input" | "output" | (optionally "action") if you want more roles
 
@@ -1757,7 +1688,7 @@ Defined in: [packages/core/src/core/types/index.ts:561](https://github.com/daydr
 
 > **schema**: `ZodType`
 
-Defined in: [packages/core/src/core/types/index.ts:564](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L564)
+Defined in: [packages/core/src/core/types/index.ts:522](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L522)
 
 The schema for the input handler
 
@@ -1765,7 +1696,7 @@ The schema for the input handler
 
 ### LLMClientConfig
 
-Defined in: [packages/core/src/core/types/index.ts:169](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L169)
+Defined in: [packages/core/src/core/types/index.ts:170](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L170)
 
 #### Properties
 
@@ -1773,49 +1704,49 @@ Defined in: [packages/core/src/core/types/index.ts:169](https://github.com/daydr
 
 > `optional` **baseDelay**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:175](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L175)
+Defined in: [packages/core/src/core/types/index.ts:176](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L176)
 
 ##### maxDelay?
 
 > `optional` **maxDelay**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:176](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L176)
+Defined in: [packages/core/src/core/types/index.ts:177](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L177)
 
 ##### maxRetries?
 
 > `optional` **maxRetries**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:171](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L171)
+Defined in: [packages/core/src/core/types/index.ts:172](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L172)
 
 ##### maxTokens?
 
 > `optional` **maxTokens**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:174](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L174)
+Defined in: [packages/core/src/core/types/index.ts:175](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L175)
 
 ##### model?
 
 > `optional` **model**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:170](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L170)
+Defined in: [packages/core/src/core/types/index.ts:171](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L171)
 
 ##### temperature?
 
 > `optional` **temperature**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:173](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L173)
+Defined in: [packages/core/src/core/types/index.ts:174](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L174)
 
 ##### timeout?
 
 > `optional` **timeout**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:172](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L172)
+Defined in: [packages/core/src/core/types/index.ts:173](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L173)
 
 ***
 
 ### LLMResponse
 
-Defined in: [packages/core/src/core/types/index.ts:158](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L158)
+Defined in: [packages/core/src/core/types/index.ts:159](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L159)
 
 #### Properties
 
@@ -1823,25 +1754,25 @@ Defined in: [packages/core/src/core/types/index.ts:158](https://github.com/daydr
 
 > `optional` **metadata**: `Record`\<`string`, `unknown`\>
 
-Defined in: [packages/core/src/core/types/index.ts:166](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L166)
+Defined in: [packages/core/src/core/types/index.ts:167](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L167)
 
 ##### model
 
 > **model**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:160](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L160)
+Defined in: [packages/core/src/core/types/index.ts:161](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L161)
 
 ##### text
 
 > **text**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:159](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L159)
+Defined in: [packages/core/src/core/types/index.ts:160](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L160)
 
 ##### usage?
 
 > `optional` **usage**: `object`
 
-Defined in: [packages/core/src/core/types/index.ts:161](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L161)
+Defined in: [packages/core/src/core/types/index.ts:162](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L162)
 
 ###### completion\_tokens
 
@@ -1859,7 +1790,7 @@ Defined in: [packages/core/src/core/types/index.ts:161](https://github.com/daydr
 
 ### LLMStructuredResponse
 
-Defined in: [packages/core/src/core/types/index.ts:32](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L32)
+Defined in: [packages/core/src/core/types/index.ts:33](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L33)
 
 #### Properties
 
@@ -1867,13 +1798,13 @@ Defined in: [packages/core/src/core/types/index.ts:32](https://github.com/daydre
 
 > **actions**: [`CoTAction`](Types.md#cotaction)[]
 
-Defined in: [packages/core/src/core/types/index.ts:40](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L40)
+Defined in: [packages/core/src/core/types/index.ts:41](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L41)
 
 ##### meta?
 
 > `optional` **meta**: `object`
 
-Defined in: [packages/core/src/core/types/index.ts:34](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L34)
+Defined in: [packages/core/src/core/types/index.ts:35](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L35)
 
 ###### requirements?
 
@@ -1891,13 +1822,13 @@ Defined in: [packages/core/src/core/types/index.ts:34](https://github.com/daydre
 
 > `optional` **plan**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:33](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L33)
+Defined in: [packages/core/src/core/types/index.ts:34](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L34)
 
 ***
 
 ### LLMValidationOptions\<T\>
 
-Defined in: [packages/core/src/core/types/index.ts:233](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L233)
+Defined in: [packages/core/src/core/types/index.ts:234](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L234)
 
 #### Type Parameters
 
@@ -1909,25 +1840,25 @@ Defined in: [packages/core/src/core/types/index.ts:233](https://github.com/daydr
 
 > **llmClient**: [`LLMClient`](../globals.md#llmclient-1)
 
-Defined in: [packages/core/src/core/types/index.ts:239](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L239)
+Defined in: [packages/core/src/core/types/index.ts:240](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L240)
 
 ##### logger
 
 > **logger**: [`Logger`](../globals.md#logger-1)
 
-Defined in: [packages/core/src/core/types/index.ts:240](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L240)
+Defined in: [packages/core/src/core/types/index.ts:241](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L241)
 
 ##### maxRetries?
 
 > `optional` **maxRetries**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:237](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L237)
+Defined in: [packages/core/src/core/types/index.ts:238](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L238)
 
 ##### onRetry()?
 
 > `optional` **onRetry**: (`error`, `attempt`) => `void`
 
-Defined in: [packages/core/src/core/types/index.ts:238](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L238)
+Defined in: [packages/core/src/core/types/index.ts:239](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L239)
 
 ###### Parameters
 
@@ -1947,25 +1878,25 @@ Defined in: [packages/core/src/core/types/index.ts:238](https://github.com/daydr
 
 > **prompt**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:234](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L234)
+Defined in: [packages/core/src/core/types/index.ts:235](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L235)
 
 ##### schema
 
 > **schema**: `ZodType`\<`T`, `T`\>
 
-Defined in: [packages/core/src/core/types/index.ts:236](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L236)
+Defined in: [packages/core/src/core/types/index.ts:237](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L237)
 
 ##### systemPrompt
 
 > **systemPrompt**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:235](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L235)
+Defined in: [packages/core/src/core/types/index.ts:236](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L236)
 
 ***
 
 ### LogEntry
 
-Defined in: [packages/core/src/core/types/index.ts:66](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L66)
+Defined in: [packages/core/src/core/types/index.ts:67](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L67)
 
 #### Properties
 
@@ -1973,37 +1904,37 @@ Defined in: [packages/core/src/core/types/index.ts:66](https://github.com/daydre
 
 > **context**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:69](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L69)
+Defined in: [packages/core/src/core/types/index.ts:70](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L70)
 
 ##### data?
 
 > `optional` **data**: `any`
 
-Defined in: [packages/core/src/core/types/index.ts:71](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L71)
+Defined in: [packages/core/src/core/types/index.ts:72](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L72)
 
 ##### level
 
 > **level**: [`LogLevel`](Types.md#loglevel)
 
-Defined in: [packages/core/src/core/types/index.ts:67](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L67)
+Defined in: [packages/core/src/core/types/index.ts:68](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L68)
 
 ##### message
 
 > **message**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:70](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L70)
+Defined in: [packages/core/src/core/types/index.ts:71](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L71)
 
 ##### timestamp
 
 > **timestamp**: `Date`
 
-Defined in: [packages/core/src/core/types/index.ts:68](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L68)
+Defined in: [packages/core/src/core/types/index.ts:69](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L69)
 
 ***
 
 ### LoggerConfig
 
-Defined in: [packages/core/src/core/types/index.ts:58](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L58)
+Defined in: [packages/core/src/core/types/index.ts:59](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L59)
 
 #### Properties
 
@@ -2011,37 +1942,37 @@ Defined in: [packages/core/src/core/types/index.ts:58](https://github.com/daydre
 
 > `optional` **enableColors**: `boolean`
 
-Defined in: [packages/core/src/core/types/index.ts:61](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L61)
+Defined in: [packages/core/src/core/types/index.ts:62](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L62)
 
 ##### enableTimestamp?
 
 > `optional` **enableTimestamp**: `boolean`
 
-Defined in: [packages/core/src/core/types/index.ts:60](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L60)
+Defined in: [packages/core/src/core/types/index.ts:61](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L61)
 
 ##### level
 
 > **level**: [`LogLevel`](Types.md#loglevel)
 
-Defined in: [packages/core/src/core/types/index.ts:59](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L59)
+Defined in: [packages/core/src/core/types/index.ts:60](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L60)
 
 ##### logPath?
 
 > `optional` **logPath**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:63](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L63)
+Defined in: [packages/core/src/core/types/index.ts:64](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L64)
 
 ##### logToFile?
 
 > `optional` **logToFile**: `boolean`
 
-Defined in: [packages/core/src/core/types/index.ts:62](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L62)
+Defined in: [packages/core/src/core/types/index.ts:63](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L63)
 
 ***
 
 ### Memory
 
-Defined in: [packages/core/src/core/types/index.ts:398](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L398)
+Defined in: [packages/core/src/core/types/index.ts:356](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L356)
 
 #### Properties
 
@@ -2049,93 +1980,43 @@ Defined in: [packages/core/src/core/types/index.ts:398](https://github.com/daydr
 
 > **content**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:401](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L401)
+Defined in: [packages/core/src/core/types/index.ts:359](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L359)
 
 ##### embedding?
 
 > `optional` **embedding**: `number`[]
 
-Defined in: [packages/core/src/core/types/index.ts:404](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L404)
+Defined in: [packages/core/src/core/types/index.ts:362](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L362)
 
 ##### id
 
 > **id**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:399](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L399)
+Defined in: [packages/core/src/core/types/index.ts:357](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L357)
 
 ##### metadata?
 
 > `optional` **metadata**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:403](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L403)
+Defined in: [packages/core/src/core/types/index.ts:361](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L361)
 
 ##### roomId
 
 > **roomId**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:400](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L400)
+Defined in: [packages/core/src/core/types/index.ts:358](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L358)
 
 ##### timestamp
 
 > **timestamp**: `Date`
 
-Defined in: [packages/core/src/core/types/index.ts:402](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L402)
-
-***
-
-### Output\<T\>
-
-Defined in: [packages/core/src/core/types/index.ts:380](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L380)
-
-Interface for defining output handlers that can be registered with the Core system.
-
-#### Type Parameters
-
-• **T** = `unknown`
-
-The type of data the output handler accepts
-
-#### Properties
-
-##### handler()
-
-> **handler**: (`data`) => `Promise`\<`unknown`\>
-
-Defined in: [packages/core/src/core/types/index.ts:384](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L384)
-
-Handler function that processes the output data
-
-###### Parameters
-
-###### data
-
-`T`
-
-###### Returns
-
-`Promise`\<`unknown`\>
-
-##### name
-
-> **name**: `string`
-
-Defined in: [packages/core/src/core/types/index.ts:382](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L382)
-
-Unique identifier for this output
-
-##### schema
-
-> **schema**: `ZodType`\<`T`, `T`\>
-
-Defined in: [packages/core/src/core/types/index.ts:386](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L386)
-
-Zod schema for validating the input data
+Defined in: [packages/core/src/core/types/index.ts:360](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L360)
 
 ***
 
 ### PlanningStep
 
-Defined in: [packages/core/src/core/types/index.ts:99](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L99)
+Defined in: [packages/core/src/core/types/index.ts:100](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L100)
 
 #### Extends
 
@@ -2147,7 +2028,7 @@ Defined in: [packages/core/src/core/types/index.ts:99](https://github.com/daydre
 
 > **content**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:79](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L79)
+Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L80)
 
 ###### Inherited from
 
@@ -2157,13 +2038,13 @@ Defined in: [packages/core/src/core/types/index.ts:79](https://github.com/daydre
 
 > **facts**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:102](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L102)
+Defined in: [packages/core/src/core/types/index.ts:103](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L103)
 
 ##### id
 
 > **id**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:77](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L77)
+Defined in: [packages/core/src/core/types/index.ts:78](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L78)
 
 ###### Inherited from
 
@@ -2173,7 +2054,7 @@ Defined in: [packages/core/src/core/types/index.ts:77](https://github.com/daydre
 
 > `optional` **meta**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L82)
+Defined in: [packages/core/src/core/types/index.ts:83](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L83)
 
 ###### Inherited from
 
@@ -2183,13 +2064,13 @@ Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydre
 
 > **plan**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:101](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L101)
+Defined in: [packages/core/src/core/types/index.ts:102](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L102)
 
 ##### tags?
 
 > `optional` **tags**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L81)
+Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L82)
 
 ###### Inherited from
 
@@ -2199,7 +2080,7 @@ Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydre
 
 > **timestamp**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L80)
+Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L81)
 
 ###### Inherited from
 
@@ -2209,7 +2090,7 @@ Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydre
 
 > **type**: `"planning"`
 
-Defined in: [packages/core/src/core/types/index.ts:100](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L100)
+Defined in: [packages/core/src/core/types/index.ts:101](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L101)
 
 ###### Overrides
 
@@ -2219,7 +2100,7 @@ Defined in: [packages/core/src/core/types/index.ts:100](https://github.com/daydr
 
 ### ProcessedResult
 
-Defined in: [packages/core/src/core/types/index.ts:280](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L280)
+Defined in: [packages/core/src/core/types/index.ts:281](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L281)
 
 #### Properties
 
@@ -2227,43 +2108,43 @@ Defined in: [packages/core/src/core/types/index.ts:280](https://github.com/daydr
 
 > `optional` **alreadyProcessed**: `boolean`
 
-Defined in: [packages/core/src/core/types/index.ts:286](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L286)
+Defined in: [packages/core/src/core/types/index.ts:287](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L287)
 
 ##### content
 
 > **content**: `any`
 
-Defined in: [packages/core/src/core/types/index.ts:281](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L281)
+Defined in: [packages/core/src/core/types/index.ts:282](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L282)
 
 ##### enrichedContext
 
 > **enrichedContext**: [`EnrichedContext`](Types.md#enrichedcontext)
 
-Defined in: [packages/core/src/core/types/index.ts:283](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L283)
+Defined in: [packages/core/src/core/types/index.ts:284](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L284)
 
 ##### isOutputSuccess?
 
 > `optional` **isOutputSuccess**: `boolean`
 
-Defined in: [packages/core/src/core/types/index.ts:285](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L285)
+Defined in: [packages/core/src/core/types/index.ts:286](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L286)
 
 ##### metadata
 
 > **metadata**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:282](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L282)
+Defined in: [packages/core/src/core/types/index.ts:283](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L283)
 
 ##### suggestedOutputs
 
 > **suggestedOutputs**: [`SuggestedOutput`](Types.md#suggestedoutputt)\<`any`\>[]
 
-Defined in: [packages/core/src/core/types/index.ts:284](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L284)
+Defined in: [packages/core/src/core/types/index.ts:285](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L285)
 
 ##### updateTasks?
 
 > `optional` **updateTasks**: `object`[]
 
-Defined in: [packages/core/src/core/types/index.ts:287](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L287)
+Defined in: [packages/core/src/core/types/index.ts:288](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L288)
 
 ###### confidence
 
@@ -2285,7 +2166,7 @@ Defined in: [packages/core/src/core/types/index.ts:287](https://github.com/daydr
 
 ### RefinedGoal
 
-Defined in: [packages/core/src/core/types/index.ts:225](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L225)
+Defined in: [packages/core/src/core/types/index.ts:226](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L226)
 
 #### Properties
 
@@ -2293,37 +2174,37 @@ Defined in: [packages/core/src/core/types/index.ts:225](https://github.com/daydr
 
 > **description**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:226](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L226)
+Defined in: [packages/core/src/core/types/index.ts:227](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L227)
 
 ##### horizon
 
 > **horizon**: `"short"`
 
-Defined in: [packages/core/src/core/types/index.ts:229](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L229)
+Defined in: [packages/core/src/core/types/index.ts:230](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L230)
 
 ##### priority
 
 > **priority**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:228](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L228)
+Defined in: [packages/core/src/core/types/index.ts:229](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L229)
 
 ##### requirements
 
 > **requirements**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:230](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L230)
+Defined in: [packages/core/src/core/types/index.ts:231](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L231)
 
 ##### success\_criteria
 
 > **success\_criteria**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:227](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L227)
+Defined in: [packages/core/src/core/types/index.ts:228](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L228)
 
 ***
 
 ### RoomMetadata
 
-Defined in: [packages/core/src/core/types/index.ts:389](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L389)
+Defined in: [packages/core/src/core/types/index.ts:347](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L347)
 
 #### Properties
 
@@ -2331,43 +2212,43 @@ Defined in: [packages/core/src/core/types/index.ts:389](https://github.com/daydr
 
 > **createdAt**: `Date`
 
-Defined in: [packages/core/src/core/types/index.ts:393](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L393)
+Defined in: [packages/core/src/core/types/index.ts:351](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L351)
 
 ##### description?
 
 > `optional` **description**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:391](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L391)
+Defined in: [packages/core/src/core/types/index.ts:349](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L349)
 
 ##### lastActive
 
 > **lastActive**: `Date`
 
-Defined in: [packages/core/src/core/types/index.ts:394](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L394)
+Defined in: [packages/core/src/core/types/index.ts:352](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L352)
 
 ##### metadata?
 
 > `optional` **metadata**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:395](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L395)
+Defined in: [packages/core/src/core/types/index.ts:353](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L353)
 
 ##### name
 
 > **name**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:390](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L390)
+Defined in: [packages/core/src/core/types/index.ts:348](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L348)
 
 ##### participants
 
 > **participants**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:392](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L392)
+Defined in: [packages/core/src/core/types/index.ts:350](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L350)
 
 ***
 
 ### SearchResult
 
-Defined in: [packages/core/src/core/types/index.ts:43](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L43)
+Defined in: [packages/core/src/core/types/index.ts:44](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L44)
 
 #### Properties
 
@@ -2375,31 +2256,31 @@ Defined in: [packages/core/src/core/types/index.ts:43](https://github.com/daydre
 
 > **content**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:45](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L45)
+Defined in: [packages/core/src/core/types/index.ts:46](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L46)
 
 ##### id
 
 > **id**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:44](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L44)
+Defined in: [packages/core/src/core/types/index.ts:45](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L45)
 
 ##### metadata?
 
 > `optional` **metadata**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:47](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L47)
+Defined in: [packages/core/src/core/types/index.ts:48](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L48)
 
 ##### similarity
 
 > **similarity**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:46](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L46)
+Defined in: [packages/core/src/core/types/index.ts:47](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L47)
 
 ***
 
 ### StructuredAnalysis
 
-Defined in: [packages/core/src/core/types/index.ts:187](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L187)
+Defined in: [packages/core/src/core/types/index.ts:188](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L188)
 
 #### Properties
 
@@ -2407,37 +2288,37 @@ Defined in: [packages/core/src/core/types/index.ts:187](https://github.com/daydr
 
 > **caveats**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:192](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L192)
+Defined in: [packages/core/src/core/types/index.ts:193](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L193)
 
 ##### conclusion
 
 > **conclusion**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:190](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L190)
+Defined in: [packages/core/src/core/types/index.ts:191](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L191)
 
 ##### confidenceLevel
 
 > **confidenceLevel**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:191](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L191)
+Defined in: [packages/core/src/core/types/index.ts:192](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L192)
 
 ##### reasoning
 
 > **reasoning**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:189](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L189)
+Defined in: [packages/core/src/core/types/index.ts:190](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L190)
 
 ##### summary
 
 > **summary**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:188](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L188)
+Defined in: [packages/core/src/core/types/index.ts:189](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L189)
 
 ***
 
 ### SuggestedOutput\<T\>
 
-Defined in: [packages/core/src/core/types/index.ts:295](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L295)
+Defined in: [packages/core/src/core/types/index.ts:296](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L296)
 
 #### Type Parameters
 
@@ -2449,31 +2330,31 @@ Defined in: [packages/core/src/core/types/index.ts:295](https://github.com/daydr
 
 > **confidence**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:298](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L298)
+Defined in: [packages/core/src/core/types/index.ts:299](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L299)
 
 ##### data
 
 > **data**: `T`
 
-Defined in: [packages/core/src/core/types/index.ts:297](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L297)
+Defined in: [packages/core/src/core/types/index.ts:298](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L298)
 
 ##### name
 
 > **name**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:296](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L296)
+Defined in: [packages/core/src/core/types/index.ts:297](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L297)
 
 ##### reasoning
 
 > **reasoning**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:299](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L299)
+Defined in: [packages/core/src/core/types/index.ts:300](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L300)
 
 ***
 
 ### SystemStep
 
-Defined in: [packages/core/src/core/types/index.ts:105](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L105)
+Defined in: [packages/core/src/core/types/index.ts:106](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L106)
 
 #### Extends
 
@@ -2485,7 +2366,7 @@ Defined in: [packages/core/src/core/types/index.ts:105](https://github.com/daydr
 
 > **content**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:79](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L79)
+Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L80)
 
 ###### Inherited from
 
@@ -2495,7 +2376,7 @@ Defined in: [packages/core/src/core/types/index.ts:79](https://github.com/daydre
 
 > **id**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:77](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L77)
+Defined in: [packages/core/src/core/types/index.ts:78](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L78)
 
 ###### Inherited from
 
@@ -2505,7 +2386,7 @@ Defined in: [packages/core/src/core/types/index.ts:77](https://github.com/daydre
 
 > `optional` **meta**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L82)
+Defined in: [packages/core/src/core/types/index.ts:83](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L83)
 
 ###### Inherited from
 
@@ -2515,13 +2396,13 @@ Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydre
 
 > **systemPrompt**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:107](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L107)
+Defined in: [packages/core/src/core/types/index.ts:108](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L108)
 
 ##### tags?
 
 > `optional` **tags**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L81)
+Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L82)
 
 ###### Inherited from
 
@@ -2531,7 +2412,7 @@ Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydre
 
 > **timestamp**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L80)
+Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L81)
 
 ###### Inherited from
 
@@ -2541,7 +2422,7 @@ Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydre
 
 > **type**: `"system"`
 
-Defined in: [packages/core/src/core/types/index.ts:106](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L106)
+Defined in: [packages/core/src/core/types/index.ts:107](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L107)
 
 ###### Overrides
 
@@ -2551,7 +2432,7 @@ Defined in: [packages/core/src/core/types/index.ts:106](https://github.com/daydr
 
 ### TaskStep
 
-Defined in: [packages/core/src/core/types/index.ts:110](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L110)
+Defined in: [packages/core/src/core/types/index.ts:111](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L111)
 
 #### Extends
 
@@ -2563,7 +2444,7 @@ Defined in: [packages/core/src/core/types/index.ts:110](https://github.com/daydr
 
 > **content**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:79](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L79)
+Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L80)
 
 ###### Inherited from
 
@@ -2573,7 +2454,7 @@ Defined in: [packages/core/src/core/types/index.ts:79](https://github.com/daydre
 
 > **id**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:77](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L77)
+Defined in: [packages/core/src/core/types/index.ts:78](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L78)
 
 ###### Inherited from
 
@@ -2583,7 +2464,7 @@ Defined in: [packages/core/src/core/types/index.ts:77](https://github.com/daydre
 
 > `optional` **meta**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L82)
+Defined in: [packages/core/src/core/types/index.ts:83](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L83)
 
 ###### Inherited from
 
@@ -2593,7 +2474,7 @@ Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydre
 
 > `optional` **tags**: `string`[]
 
-Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L81)
+Defined in: [packages/core/src/core/types/index.ts:82](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L82)
 
 ###### Inherited from
 
@@ -2603,13 +2484,13 @@ Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydre
 
 > **task**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:112](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L112)
+Defined in: [packages/core/src/core/types/index.ts:113](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L113)
 
 ##### timestamp
 
 > **timestamp**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L80)
+Defined in: [packages/core/src/core/types/index.ts:81](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L81)
 
 ###### Inherited from
 
@@ -2619,7 +2500,7 @@ Defined in: [packages/core/src/core/types/index.ts:80](https://github.com/daydre
 
 > **type**: `"task"`
 
-Defined in: [packages/core/src/core/types/index.ts:111](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L111)
+Defined in: [packages/core/src/core/types/index.ts:112](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L112)
 
 ###### Overrides
 
@@ -2629,7 +2510,7 @@ Defined in: [packages/core/src/core/types/index.ts:111](https://github.com/daydr
 
 ### Thought
 
-Defined in: [packages/core/src/core/types/index.ts:321](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L321)
+Defined in: [packages/core/src/core/types/index.ts:322](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L322)
 
 #### Properties
 
@@ -2637,55 +2518,55 @@ Defined in: [packages/core/src/core/types/index.ts:321](https://github.com/daydr
 
 > **confidence**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:323](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L323)
+Defined in: [packages/core/src/core/types/index.ts:324](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L324)
 
 ##### content
 
 > **content**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:322](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L322)
+Defined in: [packages/core/src/core/types/index.ts:323](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L323)
 
 ##### context?
 
 > `optional` **context**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:324](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L324)
+Defined in: [packages/core/src/core/types/index.ts:325](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L325)
 
 ##### metadata?
 
 > `optional` **metadata**: `Record`\<`string`, `any`\>
 
-Defined in: [packages/core/src/core/types/index.ts:328](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L328)
+Defined in: [packages/core/src/core/types/index.ts:329](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L329)
 
 ##### roomId?
 
 > `optional` **roomId**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:329](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L329)
+Defined in: [packages/core/src/core/types/index.ts:330](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L330)
 
 ##### source
 
 > **source**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:327](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L327)
+Defined in: [packages/core/src/core/types/index.ts:328](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L328)
 
 ##### timestamp
 
 > **timestamp**: `Date`
 
-Defined in: [packages/core/src/core/types/index.ts:325](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L325)
+Defined in: [packages/core/src/core/types/index.ts:326](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L326)
 
 ##### type
 
 > **type**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:326](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L326)
+Defined in: [packages/core/src/core/types/index.ts:327](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L327)
 
 ***
 
 ### ThoughtTemplate
 
-Defined in: [packages/core/src/core/types/index.ts:339](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L339)
+Defined in: [packages/core/src/core/types/index.ts:340](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L340)
 
 #### Properties
 
@@ -2693,31 +2574,31 @@ Defined in: [packages/core/src/core/types/index.ts:339](https://github.com/daydr
 
 > **description**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:341](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L341)
+Defined in: [packages/core/src/core/types/index.ts:342](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L342)
 
 ##### prompt
 
 > **prompt**: `string`
 
-Defined in: [packages/core/src/core/types/index.ts:342](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L342)
+Defined in: [packages/core/src/core/types/index.ts:343](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L343)
 
 ##### temperature
 
 > **temperature**: `number`
 
-Defined in: [packages/core/src/core/types/index.ts:343](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L343)
+Defined in: [packages/core/src/core/types/index.ts:344](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L344)
 
 ##### type
 
 > **type**: [`ThoughtType`](Types.md#thoughttype)
 
-Defined in: [packages/core/src/core/types/index.ts:340](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L340)
+Defined in: [packages/core/src/core/types/index.ts:341](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L341)
 
 ***
 
 ### VectorDB
 
-Defined in: [packages/core/src/core/types/index.ts:407](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L407)
+Defined in: [packages/core/src/core/types/index.ts:365](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L365)
 
 #### Methods
 
@@ -2725,7 +2606,7 @@ Defined in: [packages/core/src/core/types/index.ts:407](https://github.com/daydr
 
 > **delete**(`id`): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/types/index.ts:416](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L416)
+Defined in: [packages/core/src/core/types/index.ts:374](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L374)
 
 ###### Parameters
 
@@ -2741,7 +2622,7 @@ Defined in: [packages/core/src/core/types/index.ts:416](https://github.com/daydr
 
 > **findSimilar**(`content`, `limit`?, `metadata`?): `Promise`\<[`SearchResult`](Types.md#searchresult)[]\>
 
-Defined in: [packages/core/src/core/types/index.ts:408](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L408)
+Defined in: [packages/core/src/core/types/index.ts:366](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L366)
 
 ###### Parameters
 
@@ -2765,7 +2646,7 @@ Defined in: [packages/core/src/core/types/index.ts:408](https://github.com/daydr
 
 > **findSimilarDocuments**(`query`, `limit`?): `Promise`\<[`Documentation`](Types.md#documentation)[]\>
 
-Defined in: [packages/core/src/core/types/index.ts:442](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L442)
+Defined in: [packages/core/src/core/types/index.ts:400](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L400)
 
 ###### Parameters
 
@@ -2785,7 +2666,7 @@ Defined in: [packages/core/src/core/types/index.ts:442](https://github.com/daydr
 
 > **findSimilarEpisodes**(`action`, `limit`?): `Promise`\<[`EpisodicMemory`](Types.md#episodicmemory)[]\>
 
-Defined in: [packages/core/src/core/types/index.ts:435](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L435)
+Defined in: [packages/core/src/core/types/index.ts:393](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L393)
 
 ###### Parameters
 
@@ -2805,7 +2686,7 @@ Defined in: [packages/core/src/core/types/index.ts:435](https://github.com/daydr
 
 > **findSimilarInRoom**(`content`, `roomId`, `limit`?, `metadata`?): `Promise`\<[`SearchResult`](Types.md#searchresult)[]\>
 
-Defined in: [packages/core/src/core/types/index.ts:424](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L424)
+Defined in: [packages/core/src/core/types/index.ts:382](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L382)
 
 ###### Parameters
 
@@ -2833,7 +2714,7 @@ Defined in: [packages/core/src/core/types/index.ts:424](https://github.com/daydr
 
 > **getRecentEpisodes**(`limit`?): `Promise`\<[`EpisodicMemory`](Types.md#episodicmemory)[]\>
 
-Defined in: [packages/core/src/core/types/index.ts:439](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L439)
+Defined in: [packages/core/src/core/types/index.ts:397](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L397)
 
 ###### Parameters
 
@@ -2849,7 +2730,7 @@ Defined in: [packages/core/src/core/types/index.ts:439](https://github.com/daydr
 
 > **getSystemMetadata**(`key`): `Promise`\<`null` \| `Record`\<`string`, `any`\>\>
 
-Defined in: [packages/core/src/core/types/index.ts:432](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L432)
+Defined in: [packages/core/src/core/types/index.ts:390](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L390)
 
 ###### Parameters
 
@@ -2865,7 +2746,7 @@ Defined in: [packages/core/src/core/types/index.ts:432](https://github.com/daydr
 
 > **purge**(): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/types/index.ts:452](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L452)
+Defined in: [packages/core/src/core/types/index.ts:410](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L410)
 
 ###### Returns
 
@@ -2875,7 +2756,7 @@ Defined in: [packages/core/src/core/types/index.ts:452](https://github.com/daydr
 
 > **searchDocumentsByTag**(`tags`, `limit`?): `Promise`\<[`Documentation`](Types.md#documentation)[]\>
 
-Defined in: [packages/core/src/core/types/index.ts:446](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L446)
+Defined in: [packages/core/src/core/types/index.ts:404](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L404)
 
 ###### Parameters
 
@@ -2895,7 +2776,7 @@ Defined in: [packages/core/src/core/types/index.ts:446](https://github.com/daydr
 
 > **store**(`content`, `metadata`?): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/types/index.ts:414](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L414)
+Defined in: [packages/core/src/core/types/index.ts:372](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L372)
 
 ###### Parameters
 
@@ -2915,7 +2796,7 @@ Defined in: [packages/core/src/core/types/index.ts:414](https://github.com/daydr
 
 > **storeDocument**(`doc`): `Promise`\<`string`\>
 
-Defined in: [packages/core/src/core/types/index.ts:441](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L441)
+Defined in: [packages/core/src/core/types/index.ts:399](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L399)
 
 ###### Parameters
 
@@ -2931,7 +2812,7 @@ Defined in: [packages/core/src/core/types/index.ts:441](https://github.com/daydr
 
 > **storeEpisode**(`memory`): `Promise`\<`string`\>
 
-Defined in: [packages/core/src/core/types/index.ts:434](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L434)
+Defined in: [packages/core/src/core/types/index.ts:392](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L392)
 
 ###### Parameters
 
@@ -2947,7 +2828,7 @@ Defined in: [packages/core/src/core/types/index.ts:434](https://github.com/daydr
 
 > **storeInRoom**(`content`, `roomId`, `metadata`?): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/types/index.ts:418](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L418)
+Defined in: [packages/core/src/core/types/index.ts:376](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L376)
 
 ###### Parameters
 
@@ -2971,7 +2852,7 @@ Defined in: [packages/core/src/core/types/index.ts:418](https://github.com/daydr
 
 > **storeSystemMetadata**(`key`, `value`): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/types/index.ts:431](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L431)
+Defined in: [packages/core/src/core/types/index.ts:389](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L389)
 
 ###### Parameters
 
@@ -2991,7 +2872,7 @@ Defined in: [packages/core/src/core/types/index.ts:431](https://github.com/daydr
 
 > **updateDocument**(`id`, `updates`): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/types/index.ts:450](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L450)
+Defined in: [packages/core/src/core/types/index.ts:408](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L408)
 
 ###### Parameters
 
@@ -3013,7 +2894,7 @@ Defined in: [packages/core/src/core/types/index.ts:450](https://github.com/daydr
 
 > **GoalStatus**: `"pending"` \| `"active"` \| `"completed"` \| `"failed"` \| `"ready"` \| `"blocked"`
 
-Defined in: [packages/core/src/core/types/index.ts:118](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L118)
+Defined in: [packages/core/src/core/types/index.ts:119](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L119)
 
 ***
 
@@ -3021,7 +2902,7 @@ Defined in: [packages/core/src/core/types/index.ts:118](https://github.com/daydr
 
 > **HorizonType**: `"long"` \| `"medium"` \| `"short"`
 
-Defined in: [packages/core/src/core/types/index.ts:117](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L117)
+Defined in: [packages/core/src/core/types/index.ts:118](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L118)
 
 ***
 
@@ -3029,7 +2910,7 @@ Defined in: [packages/core/src/core/types/index.ts:117](https://github.com/daydr
 
 > **Step**: [`ActionStep`](Types.md#actionstep) \| [`PlanningStep`](Types.md#planningstep) \| [`SystemStep`](Types.md#systemstep) \| [`TaskStep`](Types.md#taskstep)
 
-Defined in: [packages/core/src/core/types/index.ts:115](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L115)
+Defined in: [packages/core/src/core/types/index.ts:116](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L116)
 
 ***
 
@@ -3037,7 +2918,7 @@ Defined in: [packages/core/src/core/types/index.ts:115](https://github.com/daydr
 
 > **StepType**: `"action"` \| `"planning"` \| `"system"` \| `"task"`
 
-Defined in: [packages/core/src/core/types/index.ts:74](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L74)
+Defined in: [packages/core/src/core/types/index.ts:75](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L75)
 
 ***
 
@@ -3045,4 +2926,4 @@ Defined in: [packages/core/src/core/types/index.ts:74](https://github.com/daydre
 
 > **ThoughtType**: `"social_share"` \| `"research"` \| `"analysis"` \| `"alert"` \| `"inquiry"`
 
-Defined in: [packages/core/src/core/types/index.ts:332](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/types/index.ts#L332)
+Defined in: [packages/core/src/core/types/index.ts:333](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/types/index.ts#L333)

@@ -4,7 +4,7 @@
 
 ### TwitterClient
 
-Defined in: [packages/core/src/core/io/twitter.ts:31](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L31)
+Defined in: [packages/core/src/core/io/twitter.ts:31](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L31)
 
 #### Constructors
 
@@ -12,7 +12,7 @@ Defined in: [packages/core/src/core/io/twitter.ts:31](https://github.com/daydrea
 
 > **new TwitterClient**(`credentials`, `logLevel`): [`TwitterClient`](Twitter.md#twitterclient)
 
-Defined in: [packages/core/src/core/io/twitter.ts:37](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L37)
+Defined in: [packages/core/src/core/io/twitter.ts:37](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L37)
 
 ###### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [packages/core/src/core/io/twitter.ts:37](https://github.com/daydrea
 
 > **createMentionsInput**(`interval`): `object`
 
-Defined in: [packages/core/src/core/io/twitter.ts:71](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L71)
+Defined in: [packages/core/src/core/io/twitter.ts:71](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L71)
 
 Create an input that monitors mentions
 
@@ -84,7 +84,7 @@ Create an input that monitors mentions
 
 > **createTimelineInput**(`username`, `interval`): `object`
 
-Defined in: [packages/core/src/core/io/twitter.ts:90](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L90)
+Defined in: [packages/core/src/core/io/twitter.ts:90](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L90)
 
 Create an input that monitors a user's timeline
 
@@ -138,7 +138,7 @@ Create an input that monitors a user's timeline
 
 > **createTweetOutput**(): `object`
 
-Defined in: [packages/core/src/core/io/twitter.ts:110](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L110)
+Defined in: [packages/core/src/core/io/twitter.ts:110](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L110)
 
 Create an output for sending tweets
 
@@ -184,7 +184,7 @@ Create an output for sending tweets
 
 ### TweetData
 
-Defined in: [packages/core/src/core/io/twitter.ts:13](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L13)
+Defined in: [packages/core/src/core/io/twitter.ts:13](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L13)
 
 #### Properties
 
@@ -192,25 +192,25 @@ Defined in: [packages/core/src/core/io/twitter.ts:13](https://github.com/daydrea
 
 > **content**: `string`
 
-Defined in: [packages/core/src/core/io/twitter.ts:14](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L14)
+Defined in: [packages/core/src/core/io/twitter.ts:14](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L14)
 
 ##### conversationId?
 
 > `optional` **conversationId**: `string`
 
-Defined in: [packages/core/src/core/io/twitter.ts:16](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L16)
+Defined in: [packages/core/src/core/io/twitter.ts:16](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L16)
 
 ##### inReplyTo?
 
 > `optional` **inReplyTo**: `string`
 
-Defined in: [packages/core/src/core/io/twitter.ts:15](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L15)
+Defined in: [packages/core/src/core/io/twitter.ts:15](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L15)
 
 ***
 
 ### TwitterCredentials
 
-Defined in: [packages/core/src/core/io/twitter.ts:7](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L7)
+Defined in: [packages/core/src/core/io/twitter.ts:7](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L7)
 
 #### Properties
 
@@ -218,19 +218,19 @@ Defined in: [packages/core/src/core/io/twitter.ts:7](https://github.com/daydream
 
 > **email**: `string`
 
-Defined in: [packages/core/src/core/io/twitter.ts:10](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L10)
+Defined in: [packages/core/src/core/io/twitter.ts:10](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L10)
 
 ##### password
 
 > **password**: `string`
 
-Defined in: [packages/core/src/core/io/twitter.ts:9](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L9)
+Defined in: [packages/core/src/core/io/twitter.ts:9](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L9)
 
 ##### username
 
 > **username**: `string`
 
-Defined in: [packages/core/src/core/io/twitter.ts:8](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L8)
+Defined in: [packages/core/src/core/io/twitter.ts:8](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L8)
 
 ## Variables
 
@@ -238,4 +238,4 @@ Defined in: [packages/core/src/core/io/twitter.ts:8](https://github.com/daydream
 
 > `const` **tweetSchema**: `JSONSchemaType`\<[`TweetData`](Twitter.md#tweetdata)\>
 
-Defined in: [packages/core/src/core/io/twitter.ts:20](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/io/twitter.ts#L20)
+Defined in: [packages/core/src/core/io/twitter.ts:20](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/io/twitter.ts#L20)

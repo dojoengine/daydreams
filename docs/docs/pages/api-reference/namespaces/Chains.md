@@ -4,7 +4,7 @@
 
 ### EvmChain
 
-Defined in: [packages/core/src/core/chains/evm.ts:44](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/evm.ts#L44)
+Defined in: [packages/core/src/core/chains/evm.ts:44](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/evm.ts#L44)
 
 Implementation of the IChain interface for Ethereum Virtual Machine (EVM) compatible chains.
 Provides methods for reading from and writing to EVM-based blockchains.
@@ -30,7 +30,7 @@ const evmChain = new EvmChain({
 
 > **new EvmChain**(`config`): [`EvmChain`](Chains.md#evmchain)
 
-Defined in: [packages/core/src/core/chains/evm.ts:66](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/evm.ts#L66)
+Defined in: [packages/core/src/core/chains/evm.ts:66](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/evm.ts#L66)
 
 Creates a new EVM chain instance
 
@@ -52,7 +52,7 @@ Configuration options for the chain connection
 
 > **chainId**: `string`
 
-Defined in: [packages/core/src/core/chains/evm.ts:50](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/evm.ts#L50)
+Defined in: [packages/core/src/core/chains/evm.ts:50](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/evm.ts#L50)
 
 Unique identifier for this chain implementation.
 Matches the IChain interface.
@@ -68,7 +68,7 @@ This could be "ethereum", "polygon", etc.
 
 > **read**(`call`): `Promise`\<`any`\>
 
-Defined in: [packages/core/src/core/chains/evm.ts:90](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/evm.ts#L90)
+Defined in: [packages/core/src/core/chains/evm.ts:90](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/evm.ts#L90)
 
 Performs a read operation on the blockchain, typically calling a view/pure contract function
 that doesn't modify state.
@@ -99,7 +99,7 @@ Error if the call fails
 
 > **write**(`call`): `Promise`\<`any`\>
 
-Defined in: [packages/core/src/core/chains/evm.ts:134](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/evm.ts#L134)
+Defined in: [packages/core/src/core/chains/evm.ts:134](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/evm.ts#L134)
 
 Performs a write operation on the blockchain by sending a transaction that modifies state.
 Examples include transferring tokens or updating contract storage.
@@ -130,7 +130,7 @@ Error if the transaction fails
 
 ### SolanaChain
 
-Defined in: [packages/core/src/core/chains/solana.ts:29](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/solana.ts#L29)
+Defined in: [packages/core/src/core/chains/solana.ts:29](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/solana.ts#L29)
 
 #### Implements
 
@@ -142,7 +142,7 @@ Defined in: [packages/core/src/core/chains/solana.ts:29](https://github.com/dayd
 
 > **new SolanaChain**(`config`): [`SolanaChain`](Chains.md#solanachain)
 
-Defined in: [packages/core/src/core/chains/solana.ts:34](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/solana.ts#L34)
+Defined in: [packages/core/src/core/chains/solana.ts:34](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/solana.ts#L34)
 
 ###### Parameters
 
@@ -160,7 +160,7 @@ Defined in: [packages/core/src/core/chains/solana.ts:34](https://github.com/dayd
 
 > **chainId**: `string`
 
-Defined in: [packages/core/src/core/chains/solana.ts:30](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/solana.ts#L30)
+Defined in: [packages/core/src/core/chains/solana.ts:30](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/solana.ts#L30)
 
 A unique identifier for the chain (e.g., "starknet", "ethereum", "solana", etc.)
 
@@ -174,7 +174,7 @@ A unique identifier for the chain (e.g., "starknet", "ethereum", "solana", etc.)
 
 > **read**(`call`): `Promise`\<`any`\>
 
-Defined in: [packages/core/src/core/chains/solana.ts:58](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/solana.ts#L58)
+Defined in: [packages/core/src/core/chains/solana.ts:58](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/solana.ts#L58)
 
 Example "read" method. Because Solana doesn't have a direct "contract read" by default,
 we might interpret read calls as:
@@ -205,7 +205,7 @@ read({ type: "getAccountInfo", address: "..." })
 
 > **write**(`call`): `Promise`\<`any`\>
 
-Defined in: [packages/core/src/core/chains/solana.ts:106](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/solana.ts#L106)
+Defined in: [packages/core/src/core/chains/solana.ts:106](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/solana.ts#L106)
 
 Example "write" method. We'll treat this as "send a Solana transaction."
 A typical transaction might have multiple instructions.
@@ -238,7 +238,7 @@ token transfers or program interactions).
 
 ### StarknetChain
 
-Defined in: [packages/core/src/core/chains/starknet.ts:28](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/starknet.ts#L28)
+Defined in: [packages/core/src/core/chains/starknet.ts:28](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/starknet.ts#L28)
 
 Implementation of the IChain interface for interacting with the Starknet L2 blockchain
 
@@ -262,7 +262,7 @@ const starknet = new StarknetChain({
 
 > **new StarknetChain**(`config`): [`StarknetChain`](Chains.md#starknetchain)
 
-Defined in: [packages/core/src/core/chains/starknet.ts:40](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/starknet.ts#L40)
+Defined in: [packages/core/src/core/chains/starknet.ts:40](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/starknet.ts#L40)
 
 Creates a new StarknetChain instance
 
@@ -284,7 +284,7 @@ Configuration options for the Starknet connection
 
 > **chainId**: `string` = `"starknet"`
 
-Defined in: [packages/core/src/core/chains/starknet.ts:30](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/starknet.ts#L30)
+Defined in: [packages/core/src/core/chains/starknet.ts:30](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/starknet.ts#L30)
 
 Unique identifier for this chain implementation
 
@@ -298,7 +298,7 @@ Unique identifier for this chain implementation
 
 > **read**(`call`): `Promise`\<`any`\>
 
-Defined in: [packages/core/src/core/chains/starknet.ts:55](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/starknet.ts#L55)
+Defined in: [packages/core/src/core/chains/starknet.ts:55](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/starknet.ts#L55)
 
 Performs a read-only call to a Starknet contract
 
@@ -328,7 +328,7 @@ Error if the call fails
 
 > **write**(`call`): `Promise`\<`any`\>
 
-Defined in: [packages/core/src/core/chains/starknet.ts:72](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chains/starknet.ts#L72)
+Defined in: [packages/core/src/core/chains/starknet.ts:72](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chains/starknet.ts#L72)
 
 Executes a state-changing transaction on Starknet
 
