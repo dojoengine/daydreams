@@ -7,6 +7,10 @@
  * - Process inputs through a character-based personality
  */
 
+import { z } from "zod";
+import readline from "readline";
+import chalk from "chalk";
+
 import { Orchestrator } from "../packages/core/src/core/orchestrator";
 import { HandlerRole } from "../packages/core/src/core/types";
 import { RoomManager } from "../packages/core/src/core/room-manager";
@@ -15,13 +19,12 @@ import { MessageProcessor } from "../packages/core/src/core/processors/message-p
 import { ResearchQuantProcessor } from "../packages/core/src/core/processors/research-processor";
 import { LLMClient } from "../packages/core/src/core/llm-client";
 import { LogLevel } from "../packages/core/src/core/types";
-import chalk from "chalk";
 import { defaultCharacter } from "../packages/core/src/core/character";
 import { Consciousness } from "../packages/core/src/core/consciousness";
-import { z } from "zod";
-import readline from "readline";
 import { MongoDb } from "../packages/core/src/core/db/mongo-db";
 import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
+import { MongoStorage } from "../packages/mongodb-storage/src";
+import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND } from '../packages/storage/src';
 
 async function main() {
     const loglevel = LogLevel.DEBUG;
@@ -69,23 +72,30 @@ async function main() {
     // Add processors to the master processor
     masterProcessor.addProcessor([messageProcessor, researchProcessor]);
 
-    const scheduledTaskDb = new MongoDb(
+    const scheduledTaskDb = new MongoStorage(
         "mongodb://localhost:27017",
         "myApp",
-        "scheduled_tasks"
     );
 
     await scheduledTaskDb.connect();
     console.log(chalk.green("✅ Scheduled task database connected"));
 
-    await scheduledTaskDb.deleteAll();
+    await scheduledTaskDb.migrate();
+    console.log(chalk.green("✅ Scheduled task indexes created"));
+
+    await Promise.all([
+        scheduledTaskDb.getRepository(SCHEDULED_TASKS_KIND).deleteAll(),
+        scheduledTaskDb.getRepository(ORCHESTRATORS_KIND).deleteAll(),
+    ]);
+
+    const orchestratorDb = new MongoDb(scheduledTaskDb);
 
     // Initialize core system
     const orchestrator = new Orchestrator(
         roomManager,
         vectorDb,
         masterProcessor,
-        scheduledTaskDb,
+        orchestratorDb,
         {
             level: loglevel,
             enableColors: true,

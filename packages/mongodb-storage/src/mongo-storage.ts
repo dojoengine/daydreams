@@ -30,6 +30,7 @@ import { MongoClient, Db } from "mongodb";
 /**
  * Daydreams dependencies
  */
+import { SCHEDULED_TASKS_KIND, ORCHESTRATORS_KIND } from "@daydreamsai/storage";
 import type { Repository, Storage } from "@daydreamsai/storage";
 
 /**
@@ -71,7 +72,7 @@ export class MongoStorage implements Storage {
      * Connect to the database. If the connection is already established, this
      * method does nothing.
      *
-     * @throws {Error} If the operation fails.
+     * @returns A promise that resolves when the connection is established.
      */
     public async connect(): Promise<void> {
         if (!this.client.listenerCount("connect")) {
@@ -82,8 +83,6 @@ export class MongoStorage implements Storage {
     /**
      * Close the database connection.
      *
-     * @throws {Error} If the operation fails.
-     *
      * @returns A promise that resolves when the connection is closed.
      */
     public close(): Promise<void> {
@@ -93,16 +92,22 @@ export class MongoStorage implements Storage {
     /**
      * Migrate the database schema.
      *
-     * @throws {Error} If the operation fails.
+     * @returns A promise that resolves when the operation is complete.
      */
     public async migrate(): Promise<void> {
-        // this.collections[SCHEDULED_TASKS] = this.db.collection(SCHEDULED_TASKS);
-        // this.collections[ORCHESTRATORS] = this.db.collection(ORCHESTRATORS);
-        // await Promise.all([
-        //     this.collections[SCHEDULED_TASKS].createIndex({ nextRunAt: 1 }),
-        //     this.collections[SCHEDULED_TASKS].createIndex({ status: 1 }),
-        //     this.collections[ORCHESTRATORS].createIndex({ userId: 1 }),
-        // ]);
+        // Initialize the repositories
+        this.getRepository(SCHEDULED_TASKS_KIND);
+        this.getRepository(ORCHESTRATORS_KIND);
+
+        const tasksCollection = this.repositories[SCHEDULED_TASKS_KIND].getCollection();
+        const orchestratorsCollection = this.repositories[ORCHESTRATORS_KIND].getCollection();
+
+        // Create indexes
+        await Promise.all([
+            tasksCollection.createIndex({ nextRunAt: 1 }),
+            tasksCollection.createIndex({ status: 1 }),
+            orchestratorsCollection.createIndex({ userId: 1 }),
+        ]);
     }
 
     /**

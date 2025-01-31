@@ -30,7 +30,7 @@ import { Db, Collection } from "mongodb";
 /**
  * Daydreams dependencies
  */
-import type { Repository } from "@daydreamsai/storage";
+import type { Repository, Limits, Sort } from "@daydreamsai/storage";
 
 /**
  * The repository class that represents a MongoDB collection.
@@ -52,9 +52,16 @@ export class MongoRepository implements Repository {
     }
 
     /**
+     * Get the collection object.
+     * 
+     * @returns The collection object.
+     */
+    public getCollection(): Collection<any> {
+        return this.collection;
+    }
+
+    /**
      * Insert a new document into the collection.
-     *
-     * @throws {Error} If the operation fails.
      *
      * @param data The data to insert.
      * @returns A promise that resolves with the ID of the inserted document.
@@ -66,8 +73,6 @@ export class MongoRepository implements Repository {
 
     /**
      * Updates a document in the collection.
-     *
-     * @throws {Error} If the operation fails.
      *
      * @param id The ID of the document to update.
      * @param set The fields to update.
@@ -98,19 +103,27 @@ export class MongoRepository implements Repository {
     /**
      * Finds a document in the collection.
      *
-     * @throws {Error} If the operation fails.
-     *
      * @param query The query to search for.
+     * @param limits The limits to be applied to the query.
+     * @param sort The sorting to be applied to the query.
      * @returns A promise that resolves with the found documents.
      */
-    public async find<T>(query: Record<string, any>): Promise<T[]> {
+    public async find<T>(query: Record<string, any>, limits?: Limits, sort?: Sort): Promise<T[]> {
         return this.collection.find(query).toArray();
     }
 
     /**
+     * Finds a document in the collection.
+     * 
+     * @param query The query to search for.
+     * @returns A promise that resolves with the found document.
+     */
+    public async findOne<T>(query: Record<string, any>): Promise<T | null> {
+        return this.collection.findOne(query);
+    }
+
+    /**
      * Deletes a document from the collection.
-     *
-     * @throws {Error} If the operation fails.
      *
      * @param id The ID of the document to delete.
      * @returns A promise that resolves when the operation is complete.
@@ -121,8 +134,6 @@ export class MongoRepository implements Repository {
 
     /**
      * Deletes all documents from the collection.
-     *
-     * @throws {Error} If the operation fails.
      *
      * @returns A promise that resolves when the operation is complete.
      */

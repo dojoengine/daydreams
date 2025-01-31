@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+import type { Limits, Sort } from './find-types';
+
 /**
  * Repository interface defines operations available for a certain collection.
  */
@@ -52,9 +54,19 @@ export interface Repository {
      * Find documents in the collection.
      *
      * @param query - The query to be used to find documents.
+     * @param limits - The limits to be applied to the query.
+     * @param sort - The sorting to be applied to the query.
      * @returns A promise that resolves with found documents.
      */
-    find<T>(query: Record<string, any>): Promise<T[]>;
+    find<T>(query: Record<string, any>, limits?: Limits, sort?: Sort): Promise<T[]>;
+
+    /**
+     * Finds a document in the collection.
+     * 
+     * @param query The query to search for.
+     * @returns A promise that resolves with the found document.
+     */
+    findOne<T>(query: Record<string, any>): Promise<T | null>;
 
     /**
      * Delete a document from the collection.

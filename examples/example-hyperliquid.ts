@@ -11,6 +11,10 @@
  * - Real-time order status monitoring
  */
 
+import { z } from "zod";
+import readline from "readline";
+import chalk from "chalk";
+
 import { Orchestrator } from "../packages/core/src/core/orchestrator";
 import { HandlerRole } from "../packages/core/src/core/types";
 import { HyperliquidClient } from "../packages/core/src/core/io/hyperliquid";
@@ -20,11 +24,11 @@ import { MessageProcessor } from "../packages/core/src/core/processors/message-p
 import { LLMClient } from "../packages/core/src/core/llm-client";
 import { env } from "../packages/core/src/core/env";
 import { LogLevel } from "../packages/core/src/core/types";
-import chalk from "chalk";
 import { defaultCharacter } from "../packages/core/src/core/character_trading_sage";
-import { z } from "zod";
-import readline from "readline";
-import { MongoDb } from "../packages/core/src/core/mongo-db";
+import { MongoDb } from "../packages/core/src/core/db/mongo-db";
+import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
+import { MongoStorage } from "../packages/mongodb-storage/src";
+import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND } from '../packages/storage/src';
 
 async function main() {
     const loglevel = LogLevel.ERROR;
@@ -45,31 +49,46 @@ async function main() {
         temperature: 0.3,
     });
 
-    // Initialize processor with default character personality
-    const processor = new MessageProcessor(
+    const masterProcessor = new MasterProcessor(
         llmClient,
         defaultCharacter,
         loglevel
     );
 
-    // Initialize core system
-    const scheduledTaskDb = new MongoDb(
+    // Initialize processor with default character personality
+    const messageProcessor = new MessageProcessor(
+        llmClient,
+        defaultCharacter,
+        loglevel
+    );
+
+    // Add processors to the master processor
+    masterProcessor.addProcessor([messageProcessor]);
+
+    const scheduledTaskDb = new MongoStorage(
         "mongodb://localhost:27017",
         "myApp",
-        "scheduled_tasks"
     );
 
     await scheduledTaskDb.connect();
     console.log(chalk.green("✅ Scheduled task database connected"));
 
-    await scheduledTaskDb.deleteAll();
+    await scheduledTaskDb.migrate();
+    console.log(chalk.green("✅ Scheduled task indexes created"));
+
+    await Promise.all([
+        scheduledTaskDb.getRepository(SCHEDULED_TASKS_KIND).deleteAll(),
+        scheduledTaskDb.getRepository(ORCHESTRATORS_KIND).deleteAll(),
+    ]);
+
+    const orchestratorDb = new MongoDb(scheduledTaskDb);
 
     // Initialize core system
     const core = new Orchestrator(
         roomManager,
         vectorDb,
-        [processor],
-        scheduledTaskDb,
+        masterProcessor,
+        orchestratorDb,
         {
             level: loglevel,
             enableColors: true,
