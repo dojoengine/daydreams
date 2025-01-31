@@ -19,17 +19,26 @@ import { defaultCharacter } from "../packages/core/src/core/character";
 import { LogLevel } from "../packages/core/src/core/types";
 import { MongoDb } from "../packages/core/src/core/db/mongo-db";
 import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
+import { MongoStorage } from "../packages/mongodb-storage/src";
+import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND } from '../packages/storage/src';
 
-const scheduledTaskDb = new MongoDb(
+const scheduledTaskDb = new MongoStorage(
     "mongodb://localhost:27017",
     "myApp",
-    "scheduled_tasks"
 );
 
 await scheduledTaskDb.connect();
 console.log(chalk.green("✅ Scheduled task database connected"));
 
-await scheduledTaskDb.deleteAll();
+await scheduledTaskDb.migrate();
+console.log(chalk.green("✅ Scheduled task indexes created"));
+
+await Promise.all([
+    scheduledTaskDb.getRepository(SCHEDULED_TASKS_KIND).deleteAll(),
+    scheduledTaskDb.getRepository(ORCHESTRATORS_KIND).deleteAll(),
+]);
+
+const orchestratorDb = new MongoDb(scheduledTaskDb);
 
 // ------------------------------------------------------
 // 1) CREATE DAYDREAMS AGENT
@@ -72,7 +81,7 @@ async function createDaydreamsAgent() {
         roomManager,
         vectorDb,
         masterProcessor,
-        scheduledTaskDb,
+        orchestratorDb,
         {
             level: loglevel,
             enableColors: true,
@@ -212,7 +221,7 @@ app.get("/api/history/:userId", async (req, res) => {
 
         // Get all orchestrator records for this user
         const histories =
-            await scheduledTaskDb.getOrchestratorsByUserId(userId);
+            await orchestratorDb.getOrchestratorsByUserId(userId);
 
         if (!histories || histories.length === 0) {
             console.log("No histories found");
@@ -241,7 +250,7 @@ app.get("/api/history/:userId/:chatId", async (req, res) => {
             return res.status(400).json({ error: "Invalid chat ID format" });
         }
 
-        const history = await scheduledTaskDb.getOrchestratorById(objectId);
+        const history = await orchestratorDb.getOrchestratorById(objectId);
 
         if (!history) {
             return res.status(404).json({ error: "History not found" });

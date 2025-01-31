@@ -1,0 +1,18 @@
+{
+    "name": "@daydreamsai/mongodb-storage",
+    "version": "0.0.1",
+    "module": "index.ts",
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsup --dts-resolve"
+    },
+    "dependencies": {
+        "@daydreamsai/storage": "workspace:^",
+        "tsup": "^8.3.5"
+    }
+}

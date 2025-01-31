@@ -1,4 +1,6 @@
-import { MongoClient, Collection, ObjectId } from "mongodb";
+import { SCHEDULED_TASKS_KIND, ORCHESTRATORS_KIND } from "@daydreamsai/storage";
+import type { Storage, Repository } from "@daydreamsai/storage";
+
 import type { HandlerRole } from "../types";
 import type {
     OrchestratorChat,
@@ -7,10 +9,10 @@ import type {
     ScheduledTask,
 } from "../memory";
 
+// TODO: This class has nothing to do with MongoDB specifically, it should be renamed.
 export class MongoDb implements OrchestratorDb {
-    private client: MongoClient;
-    private collection!: Collection<ScheduledTask>;
-    private orchestratorCollection!: Collection<OrchestratorChat>;
+    private tasks!: Repository;
+    private orchestrators!: Repository;
 
     /**
      * @param uri   A MongoDB connection string
@@ -18,43 +20,11 @@ export class MongoDb implements OrchestratorDb {
      * @param collectionName  Name of the collection to store tasks in
      */
     constructor(
-        private uri: string,
-        private dbName: string = "sleever",
-        private collectionName: string = "scheduled_tasks"
+        private storage: Storage
     ) {
-        this.client = new MongoClient(this.uri);
-    }
-
-    /**
-     * Connects to the MongoDB server and initializes the tasks collection.
-     */
-    public async connect(): Promise<void> {
-        if (!this.client.listenerCount("connect")) {
-            await this.client.connect();
-        }
-
-        const db = this.client.db(this.dbName);
-        this.collection = db.collection<ScheduledTask>(this.collectionName);
-
-        // Optional: Create indexes
-        // - An index on nextRunAt helps find "due" tasks quickly
-        // - An index on status helps filter quickly by status
-        await this.collection.createIndex({ nextRunAt: 1 });
-        await this.collection.createIndex({ status: 1 });
-
-        this.orchestratorCollection =
-            db.collection<OrchestratorChat>("orchestrators");
-
-        await this.orchestratorCollection.createIndex({
-            userId: 1,
-        });
-    }
-
-    /**
-     * Closes the MongoDB client connection.
-     */
-    public async close(): Promise<void> {
-        await this.client.close();
+        this.tasks = this.storage.getRepository(SCHEDULED_TASKS_KIND);
+        this.orchestrators =
+            this.storage.getRepository(ORCHESTRATORS_KIND);
     }
 
     /**
@@ -66,7 +36,7 @@ export class MongoDb implements OrchestratorDb {
      * @param nextRunAt   - When this task should run
      * @param intervalMs  - If set, the task will be re-scheduled after each run
      */
-    public async createTask(
+    public createTask(
         userId: string,
         handlerName: string,
         taskData: Record<string, any> = {},
@@ -75,7 +45,6 @@ export class MongoDb implements OrchestratorDb {
     ): Promise<string> {
         const now = new Date();
         const doc: ScheduledTask = {
-            _id: new ObjectId().toString(),
             userId,
             handlerName,
             taskData,
@@ -86,8 +55,7 @@ export class MongoDb implements OrchestratorDb {
             updatedAt: now,
         };
 
-        const result = await this.collection.insertOne(doc);
-        return result.insertedId;
+        return this.tasks.insert(doc);
     }
 
     /**
@@ -98,49 +66,34 @@ export class MongoDb implements OrchestratorDb {
      */
     public async findDueTasks(limit = 50): Promise<ScheduledTask[]> {
         const now = new Date();
-        if (!this.collection) {
-            throw new Error("Database collection is not initialized");
-        }
-        return this.collection
-            .find({
+        const tasks = await this.tasks
+            .find<ScheduledTask>({
                 status: "pending",
+                // TODO: this $lte condition is very specific to MongoDB, we need to abstract this.
                 nextRunAt: { $lte: now },
-            })
-            .sort({ nextRunAt: 1 }) // earliest tasks first
-            .limit(limit)
-            .toArray();
+            }, { limit }, { nextRunAt: "asc" });
+
+        return tasks;
     }
 
     /**
      * Marks a task's status as "running". Typically called right before invoking it.
      */
     public async markRunning(taskId: string): Promise<void> {
-        const now = new Date();
-        await this.collection.updateOne(
-            { _id: taskId },
-            {
-                $set: {
-                    status: "running",
-                    updatedAt: now,
-                },
-            }
-        );
+        await this.tasks.update(taskId, {
+            status: "running",
+            updatedAt: new Date(),
+        });
     }
 
     /**
      * Marks a task as completed (or failed).
      */
     public async markCompleted(taskId: string, failed = false): Promise<void> {
-        const now = new Date();
-        await this.collection.updateOne(
-            { _id: taskId },
-            {
-                $set: {
-                    status: failed ? "failed" : "completed",
-                    updatedAt: now,
-                },
-            }
-        );
+        await this.tasks.update(taskId, {
+            status: failed ? "failed" : "completed",
+            updatedAt: new Date(),
+        });
     }
 
     /**
@@ -150,17 +103,11 @@ export class MongoDb implements OrchestratorDb {
         taskId: string,
         newRunTime: Date
     ): Promise<void> {
-        const now = new Date();
-        await this.collection.updateOne(
-            { _id: taskId },
-            {
-                $set: {
-                    status: "pending",
-                    nextRunAt: newRunTime,
-                    updatedAt: now,
-                },
-            }
-        );
+        await this.tasks.update(taskId, {
+            status: "pending",
+            nextRunAt: newRunTime,
+            updatedAt: new Date(),
+        });
     }
 
     /**
@@ -182,7 +129,7 @@ export class MongoDb implements OrchestratorDb {
      * Deletes all tasks from the collection.
      */
     public async deleteAll(): Promise<void> {
-        await this.collection.deleteMany({});
+        await this.tasks.deleteAll();
     }
 
     /**
@@ -196,14 +143,13 @@ export class MongoDb implements OrchestratorDb {
             updatedAt: new Date(),
             messages: [],
         };
-        const result = await this.orchestratorCollection.insertOne(chat);
-        return result.insertedId.toString();
+        return await this.orchestrators.insert(chat);
     }
 
     /**
      * Adds a message (input, output, or action) to an existing orchestrator's conversation.
      *
-     * @param orchestratorId - The MongoDB ObjectId of the orchestrator chat.
+     * @param orchestratorId - The ID of the orchestrator chat.
      * @param role - "input", "output" or "action".
      * @param name - The name/id of the IOHandler.
      * @param data - The data payload to store (e.g., text, JSON from APIs, etc).
@@ -214,19 +160,17 @@ export class MongoDb implements OrchestratorDb {
         name: string,
         data: unknown
     ): Promise<void> {
-        await this.orchestratorCollection.updateOne(
-            { _id: orchestratorId },
+        await this.orchestrators.update(
+            orchestratorId,
             {
-                $push: {
-                    messages: {
-                        role,
-                        name,
-                        data,
-                        timestamp: new Date(),
-                    },
-                },
-                $set: {
-                    updatedAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                messages: {
+                    role,
+                    name,
+                    data,
+                    timestamp: new Date(),
                 },
             }
         );
@@ -238,11 +182,10 @@ export class MongoDb implements OrchestratorDb {
     public async getMessages(
         orchestratorId: string
     ): Promise<OrchestratorMessage[]> {
-        const doc = await this.orchestratorCollection.findOne({
+        const doc = await this.orchestrators.findOne<OrchestratorChat>({
             _id: orchestratorId,
         });
-        if (!doc) return [];
-        return doc.messages;
+        return doc?.messages || [];
     }
 
     /**
@@ -251,16 +194,16 @@ export class MongoDb implements OrchestratorDb {
     public async findOrchestratorsByUser(
         userId: string
     ): Promise<OrchestratorChat[]> {
-        return this.orchestratorCollection.find({ userId }).toArray();
+        return this.orchestrators.find({ userId });
     }
 
     /**
-     * Retrieves a single orchestrator document by its ObjectId.
+     * Retrieves a single orchestrator document by its ID.
      */
     public async getOrchestratorById(
         orchestratorId: string
     ): Promise<OrchestratorChat | null> {
-        return this.orchestratorCollection.findOne({
+        return this.orchestrators.findOne({
             _id: orchestratorId,
         });
     }
@@ -269,13 +212,11 @@ export class MongoDb implements OrchestratorDb {
         userId: string
     ): Promise<OrchestratorChat[]> {
         try {
-            const documents = await this.orchestratorCollection
-                .find({ userId })
-                .sort({ createdAt: -1 })
-                .toArray();
+            const documents = await this.orchestrators
+                .find<OrchestratorChat>({ userId }, undefined, { createdAt: "desc" });
 
             return documents.map((doc) => ({
-                _id: doc._id.toString(),
+                _id: doc._id?.toString() || "",
                 userId: doc.userId,
                 createdAt: doc.createdAt,
                 updatedAt: doc.updatedAt,

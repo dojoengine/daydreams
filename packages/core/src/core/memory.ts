@@ -3,7 +3,7 @@ import type { Room } from "./room";
 
 // Define interfaces matching MongoDB document shapes
 export interface ScheduledTask {
-    _id: string;
+    _id?: string;
     userId: string;
     handlerName: string;
     taskData: Record<string, any>;
@@ -30,9 +30,6 @@ export interface OrchestratorChat {
 }
 
 export interface OrchestratorDb {
-    connect(): Promise<void>;
-    close(): Promise<void>;
-
     // Orchestrator methods
     getOrchestratorById(id: string): Promise<OrchestratorChat | null>;
     getOrchestratorsByUserId(userId: string): Promise<OrchestratorChat[]>;

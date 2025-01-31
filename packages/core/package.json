@@ -4,6 +4,7 @@
     "version": "0.0.3",
     "type": "module",
     "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "devDependencies": {
         "@types/bun": "latest"
     },
@@ -31,6 +32,7 @@
         "@ai-sdk/openai": "^1.1.1",
         "@ai-sdk/togetherai": "^0.1.1",
         "@ai-sdk/xai": "^1.1.1",
+        "@daydreamsai/storage": "workspace:^",
         "@langchain/core": "^0.3.33",
         "@langchain/textsplitters": "^0.1.0",
         "@openrouter/ai-sdk-provider": "^0.0.6",

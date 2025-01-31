@@ -13,3 +13,17 @@ services:
     restart: always
     ports:
       - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+  mongo-express:
+    image: mongo-express:1.0.2-20-alpine3.19
+    container_name: ${COMPOSE_PROJECT_NAME}_mongo-express
+    restart: always
+    ports:
+      - "9000:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+
+volumes:
+  mongo-data:

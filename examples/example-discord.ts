@@ -4,6 +4,9 @@
  * Discord messages without manual dispatch calls.
  */
 
+import chalk from "chalk";
+import readline from "readline";
+
 import { Orchestrator } from "../packages/core/src/core/orchestrator";
 import { HandlerRole, LogLevel } from "../packages/core/src/core/types";
 import { DiscordClient } from "../packages/core/src/core/io/discord";
@@ -12,13 +15,12 @@ import { ChromaVectorDB } from "../packages/core/src/core/vector-db";
 import { MessageProcessor } from "../packages/core/src/core/processors/message-processor";
 import { LLMClient } from "../packages/core/src/core/llm-client";
 import { env } from "../packages/core/src/core/env";
-import chalk from "chalk";
 import { defaultCharacter } from "../packages/core/src/core/character";
-import { z } from "zod";
-import readline from "readline";
 import { MongoDb } from "../packages/core/src/core/db/mongo-db";
 import { Message } from "discord.js";
 import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
+import { MongoStorage } from "../packages/mongodb-storage/src";
+import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND } from '../packages/storage/src';
 
 async function main() {
     // Set logging level as you see fit
@@ -55,24 +57,30 @@ async function main() {
 
     masterProcessor.addProcessor(messageProcessor);
 
-    // Connect to MongoDB (for scheduled tasks, if you use them)
-    const scheduledTaskDb = new MongoDb(
+    const scheduledTaskDb = new MongoStorage(
         "mongodb://localhost:27017",
         "myApp",
-        "scheduled_tasks"
     );
+
     await scheduledTaskDb.connect();
     console.log(chalk.green("✅ Scheduled task database connected"));
 
-    // Clear any existing tasks if you like
-    await scheduledTaskDb.deleteAll();
+    await scheduledTaskDb.migrate();
+    console.log(chalk.green("✅ Scheduled task indexes created"));
+
+    await Promise.all([
+        scheduledTaskDb.getRepository(SCHEDULED_TASKS_KIND).deleteAll(),
+        scheduledTaskDb.getRepository(ORCHESTRATORS_KIND).deleteAll(),
+    ]);
+
+    const orchestratorDb = new MongoDb(scheduledTaskDb);
 
     // Create the Orchestrator
     const core = new Orchestrator(
         roomManager,
         vectorDb,
         masterProcessor,
-        scheduledTaskDb,
+        orchestratorDb,
         {
             level: loglevel,
             enableColors: true,

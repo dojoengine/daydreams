@@ -2,33 +2,47 @@
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Daydreams is a powerful generative agent library for executing anything onchain. It is chain agnostic and can be used to perform tasks - by simply injecting context with api documentation. Whether you're building on Base, Solana, Ethereum, Starknet, or other chains, Daydreams has you covered.
+Daydreams is a powerful generative agent library for executing anything onchain.
+It is chain agnostic and can be used to perform tasks - by simply injecting
+context with api documentation. Whether you're building on Base, Solana,
+Ethereum, Starknet, or other chains, Daydreams has you covered.
 
 Think of it as an opinionated framework for building next generation agents.
 
 ## Key Features
 
-- 🤖 **Chain Agnostic** - Works with any blockchain through simple context injection
-- 🧠 **Chain of Thought Processing** - Sophisticated reasoning engine for complex decision making
-- 🔄 **Flexible Handler System** - Easy to compose input, action, and output handlers
-- 💾 **Built-in Memory** - Vector database integration for experience storage and retrieval
+- 🤖 **Chain Agnostic** - Works with any blockchain through simple context
+  injection
+- 🧠 **Chain of Thought Processing** - Sophisticated reasoning engine for
+  complex decision making
+- 🔄 **Flexible Handler System** - Easy to compose input, action, and output
+  handlers
+- 💾 **Built-in Memory** - Vector database integration for experience storage
+  and retrieval
 - 🎯 **Goal-Oriented** - Hierarchical goal planning and execution
-- 🤝 **Multi-Agent Ready** - Built for swarm intelligence and agent collaboration
+- 🤝 **Multi-Agent Ready** - Built for swarm intelligence and agent
+  collaboration
 
 ## Generative Framework
 
-Unlike traditional frameworks that require explicit integrations, Daydreams uses a generative approach where the agent dynamically creates and executes actions through Chain of Thought processing. This means:
+Unlike traditional frameworks that require explicit integrations, Daydreams uses
+a generative approach where the agent dynamically creates and executes actions
+through Chain of Thought processing. This means:
 
-- **Zero-Shot Integration**: Agents can interact with new protocols without pre-built integrations
-- **Dynamic Function Creation**: Actions are generated on-the-fly based on context and goals
+- **Zero-Shot Integration**: Agents can interact with new protocols without
+  pre-built integrations
+- **Dynamic Function Creation**: Actions are generated on-the-fly based on
+  context and goals
 - **Adaptive Behavior**: Agents learn and evolve strategies through experience
-- **Minimal Setup**: Just provide context and goals - the agent figures out the rest
+- **Minimal Setup**: Just provide context and goals - the agent figures out the
+  rest
 
 ## LLM Support
 
 Daydreams supports all major LLM providers and open source models:
 
-- **OpenRouter**: Access to the latest open source models (Mistral, Llama, DeepSeek, etc.)
+- **OpenRouter**: Access to the latest open source models (Mistral, Llama,
+  DeepSeek, etc.)
 - **OpenAI**: o1, o1-mini
 - **Anthropic**: Claude 3.5 Sonnet
 - **Google**: Gemini
@@ -36,7 +50,10 @@ Daydreams supports all major LLM providers and open source models:
 
 ## Architecture
 
-At its core, Daydreams is built around a simple yet powerful concept: everything is an IO (Input/Output) operation. The Orchestrator acts as the central nervous system, managing a stream of IO handlers that can be composed together for maximum speed and flexibility.
+At its core, Daydreams is built around a simple yet powerful concept: everything
+is an IO (Input/Output) operation. The Orchestrator acts as the central nervous
+system, managing a stream of IO handlers that can be composed together for
+maximum speed and flexibility.
 
 ```typescript
 // Everything in Daydreams is an IO handler
@@ -85,7 +102,15 @@ bun add @daydreamsai/core
 Here's a simple example to get you started:
 
 ```typescript
-import { Orchestrator, MessageProcessor, LLMClient } from "@daydreamsai/core";
+import {
+  Orchestrator,
+  MasterProcessor,
+  MessageProcessor,
+  MongoDb,
+  LLMClient,
+  defaultCharacter,
+} from "@daydreamsai/core";
+import { MongoStorage } from "@daydreamsai/mongodb-storage";
 
 // Initialize the LLM client
 const llm = new LLMClient({
@@ -94,19 +119,30 @@ const llm = new LLMClient({
 });
 
 // Create a message processor
-const processor = new MessageProcessor(llm);
+const processor = new MessageProcessor(llm, defaultCharacter);
+
+// Add processors to the master processor
+const masterProcessor = new MasterProcessor(llmClient, defaultCharacter);
+masterProcessor.addProcessor([messageProcessor]);
 
 // Initialize core components
 const roomManager = new RoomManager(vectorDb);
 const vectorDb = new ChromaVectorDB("my_agent");
-const scheduledTaskDb = new MongoDb("mongodb://localhost:27017");
+
+// Connect to MongoDb and provision indexes
+const scheduledTaskDb = new MongoStorage("mongodb://localhost:27017", "myApp");
+
+await scheduledTaskDb.connect();
+await scheduledTaskDb.migrate();
+
+const orchestratorDb = new MongoDb(scheduledTaskDb);
 
 // Initialize the orchestrator
 const orchestrator = new Orchestrator(
   roomManager,
   vectorDb,
-  [processor],
-  scheduledTaskDb,
+  processor,
+  orchestratorDb,
   {
     level: "debug",
     enableColors: true,
@@ -134,7 +170,8 @@ Daydreams is built around several key concepts:
 
 ### Orchestrator
 
-The central component that manages data flow, registers handlers, and maintains autonomous operation.
+The central component that manages data flow, registers handlers, and maintains
+autonomous operation.
 
 ### Handlers
 
@@ -155,24 +192,29 @@ The reasoning engine that:
 
 ### Memory System
 
-Stores and retrieves experiences using vector databases for contextual decision making.
+Stores and retrieves experiences using vector databases for contextual decision
+making.
 
 ## Example: Twitter Bot
 
-Here's a glimpse of what you can build with Daydreams - a Twitter bot that autonomously interacts and generates content:
+Here's a glimpse of what you can build with Daydreams - a Twitter bot that
+autonomously interacts and generates content:
 
 ```typescript
 import {
   Orchestrator,
+  MongoDb,
   TwitterClient,
   RoomManager,
   ChromaVectorDB,
+  MasterProcessor,
   MessageProcessor,
   LLMClient,
   Consciousness,
   HandlerRole,
   LogLevel,
 } from "@daydreamsai/core";
+import { MongoStorage } from "@daydreamsai/mongodb-storage";
 
 // 1. Initialize vector database for memory storage
 const vectorDb = new ChromaVectorDB("twitter_agent", {
@@ -190,21 +232,25 @@ const llm = new LLMClient({
 });
 
 // 4. Create message processor with default personality
+const masterProcessor = new MasterProcessor(
+  llmClient,
+  defaultCharacter,
+  LogLevel.DEBUG
+);
 const processor = new MessageProcessor(llm, defaultCharacter, LogLevel.DEBUG);
+masterProcessor.addProcessor([messageProcessor]);
 
 // 5. Initialize MongoDB for scheduled tasks
-const scheduledTaskDb = new MongoDb(
-  "mongodb://localhost:27017",
-  "myApp",
-  "scheduled_tasks"
-);
+const scheduledTaskDb = new MongoStorage("mongodb://localhost:27017", "myApp");
+await scheduledTaskDb.connect();
+await scheduledTaskDb.migrate();
 
 // 6. Initialize the orchestrator to manage everything
 const orchestrator = new Orchestrator(
   roomManager,
   vectorDb,
-  [processor],
-  scheduledTaskDb,
+  masterProcessor,
+  new MongoDb(scheduledTaskDb),
   {
     level: LogLevel.DEBUG,
     enableColors: true,

@@ -220,6 +220,9 @@ importers:
       '@ai-sdk/xai':
         specifier: ^1.1.1
         version: 1.1.1(zod@3.24.1)
+      '@daydreamsai/storage':
+        specifier: workspace:^
+        version: link:../storage
       '@langchain/core':
         specifier: ^0.3.33
         version: 0.3.33(openai@4.78.0(encoding@0.1.13)(zod@3.24.1))
@@ -287,6 +290,21 @@ importers:
       '@types/bun':
         specifier: latest
         version: 1.2.1
+
+  packages/mongodb-storage:
+    dependencies:
+      '@daydreamsai/storage':
+        specifier: workspace:^
+        version: link:../storage
+      tsup:
+        specifier: ^8.3.5
+        version: 8.3.5(jiti@2.4.2)(postcss@8.4.49)(tsx@4.19.2)(typescript@5.7.3)(yaml@2.7.0)
+
+  packages/storage:
+    dependencies:
+      tsup:
+        specifier: ^8.3.5
+        version: 8.3.5(jiti@2.4.2)(postcss@8.4.49)(tsx@4.19.2)(typescript@5.7.3)(yaml@2.7.0)
 
 packages:
 

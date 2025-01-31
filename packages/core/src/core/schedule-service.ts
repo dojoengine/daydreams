@@ -18,7 +18,7 @@ export class SchedulerService {
         private context: IOrchestratorContext,
         private orchestrator: Orchestrator,
         private pollMs: number = 10_000
-    ) {}
+    ) { }
 
     public start() {
         if (this.intervalId) {
@@ -35,6 +35,10 @@ export class SchedulerService {
         try {
             const tasks = await this.context.orchestratorDb.findDueTasks();
             for (const task of tasks) {
+                if (!task._id) {
+                    continue;
+                }
+
                 await this.context.orchestratorDb.markRunning(task._id);
 
                 const handler = this.orchestrator.getHandler(task.handlerName);
