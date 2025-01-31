@@ -34,6 +34,7 @@
         "@langchain/textsplitters": "^0.1.0",
         "@openrouter/ai-sdk-provider": "^0.0.6",
         "@solana/web3.js": "^1.98.0",
+        "@tavily/core": "^0.0.2",
         "agent-twitter-client": "^0.0.16",
         "ai": "^4.1.0",
         "ajv": "^8.17.1",

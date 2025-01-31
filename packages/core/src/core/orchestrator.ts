@@ -282,6 +282,8 @@ export class Orchestrator {
             queue.push({ data: initialData, source: sourceName });
         }
 
+        console.log("DEBUG: Queue ============= : ", queue);
+
         // Optionally store final outputs to return or do something with them
         const outputs: Array<{ name: string; data: any }> = [];
 
@@ -353,6 +355,11 @@ export class Orchestrator {
                 userId
             );
 
+            console.log(
+                "DEBUG: Processed results ============= : ",
+                processedResults
+            );
+
             if (!processedResults || processedResults.length === 0) {
                 continue;
             }
@@ -387,6 +394,8 @@ export class Orchestrator {
                     }
                 }
 
+                console.log("DEBUG: Processed ============= : ", processed);
+
                 // For each suggested output or action
                 for (const output of processed.suggestedOutputs ?? []) {
                     const handler = this.ioHandlers.get(output.name);
@@ -401,6 +410,7 @@ export class Orchestrator {
                     if (handler.role === HandlerRole.OUTPUT) {
                         // e.g. send a Slack message
                         outputs.push({ name: output.name, data: output.data });
+                        console.log("DEBUG: Outputs ============= : ", outputs);
                         await this.dispatchToOutput(
                             output.name,
                             request,
@@ -426,10 +436,18 @@ export class Orchestrator {
                         }
                     } else if (handler.role === HandlerRole.ACTION) {
                         // e.g. fetch data from an external API
+                        console.log(
+                            "DEBUG: Dispatching action ============= : ",
+                            output.name
+                        );
+                        console.log(
+                            "DEBUG: Dispatching action data ============= : ",
+                            output.data
+                        );
                         const actionResult = await this.dispatchToAction(
                             output.name,
                             request,
-                            output.data
+                            output.data || { query: processed.content }
                         );
 
                         this.logger.debug(
@@ -493,6 +511,7 @@ export class Orchestrator {
         source: string,
         userId?: string
     ): Promise<ProcessedResult[]> {
+        console.log("DEBUG: Processing content ============= : ", content);
         if (Array.isArray(content)) {
             const allResults: ProcessedResult[] = [];
             for (const item of content) {
@@ -515,6 +534,7 @@ export class Orchestrator {
             source,
             userId
         );
+        console.log("DEBUG: Single result ============= : ", singleResult);
         return singleResult ? [singleResult] : [];
     }
 
@@ -591,6 +611,10 @@ export class Orchestrator {
 
         // If there's a room, save the memory and mark processed
         if (content.room && result) {
+            console.log(
+                "DEBUG: Adding memory ============= : ",
+                result.content
+            );
             await this.roomManager.addMemory(
                 content.room,
                 JSON.stringify(result.content),

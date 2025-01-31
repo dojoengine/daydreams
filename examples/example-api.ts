@@ -1,10 +1,12 @@
 /**
- * Example demonstrating a Twitter bot using the Daydreams package.
- * This bot can:
- * - Monitor Twitter mentions and auto-reply
- * - Generate autonomous thoughts and tweet them
- * - Maintain conversation memory using ChromaDB
- * - Process inputs through a character-based personality
+ * Example demonstrating API integration capabilities using the Daydreams package.
+ * This example showcases:
+ * - Web search functionality using Tavily API
+ * - GitHub API integration for fetching issues
+ * - Universal API handler for making HTTP requests
+ * - Interactive console-based chat interface
+ * - Memory persistence using ChromaDB
+ * - Task scheduling with MongoDB
  */
 
 import { Orchestrator } from "../packages/core/src/core/orchestrator";
@@ -22,11 +24,15 @@ import { z } from "zod";
 import readline from "readline";
 import { MongoDb } from "../packages/core/src/core/db/mongo-db";
 import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
+import {
+    WebSearcher,
+    searchedContentSchema,
+} from "../packages/core/src/core/io/scraper";
 
 async function main() {
     const loglevel = LogLevel.DEBUG;
     // Initialize core dependencies
-    const vectorDb = new ChromaVectorDB("twitter_agent", {
+    const vectorDb = new ChromaVectorDB("api_agent", {
         chromaUrl: "http://localhost:8000",
         logLevel: loglevel,
     });
@@ -98,6 +104,48 @@ async function main() {
         intervalMs: 300000, // Think every 5 minutes
         minConfidence: 0.7,
         logLevel: loglevel,
+    });
+
+    orchestrator.registerIOHandler({
+        name: "web_searcher",
+        role: HandlerRole.ACTION,
+        outputSchema: z.array(searchedContentSchema),
+        execute: async (payload) => {
+            console.log("DEBUG: Full web_searcher context:", {
+                payload,
+                type: typeof payload,
+                keys: payload ? Object.keys(payload) : "no keys",
+            });
+
+            // When called as a suggested output, the original message is in the context
+            let query: string;
+            if (payload?.context?.content) {
+                query = payload.context.content;
+            } else {
+                query =
+                    typeof payload === "string"
+                        ? payload
+                        : payload?.data?.query ||
+                          payload?.query ||
+                          payload?.content ||
+                          payload;
+            }
+
+            if (!query || typeof query !== "string") {
+                throw new Error(
+                    "Invalid query format. Expected a string query. Received: " +
+                        JSON.stringify(query)
+                );
+            }
+
+            console.log("DEBUG: Using query:", query);
+
+            const searcher = new WebSearcher(
+                { tavily_api_key: process.env.TAVILY_API_KEY! },
+                LogLevel.INFO
+            );
+            return await searcher.search(query);
+        },
     });
 
     orchestrator.registerIOHandler({
@@ -186,6 +234,10 @@ async function main() {
             message: z.string(),
         }),
         execute: async (payload) => {
+            console.log(
+                "DEBUG: Received payload in ui_chat_reply:",
+                JSON.stringify(payload, null, 2)
+            );
             const { userId, message } = payload as {
                 userId?: string;
                 message: string;
@@ -228,6 +280,8 @@ async function main() {
                     userId
                 );
 
+                console.log("DEBUG: Outputs: ", outputs);
+
                 // Now `outputs` is an array of suggestions with role=output that got triggered
                 if (outputs && outputs.length > 0) {
                     for (const out of outputs) {
@@ -247,8 +301,10 @@ async function main() {
     };
 
     // Start the prompt loop
-    console.log(chalk.cyan("🤖 Bot is now running and monitoring Twitter..."));
-    console.log(chalk.cyan("You can type messages in the console."));
+    console.log(chalk.cyan("🤖 API Assistant is now running..."));
+    console.log(
+        chalk.cyan("You can ask questions about APIs or request data.")
+    );
     console.log(chalk.cyan('Type "exit" to quit'));
     promptUser();
 
@@ -258,10 +314,11 @@ async function main() {
 
         // Clean up resources
         await consciousness.stop();
-        orchestrator.removeIOHandler("twitter_mentions");
-        orchestrator.removeIOHandler("consciousness_thoughts");
-        orchestrator.removeIOHandler("twitter_reply");
-        orchestrator.removeIOHandler("twitter_thought");
+        orchestrator.removeIOHandler("web_searcher");
+        orchestrator.removeIOHandler("fetchGithubIssues");
+        orchestrator.removeIOHandler("universalApiCall");
+        orchestrator.removeIOHandler("user_chat");
+        orchestrator.removeIOHandler("ui_chat_reply");
         rl.close();
 
         console.log(chalk.green("✅ Shutdown complete"));
