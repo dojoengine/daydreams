@@ -23,16 +23,30 @@
  */
 
 /**
- * Repository interface defines operations available for a certain collection.
+ * Daydreams dependencies
  */
-export interface Repository {
+import type { Repository } from "@daydreamsai/storage";
+
+/**
+ * Memory repository class keeps all collection items in memory.
+ */
+export class MemoryRepository implements Repository {
     /**
-     * Insert a new document into the collection.
-     *
-     * @param data - The data to be inserted.
-     * @returns The id of the inserted document.
+     * Collection of items.
      */
-    insert<T>(data: T): Promise<string>;
+    private data: Record<string, any> = {};
+
+    /**
+     * Insert item into collection.
+     *
+     * @param data Item to insert.
+     * @returns A promise that resolves with the id of the inserted item.
+     */
+    public async insert<T>(data: T): Promise<string> {
+        const id = Math.random().toString(36).substr(2, 9);
+        this.data[id] = data;
+        return Promise.resolve(id);
+    }
 
     /**
      * Updates a document in the collection.
@@ -42,11 +56,21 @@ export interface Repository {
      * @param push - The fields to be pushed.
      * @returns A promise that resolves when the operation is complete.
      */
-    update(
+    public async update(
         id: string,
         set: Record<string, any>,
-        push?: Record<string, any>
-    ): Promise<void>;
+        push: Record<string, any>
+    ): Promise<void> {
+        this.data[id] = { ...this.data[id], ...set };
+        for (const key in push) {
+            if (!this.data[id][key]) {
+                this.data[id][key] = [];
+            }
+            this.data[id][key].push(push[key]);
+        }
+
+        return Promise.resolve();
+    }
 
     /**
      * Find documents in the collection.
@@ -54,7 +78,18 @@ export interface Repository {
      * @param query - The query to be used to find documents.
      * @returns A promise that resolves with found documents.
      */
-    find<T>(query: Record<string, any>): Promise<T[]>;
+    public async find<T>(query: Record<string, any>): Promise<T[]> {
+        const items = Object.values(this.data).filter((item) => {
+            for (const key in query) {
+                if (query[key] !== item[key]) {
+                    return false;
+                }
+            }
+            return true;
+        }) as T[];
+
+        return Promise.resolve(items);
+    }
 
     /**
      * Delete a document from the collection.
@@ -62,12 +97,18 @@ export interface Repository {
      * @param id - The id of the document to be deleted.
      * @returns A promise that resolves when the operation is complete.
      */
-    delete(id: string): Promise<void>;
+    public async delete(id: string): Promise<void> {
+        delete this.data[id];
+        return Promise.resolve();
+    }
 
     /**
      * Delete all documents from the collection.
      *
      * @returns A promise that resolves when the operation is complete.
      */
-    deleteAll(): Promise<void>;
+    public async deleteAll(): Promise<void> {
+        this.data = {};
+        return Promise.resolve();
+    }
 }

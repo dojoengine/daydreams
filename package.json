@@ -11,7 +11,7 @@
         "api": "bun run examples/example-api.ts",
         "ui": "pnpm --dir clients/example-ui run dev",
         "test": "bun run packages/core",
-        "build": "pnpm --dir packages/core run build",
+        "build": "lerna run build",
         "release": "pnpm build && pnpm prettier && npx lerna publish --no-private --force-publish",
         "prettier-check": "pnpx prettier --check packages",
         "prettier": "pnpx prettier --write packages",

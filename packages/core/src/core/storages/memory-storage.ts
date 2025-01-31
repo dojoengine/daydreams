@@ -22,5 +22,35 @@
  * SOFTWARE.
  */
 
-export { MemoryStorage } from "./memory-storage";
-export { MemoryRepository } from "./memory-repository";
+/**
+ * Daydreams dependencies
+ */
+import type { Storage, Repository } from "@daydreamsai/storage";
+
+/**
+ * Internal dependencies
+ */
+import { MemoryRepository } from "./memory-repository";
+
+/**
+ * Memory storage class keeps all collections in memory.
+ */
+export class MemoryStorage implements Storage {
+    /**
+     * Collection of repositories.
+     */
+    private repositories: Record<string, MemoryRepository> = {};
+
+    /**
+     * Get repository by kind. If repository does not exist, it will be created.
+     *
+     * @param kind Repository kind.
+     * @returns Repository instance.
+     */
+    public getRepository(kind: string): Repository {
+        if (!this.repositories[kind]) {
+            this.repositories[kind] = new MemoryRepository();
+        }
+        return this.repositories[kind];
+    }
+}

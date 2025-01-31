@@ -1,4 +1,6 @@
 import { MongoClient, Collection, ObjectId } from "mongodb";
+import type { Storage, Repository } from "@daydreamsai/storage";
+
 import type { HandlerRole } from "../types";
 import type {
     OrchestratorChat,
@@ -12,6 +14,9 @@ export class MongoDb implements OrchestratorDb {
     private collection!: Collection<ScheduledTask>;
     private orchestratorCollection!: Collection<OrchestratorChat>;
 
+    private tasks!: Repository;
+    private orchestrators!: Repository;
+
     /**
      * @param uri   A MongoDB connection string
      * @param dbName   Name of the database to use
@@ -20,9 +25,14 @@ export class MongoDb implements OrchestratorDb {
     constructor(
         private uri: string,
         private dbName: string = "sleever",
-        private collectionName: string = "scheduled_tasks"
+        private collectionName: string = "scheduled_tasks",
+        private permanentStorage: Storage
     ) {
         this.client = new MongoClient(this.uri);
+
+        this.tasks = this.permanentStorage.getRepository("scheduled_tasks");
+        this.orchestrators =
+            this.permanentStorage.getRepository("orchestrators");
     }
 
     /**
@@ -66,7 +76,7 @@ export class MongoDb implements OrchestratorDb {
      * @param nextRunAt   - When this task should run
      * @param intervalMs  - If set, the task will be re-scheduled after each run
      */
-    public async createTask(
+    public createTask(
         userId: string,
         handlerName: string,
         taskData: Record<string, any> = {},
@@ -86,8 +96,7 @@ export class MongoDb implements OrchestratorDb {
             updatedAt: now,
         };
 
-        const result = await this.collection.insertOne(doc);
-        return result.insertedId;
+        return this.tasks.insert(doc);
     }
 
     /**
@@ -115,32 +124,20 @@ export class MongoDb implements OrchestratorDb {
      * Marks a task's status as "running". Typically called right before invoking it.
      */
     public async markRunning(taskId: string): Promise<void> {
-        const now = new Date();
-        await this.collection.updateOne(
-            { _id: taskId },
-            {
-                $set: {
-                    status: "running",
-                    updatedAt: now,
-                },
-            }
-        );
+        await this.tasks.update(taskId, {
+            status: "running",
+            updatedAt: new Date(),
+        });
     }
 
     /**
      * Marks a task as completed (or failed).
      */
     public async markCompleted(taskId: string, failed = false): Promise<void> {
-        const now = new Date();
-        await this.collection.updateOne(
-            { _id: taskId },
-            {
-                $set: {
-                    status: failed ? "failed" : "completed",
-                    updatedAt: now,
-                },
-            }
-        );
+        await this.tasks.update(taskId, {
+            status: failed ? "failed" : "completed",
+            updatedAt: new Date(),
+        });
     }
 
     /**
@@ -150,17 +147,11 @@ export class MongoDb implements OrchestratorDb {
         taskId: string,
         newRunTime: Date
     ): Promise<void> {
-        const now = new Date();
-        await this.collection.updateOne(
-            { _id: taskId },
-            {
-                $set: {
-                    status: "pending",
-                    nextRunAt: newRunTime,
-                    updatedAt: now,
-                },
-            }
-        );
+        await this.tasks.update(taskId, {
+            status: "pending",
+            nextRunAt: newRunTime,
+            updatedAt: new Date(),
+        });
     }
 
     /**
@@ -182,7 +173,7 @@ export class MongoDb implements OrchestratorDb {
      * Deletes all tasks from the collection.
      */
     public async deleteAll(): Promise<void> {
-        await this.collection.deleteMany({});
+        await this.tasks.deleteAll();
     }
 
     /**
@@ -196,8 +187,7 @@ export class MongoDb implements OrchestratorDb {
             updatedAt: new Date(),
             messages: [],
         };
-        const result = await this.orchestratorCollection.insertOne(chat);
-        return result.insertedId.toString();
+        return await this.orchestrators.insert(chat);
     }
 
     /**
@@ -214,19 +204,17 @@ export class MongoDb implements OrchestratorDb {
         name: string,
         data: unknown
     ): Promise<void> {
-        await this.orchestratorCollection.updateOne(
-            { _id: orchestratorId },
+        await this.orchestrators.update(
+            orchestratorId,
             {
-                $push: {
-                    messages: {
-                        role,
-                        name,
-                        data,
-                        timestamp: new Date(),
-                    },
-                },
-                $set: {
-                    updatedAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                messages: {
+                    role,
+                    name,
+                    data,
+                    timestamp: new Date(),
                 },
             }
         );
