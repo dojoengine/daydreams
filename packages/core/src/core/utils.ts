@@ -175,9 +175,27 @@ export const validateLLMResponseSchema = async <T>({
                 .toString()
                 .replace(/```json\n?|\n?```/g, "");
 
+            // Add debug logging for raw response
+            logger.debug(
+                "validateLLMResponseSchema",
+                "Raw LLM response before parsing",
+                {
+                    rawResponse: response.toString(),
+                    cleanedResponse: responseText,
+                }
+            );
+
             let parsed: T;
             try {
                 parsed = JSON.parse(responseText);
+                // Add debug logging for successful parse
+                logger.debug(
+                    "validateLLMResponseSchema",
+                    "Successfully parsed JSON",
+                    {
+                        parsedObject: parsed,
+                    }
+                );
             } catch (parseError) {
                 logger.error(
                     "validateLLMResponseSchema",
@@ -185,6 +203,17 @@ export const validateLLMResponseSchema = async <T>({
                     {
                         response: responseText,
                         error: parseError,
+                        errorMessage: (parseError as Error).message,
+                        // Log the position if it's a SyntaxError
+                        position: (parseError as any).position,
+                        // Add a snippet around the error if possible
+                        snippet: responseText.slice(
+                            Math.max(
+                                0,
+                                ((parseError as any).position || 0) - 50
+                            ),
+                            ((parseError as any).position || 0) + 50
+                        ),
                     }
                 );
                 attempts++;
@@ -199,6 +228,7 @@ export const validateLLMResponseSchema = async <T>({
                     {
                         errors: validate.errors,
                         response: parsed,
+                        schema: jsonSchema,
                     }
                 );
                 attempts++;

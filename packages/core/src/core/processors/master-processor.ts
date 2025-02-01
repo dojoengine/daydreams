@@ -95,6 +95,10 @@ export class MasterProcessor extends BaseProcessor {
 
         # Available Actions:
         ${actionsSchemaPart}
+        
+        # Action vs Task Guidelines:
+        - For immediate web searches, use suggestedOutputs with web_searcher
+        - For scheduled/recurring web searches, use updateTasks with web_searcher
 
         <thinking id="processor_decision">
         1. Decide on what do to with the content. If you an output or action is suggested, you should use it.
@@ -108,9 +112,10 @@ export class MasterProcessor extends BaseProcessor {
         </thinking>
 
         <thinking id="output_suggestion">
-        1. Suggested outputs/actions based on the available handlers based on the content and the available handlers. 
-        2. If the content is a message, use the personality of the character to determine if the output was successful.
-        3. If possible you should include summary of the content in the output for the user to avoid more processing.
+        1. Suggested outputs/actions based on the available handlers based on the content and the available handlers.
+        2. Prioritize giving user feedback first before delegating to action handlers.
+        3. If the content is a message, use the personality of the character to determine if the output was successful.
+        4. If possible you should include summary of the content in the output for the user to avoid more processing.
         </thinking>
 `;
 
