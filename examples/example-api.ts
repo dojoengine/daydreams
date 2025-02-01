@@ -9,7 +9,7 @@
 
 import { Orchestrator } from "../packages/core/src/core/orchestrator";
 import { HandlerRole } from "../packages/core/src/core/types";
-import { RoomManager } from "../packages/core/src/core/room-manager";
+import { ConversationManager } from "../packages/core/src/core/conversation-manager";
 import { ChromaVectorDB } from "../packages/core/src/core/vector-db";
 import { MessageProcessor } from "../packages/core/src/core/processors/message-processor";
 import { ResearchQuantProcessor } from "../packages/core/src/core/processors/research-processor";
@@ -22,6 +22,7 @@ import { z } from "zod";
 import readline from "readline";
 import { MongoDb } from "../packages/core/src/core/db/mongo-db";
 import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
+import { makeFlowLifecycle } from "../packages/core/src/core/life-cycle";
 
 async function main() {
     const loglevel = LogLevel.DEBUG;
@@ -33,7 +34,7 @@ async function main() {
 
     await vectorDb.purge(); // Clear previous session data
 
-    const roomManager = new RoomManager(vectorDb);
+    const conversationManager = new ConversationManager(vectorDb);
 
     // Research client
     const researchClient = new LLMClient({
@@ -52,22 +53,16 @@ async function main() {
         loglevel
     );
 
-    // Initialize processor with default character personality
-    const messageProcessor = new MessageProcessor(
-        llmClient,
-        defaultCharacter,
-        loglevel
-    );
-
-    const researchProcessor = new ResearchQuantProcessor(
-        researchClient,
-        defaultCharacter,
-        loglevel,
-        1000 // chunk size, depends
-    );
-
     // Add processors to the master processor
-    masterProcessor.addProcessor([messageProcessor, researchProcessor]);
+    masterProcessor.addProcessor([
+        new MessageProcessor(llmClient, defaultCharacter, loglevel),
+        new ResearchQuantProcessor(
+            researchClient,
+            defaultCharacter,
+            loglevel,
+            1000 // chunk size, depends
+        ),
+    ]);
 
     const scheduledTaskDb = new MongoDb(
         "mongodb://localhost:27017",
@@ -80,12 +75,9 @@ async function main() {
 
     await scheduledTaskDb.deleteAll();
 
-    // Initialize core system
     const orchestrator = new Orchestrator(
-        roomManager,
-        vectorDb,
         masterProcessor,
-        scheduledTaskDb,
+        makeFlowLifecycle(scheduledTaskDb, conversationManager),
         {
             level: loglevel,
             enableColors: true,
@@ -94,7 +86,7 @@ async function main() {
     );
 
     // Initialize autonomous thought generation
-    const consciousness = new Consciousness(llmClient, roomManager, {
+    const consciousness = new Consciousness(llmClient, conversationManager, {
         intervalMs: 300000, // Think every 5 minutes
         minConfidence: 0.7,
         logLevel: loglevel,
@@ -220,12 +212,12 @@ async function main() {
                 const outputs: any = await orchestrator.dispatchToInput(
                     "user_chat",
                     {
-                        headers: {
-                            "x-user-id": userId,
-                        },
-                    },
-                    userMessage,
-                    userId
+                        userId,
+                        platformId: "discord",
+                        threadId: "123",
+                        data: { content: userMessage },
+                        contentId: "123",
+                    }
                 );
 
                 // Now `outputs` is an array of suggestions with role=output that got triggered

@@ -1,20 +1,20 @@
 import { Logger } from "./logger";
 import { LLMClient } from "./llm-client";
-import { type Room } from "./room";
-import { type RoomManager } from "./room-manager";
+import { Conversation } from "./conversation";
+import { ConversationManager } from "./conversation-manager";
 import { LogLevel, type Thought } from "./types";
 import { validateLLMResponseSchema } from "./utils";
 import { z } from "zod";
 
 export class Consciousness {
-    private static readonly ROOM_ID = "consciousness_main";
+    private static readonly CONVERSATION_ID = "consciousness_main";
 
     private logger: Logger;
     private thoughtInterval: NodeJS.Timer | null = null;
 
     constructor(
         private llmClient: LLMClient,
-        private roomManager: RoomManager,
+        private conversationManager: ConversationManager,
         private config: {
             intervalMs?: number;
             minConfidence?: number;
@@ -59,7 +59,7 @@ export class Consciousness {
                         confidence: thought.confidence,
                         suggestedActions:
                             thought.context?.suggestedActions || [],
-                        roomId: Consciousness.ROOM_ID,
+                        conversationId: Consciousness.CONVERSATION_ID,
                     },
                 };
             } else {
@@ -110,7 +110,7 @@ export class Consciousness {
 
     private async generateThought(): Promise<Thought> {
         const recentMemories = this.getRecentMemories(
-            await this.roomManager.listRooms()
+            await this.conversationManager.listConversations()
         );
 
         const prompt = `Analyze these recent memories and generate an insightful thought.
@@ -229,21 +229,21 @@ export class Consciousness {
     }
 
     private getRecentMemories(
-        rooms: Room[],
+        conversations: Conversation[],
         limit: number = 10
-    ): Array<{ content: string; roomId: string }> {
+    ): Array<{ content: string; conversationId: string }> {
         const allMemories: Array<{
             content: string;
-            roomId: string;
+            conversationId: string;
             timestamp: Date;
         }> = [];
 
-        for (const room of rooms) {
-            const memories = room.getMemories(5); // Get last 5 memories from each room
+        for (const conversation of conversations) {
+            const memories = conversation.getMemories(5); // Get last 5 memories from each conversation
             allMemories.push(
                 ...memories.map((m) => ({
                     content: m.content,
-                    roomId: room.id,
+                    conversationId: conversation.id,
                     timestamp: m.timestamp,
                 }))
             );
@@ -253,6 +253,9 @@ export class Consciousness {
         return allMemories
             .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
             .slice(0, limit)
-            .map(({ content, roomId }) => ({ content, roomId }));
+            .map(({ content, conversationId }) => ({
+                content,
+                conversationId,
+            }));
     }
 }

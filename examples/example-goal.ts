@@ -106,11 +106,13 @@ async function main() {
         role: HandlerRole.OUTPUT,
         execute: async (data: any) => {
             const result = await starknetChain.write(data.payload);
-            return `Transaction executed successfully: ${JSON.stringify(
-                result,
-                null,
-                2
-            )}`;
+            return {
+                content: `Transaction executed successfully: ${JSON.stringify(
+                    result,
+                    null,
+                    2
+                )}`,
+            };
         },
         outputSchema: z
             .object({
@@ -145,7 +147,9 @@ async function main() {
                 `query: ${query}`,
                 `result: ${JSON.stringify(result, null, 2)}`,
             ].join("\n\n");
-            return `GraphQL data fetched successfully: ${resultStr}`;
+            return {
+                content: `GraphQL data fetched successfully: ${resultStr}`,
+            };
         },
         outputSchema: z
             .object({

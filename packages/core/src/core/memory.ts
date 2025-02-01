@@ -1,5 +1,5 @@
 import type { HandlerRole, Memory } from "./types";
-import type { Room } from "./room";
+import type { Conversation } from "./conversation";
 
 // Define interfaces matching MongoDB document shapes
 export interface ScheduledTask {
@@ -29,6 +29,25 @@ export interface OrchestratorChat {
     messages: OrchestratorMessage[];
 }
 
+export interface Chat {
+    _id?: string;
+    userId: string;
+    platformId: string; // e.g., "twitter", "telegram"
+    threadId: string; // platform-specific thread/conversation ID
+    createdAt: Date;
+    updatedAt: Date;
+    messages: ChatMessage[];
+    metadata?: Record<string, any>; // Platform-specific data
+}
+
+export interface ChatMessage {
+    role: HandlerRole;
+    name: string;
+    data: unknown;
+    timestamp: Date;
+    messageId?: string; // Platform-specific message ID if available
+}
+
 export interface OrchestratorDb {
     connect(): Promise<void>;
     close(): Promise<void>;
@@ -36,14 +55,19 @@ export interface OrchestratorDb {
     // Orchestrator methods
     getOrchestratorById(id: string): Promise<OrchestratorChat | null>;
     getOrchestratorsByUserId(userId: string): Promise<OrchestratorChat[]>;
-    createOrchestrator(userId: string): Promise<string>;
-    addMessage(
-        orchestratorId: string,
+    getOrCreateChat(
+        userId: string,
+        platformId: string,
+        threadId: string,
+        metadata?: Record<string, any>
+    ): Promise<string>;
+    addChatMessage(
+        chatId: string,
         role: HandlerRole,
         name: string,
-        data: any
+        data: unknown
     ): Promise<void>;
-    getMessages(orchestratorId: string): Promise<OrchestratorMessage[]>;
+    getChatMessages(chatId: string): Promise<ChatMessage[]>;
 
     // Task management methods
     createTask(
@@ -62,12 +86,23 @@ export interface OrchestratorDb {
 }
 
 export interface MemoryManager {
-    hasProcessedContentInRoom(
+    hasProcessedContentInConversation(
         contentId: string,
-        roomId: string
+        conversationId: string
     ): Promise<boolean>;
-    ensureRoom(roomId: string, source: string, userId?: string): Promise<Room>;
-    getMemoriesFromRoom(roomId: string): Promise<Memory[]>;
-    addMemory(roomId: string, content: string, metadata?: any): Promise<void>;
-    markContentAsProcessed(contentId: string, roomId: string): Promise<void>;
+    ensureConversation(
+        conversationId: string,
+        source: string,
+        userId?: string
+    ): Promise<Conversation>;
+    getMemoriesFromConversation(conversationId: string): Promise<Memory[]>;
+    addMemory(
+        conversationId: string,
+        content: string,
+        metadata?: any
+    ): Promise<void>;
+    markContentAsProcessed(
+        contentId: string,
+        conversationId: string
+    ): Promise<void>;
 }

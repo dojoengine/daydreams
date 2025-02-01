@@ -1,6 +1,6 @@
 import { Orchestrator } from "./orchestrator";
-import { RoomManager } from "./room-manager";
-import { Room } from "./room";
+import { ConversationManager } from "./conversation-manager";
+import { Conversation } from "./conversation";
 import { ChromaVectorDB } from "./vector-db";
 import { BaseProcessor } from "./processor";
 import { GoalManager } from "./goal-manager";
@@ -32,8 +32,8 @@ export {
     Orchestrator,
     Processors,
     Providers,
-    Room,
-    RoomManager,
+    Conversation,
+    ConversationManager,
     StepManager,
     Types,
     Utils,

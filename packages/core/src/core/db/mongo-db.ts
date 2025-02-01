@@ -1,9 +1,8 @@
 import { MongoClient, Collection, ObjectId } from "mongodb";
-import type { HandlerRole } from "../types";
+import type { Chat, ChatMessage, HandlerRole } from "../types";
 import type {
     OrchestratorChat,
     OrchestratorDb,
-    OrchestratorMessage,
     ScheduledTask,
 } from "../memory";
 
@@ -11,6 +10,8 @@ export class MongoDb implements OrchestratorDb {
     private client: MongoClient;
     private collection!: Collection<ScheduledTask>;
     private orchestratorCollection!: Collection<OrchestratorChat>;
+
+    private chatsCollection!: Collection<Chat>;
 
     /**
      * @param uri   A MongoDB connection string
@@ -35,6 +36,18 @@ export class MongoDb implements OrchestratorDb {
 
         const db = this.client.db(this.dbName);
         this.collection = db.collection<ScheduledTask>(this.collectionName);
+
+        this.chatsCollection = db.collection<Chat>("chats");
+
+        // Create indexes for efficient querying
+        await this.chatsCollection.createIndex(
+            {
+                userId: 1,
+                platformId: 1,
+                threadId: 1,
+            },
+            { unique: true }
+        );
 
         // Optional: Create indexes
         // - An index on nextRunAt helps find "due" tasks quickly
@@ -185,18 +198,33 @@ export class MongoDb implements OrchestratorDb {
         await this.collection.deleteMany({});
     }
 
-    /**
-     * Creates a new "orchestrator" document for a user, returning its generated _id.
-     * This can represent a "new chat/session" with the agent.
-     */
-    public async createOrchestrator(userId: string): Promise<string> {
-        const chat: OrchestratorChat = {
-            userId: userId,
+    public async getOrCreateChat(
+        userId: string,
+        platformId: string,
+        threadId: string,
+        metadata?: Record<string, any>
+    ): Promise<string> {
+        const existingChat = await this.chatsCollection.findOne({
+            userId,
+            platformId,
+            threadId,
+        });
+
+        if (existingChat) {
+            return existingChat._id!.toString();
+        }
+
+        const chat: Chat = {
+            userId,
+            platformId,
+            threadId,
             createdAt: new Date(),
             updatedAt: new Date(),
             messages: [],
+            metadata,
         };
-        const result = await this.orchestratorCollection.insertOne(chat);
+
+        const result = await this.chatsCollection.insertOne(chat);
         return result.insertedId.toString();
     }
 
@@ -208,14 +236,14 @@ export class MongoDb implements OrchestratorDb {
      * @param name - The name/id of the IOHandler.
      * @param data - The data payload to store (e.g., text, JSON from APIs, etc).
      */
-    public async addMessage(
-        orchestratorId: string,
+    public async addChatMessage(
+        chatId: string,
         role: HandlerRole,
         name: string,
         data: unknown
     ): Promise<void> {
-        await this.orchestratorCollection.updateOne(
-            { _id: orchestratorId },
+        await this.chatsCollection.updateOne(
+            { _id: chatId },
             {
                 $push: {
                     messages: {
@@ -235,12 +263,11 @@ export class MongoDb implements OrchestratorDb {
     /**
      * Retrieves all messages in a specific orchestrator's conversation.
      */
-    public async getMessages(
-        orchestratorId: string
-    ): Promise<OrchestratorMessage[]> {
-        const doc = await this.orchestratorCollection.findOne({
-            _id: orchestratorId,
+    public async getChatMessages(chatId: string): Promise<ChatMessage[]> {
+        const doc = await this.chatsCollection.findOne({
+            _id: chatId,
         });
+
         if (!doc) return [];
         return doc.messages;
     }
