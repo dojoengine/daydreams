@@ -11,7 +11,12 @@ import type {
     LLMResponse,
     StructuredAnalysis,
 } from "./types";
-import { generateText } from "ai";
+import {
+    generateText,
+    type CoreMessage,
+    type FilePart,
+    type ImagePart,
+} from "ai";
 
 import { openai } from "@ai-sdk/openai";
 import { azure } from "@ai-sdk/azure";
@@ -341,7 +346,8 @@ export class LLMClient extends EventEmitter {
      */
     async analyze(
         prompt: string,
-        options: AnalysisOptions = {}
+        options: AnalysisOptions = {},
+        filesAndImages?: Array<ImagePart | FilePart>
     ): Promise<string | StructuredAnalysis> {
         const {
             temperature = this.config.temperature,
@@ -352,19 +358,31 @@ export class LLMClient extends EventEmitter {
         const modelId = this.getModelIdentifier();
         const model = this.getProviderModel(this.provider, modelId);
 
+        // Initialize messages array with system and user messages
+        const messages: CoreMessage[] = [
+            {
+                role: "system",
+                content: "Provide response in JSON format.",
+            },
+        ];
+
+        // If files/images are provided, add them before the prompt
+        if (filesAndImages?.length) {
+            messages.push({
+                role: "user",
+                content: filesAndImages,
+            });
+        }
+
+        messages.push({
+            role: "user",
+            content: prompt,
+        });
+
         let response = await generateText({
             model,
             temperature,
-            messages: [
-                {
-                    role: "system",
-                    content: "\n\nProvide response in JSON format.",
-                },
-                {
-                    role: "user",
-                    content: prompt,
-                },
-            ],
+            messages,
             maxTokens,
         });
 

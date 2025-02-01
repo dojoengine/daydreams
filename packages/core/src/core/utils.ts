@@ -134,6 +134,7 @@ export const calculateImportance = (result: string): number => {
 
 export const validateLLMResponseSchema = async <T>({
     prompt,
+    filesAndImages,
     systemPrompt,
     schema,
     maxRetries = 3,
@@ -154,7 +155,7 @@ export const validateLLMResponseSchema = async <T>({
 
     # rules
     - Only include the correct schema nothing else.
-    - Return a JSON object exactly matching this schema. 
+    - Return a JSON object exactly matching this schema.
     - Do not include any markdown formatting, slashes or comments.
     - return no <thinking> tags.
     - Only return the JSON object, no other text or other values.
@@ -167,9 +168,13 @@ export const validateLLMResponseSchema = async <T>({
 
     while (attempts < maxRetries) {
         try {
-            const response = await llmClient.analyze(formattedPrompt, {
-                system: systemPrompt,
-            });
+            const response = await llmClient.analyze(
+                formattedPrompt,
+                {
+                    system: systemPrompt,
+                },
+                filesAndImages
+            );
 
             let responseText = response
                 .toString()
