@@ -78,6 +78,7 @@ type ProviderFunction<T> = (modelId: string, config?: any) => T;
  */
 export class LLMClient extends EventEmitter {
     private readonly config: Required<LLMClientConfig>;
+    private lastRunAt = 0;
     private readonly provider: keyof ProviderMap;
 
     /**
@@ -113,6 +114,11 @@ export class LLMClient extends EventEmitter {
             config.model || this.getDefaultModel()
         );
 
+        // TODO: Gather rate limits for each provider for accurate defaults
+        // if (!config.throttleInterval) {
+
+        // }
+
         this.config = {
             model: config.model || this.getDefaultModel(),
             maxRetries: config.maxRetries || 3,
@@ -121,12 +127,14 @@ export class LLMClient extends EventEmitter {
             maxTokens: config.maxTokens || 8192,
             baseDelay: config.baseDelay || 1000,
             maxDelay: config.maxDelay || 10000,
+            // Defaults to 5 calls per second
+            throttleInterval: config.throttleInterval || 1000 / 5
         };
 
         this.initializeClient();
     }
 
-    private initializeClient(): void {}
+    private initializeClient(): void { }
 
     /**
      * Extracts the provider name from a model identifier.
@@ -264,6 +272,8 @@ export class LLMClient extends EventEmitter {
         prompt: string,
         signal: AbortSignal
     ): Promise<LLMResponse> {
+        await this.throttle();
+
         const modelId = this.getModelIdentifier();
         const model = this.getProviderModel(this.provider, modelId);
 
@@ -343,6 +353,8 @@ export class LLMClient extends EventEmitter {
         prompt: string,
         options: AnalysisOptions = {}
     ): Promise<string | StructuredAnalysis> {
+        await this.throttle();
+
         const {
             temperature = this.config.temperature,
             maxTokens = this.config.maxTokens,
@@ -387,5 +399,15 @@ export class LLMClient extends EventEmitter {
         }
 
         return result;
+    }
+
+    private async throttle() {
+        let diff = (Date.now() - this.lastRunAt);
+
+        if (diff < this.config.throttleInterval) {
+            await setTimeout(this.config.throttleInterval - diff);
+        }
+
+        this.lastRunAt = Date.now();
     }
 }

@@ -175,6 +175,7 @@ export interface LLMClientConfig {
     maxTokens?: number;
     baseDelay?: number;
     maxDelay?: number;
+    throttleInterval?: number;
 }
 
 export interface AnalysisOptions {
