@@ -17,6 +17,7 @@ import * as IO from "./io";
 import * as Types from "./types";
 import * as Processors from "./processors";
 import { SchedulerService } from "./schedule-service";
+import { MemoryStorage } from './storages';
 
 export {
     BaseProcessor,
@@ -38,4 +39,5 @@ export {
     Types,
     Utils,
     SchedulerService,
+    MemoryStorage,
 };
