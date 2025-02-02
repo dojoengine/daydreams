@@ -119,7 +119,6 @@ export class LLMClient extends EventEmitter {
             config.model || this.getDefaultModel()
         );
 
-
         this.config = {
             model: config.model || this.getDefaultModel(),
             maxRetries: config.maxRetries || 3,
@@ -129,13 +128,13 @@ export class LLMClient extends EventEmitter {
             baseDelay: config.baseDelay || 1000,
             maxDelay: config.maxDelay || 10000,
             // Defaults to 5 calls per second
-            throttleInterval: config.throttleInterval || 1000 / 5
+            throttleInterval: config.throttleInterval || 1000 / 5,
         };
 
         this.initializeClient();
     }
 
-    private initializeClient(): void { }
+    private initializeClient(): void {}
 
     /**
      * Extracts the provider name from a model identifier.
@@ -416,7 +415,7 @@ export class LLMClient extends EventEmitter {
     }
 
     private async throttle() {
-        let diff = (Date.now() - this.lastRunAt);
+        let diff = Date.now() - this.lastRunAt;
 
         if (diff < this.config.throttleInterval) {
             await setTimeout(this.config.throttleInterval - diff);

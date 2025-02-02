@@ -109,7 +109,10 @@ export class TelegramClient {
 
     async initialize(): Promise<void> {
         if (this.isInitialized) {
-            this.logger.info("TelegramClient", "Already initialized, skipping...");
+            this.logger.info(
+                "TelegramClient",
+                "Already initialized, skipping..."
+            );
             return;
         }
 
@@ -131,8 +134,14 @@ export class TelegramClient {
     }
 
     private async botLogin(): Promise<void> {
-        if (!this.credentials.bot_token || !this.credentials.api_id || !this.credentials.api_hash) {
-            throw new Error("Bot token, Api ID and Api hash are required for bot login.");
+        if (
+            !this.credentials.bot_token ||
+            !this.credentials.api_id ||
+            !this.credentials.api_hash
+        ) {
+            throw new Error(
+                "Bot token, Api ID and Api hash are required for bot login."
+            );
         }
         try {
             this.client = new GramJSClient(
@@ -141,7 +150,8 @@ export class TelegramClient {
                 this.credentials.api_hash as string,
                 {
                     connectionRetries: 5,
-                })
+                }
+            );
 
             await this.client.start({
                 botAuthToken: env.TELEGRAM_TOKEN,
@@ -155,7 +165,7 @@ export class TelegramClient {
             if (env.TELEGRAM_STARTUP_CHAT_ID) {
                 await this.sendMessage({
                     chatId: parseInt(env.TELEGRAM_STARTUP_CHAT_ID),
-                    content: `🤖 Bot started successfully!\nBot username: @${(me as Api.User).username}\nTime: ${new Date().toLocaleString()}`
+                    content: `🤖 Bot started successfully!\nBot username: @${(me as Api.User).username}\nTime: ${new Date().toLocaleString()}`,
                 });
             }
 
@@ -170,13 +180,18 @@ export class TelegramClient {
     private async userLogin(): Promise<void> {
         try {
             if (!this.credentials.api_id || !this.credentials.api_hash) {
-                throw new Error("API ID and API hash are required for user login.");
+                throw new Error(
+                    "API ID and API hash are required for user login."
+                );
             }
 
             // Try to use session string if provided
             const sessionString = this.credentials.session?.toString();
             if (!sessionString) {
-                this.logger.info("TelegramClient", "No session string provided, starting interactive login");
+                this.logger.info(
+                    "TelegramClient",
+                    "No session string provided, starting interactive login"
+                );
                 await this.handleInteractiveLogin();
                 return;
             }
@@ -193,21 +208,31 @@ export class TelegramClient {
                 );
 
                 // Try to connect and validate session
-                this.logger.info("TelegramClient", "Attempting to connect with existing session...");
+                this.logger.info(
+                    "TelegramClient",
+                    "Attempting to connect with existing session..."
+                );
                 await this.client.connect();
 
                 // Verify the session is valid by getting user info
                 const me = await this.client.getMe();
-                this.logger.info("TelegramClient", "Successfully connected with session", {
-                    id: (me as Api.User).id,
-                    username: (me as Api.User).username
-                });
+                this.logger.info(
+                    "TelegramClient",
+                    "Successfully connected with session",
+                    {
+                        id: (me as Api.User).id,
+                        username: (me as Api.User).username,
+                    }
+                );
 
                 // Send startup message
                 await this.sendStartupMessage(me as Api.User);
-
             } catch (error) {
-                this.logger.warn("TelegramClient", "Session invalid or expired, falling back to interactive login", { error });
+                this.logger.warn(
+                    "TelegramClient",
+                    "Session invalid or expired, falling back to interactive login",
+                    { error }
+                );
                 // Create new client for interactive login
                 this.client = new GramJSClient(
                     new StringSession(""),
@@ -220,42 +245,55 @@ export class TelegramClient {
                 await this.handleInteractiveLogin();
             }
         } catch (error) {
-            this.logger.error("TelegramClient", "Failed to login as user", { error });
+            this.logger.error("TelegramClient", "Failed to login as user", {
+                error,
+            });
             throw error;
         }
     }
 
     private async handleInteractiveLogin(): Promise<void> {
-        const rl = require('readline').createInterface({
+        const rl = require("readline").createInterface({
             input: process.stdin,
-            output: process.stdout
+            output: process.stdout,
         });
 
         try {
             await this.client!.start({
                 phoneNumber: async () => {
                     return await new Promise<string>((resolve) => {
-                        rl.question('Please enter your phone number: ', (phone: string) => {
-                            resolve(phone);
-                        });
+                        rl.question(
+                            "Please enter your phone number: ",
+                            (phone: string) => {
+                                resolve(phone);
+                            }
+                        );
                     });
                 },
                 password: async () => {
                     return await new Promise<string>((resolve) => {
-                        rl.question('Please enter your 2FA password (if enabled): ', (password: string) => {
-                            resolve(password);
-                        });
+                        rl.question(
+                            "Please enter your 2FA password (if enabled): ",
+                            (password: string) => {
+                                resolve(password);
+                            }
+                        );
                     });
                 },
                 phoneCode: async () => {
                     return await new Promise<string>((resolve) => {
-                        rl.question('Please enter the code you received: ', (code: string) => {
-                            resolve(code);
-                        });
+                        rl.question(
+                            "Please enter the code you received: ",
+                            (code: string) => {
+                                resolve(code);
+                            }
+                        );
                     });
                 },
                 onError: (err) => {
-                    this.logger.error("TelegramClient", "Error during login", { error: err });
+                    this.logger.error("TelegramClient", "Error during login", {
+                        error: err,
+                    });
                 },
             });
 
@@ -267,7 +305,6 @@ export class TelegramClient {
             // Get user details and send startup message
             const me = await this.client!.getMe();
             await this.sendStartupMessage(me as Api.User);
-
         } finally {
             rl.close();
         }
@@ -277,19 +314,26 @@ export class TelegramClient {
         if (!env.TELEGRAM_STARTUP_CHAT_ID) return;
 
         try {
-            const message = `🤖 User logged in successfully!\n` +
+            const message =
+                `🤖 User logged in successfully!\n` +
                 `User ID: ${user.id}\n` +
-                `Username: @${user.username || 'unknown'}\n` +
+                `Username: @${user.username || "unknown"}\n` +
                 `Time: ${new Date().toLocaleString()}`;
 
             const result = await this.sendMessage({
                 chatId: parseInt(env.TELEGRAM_STARTUP_CHAT_ID),
-                content: message
+                content: message,
             });
 
-            this.logger.info("TelegramClient", "Startup message sent", { result });
+            this.logger.info("TelegramClient", "Startup message sent", {
+                result,
+            });
         } catch (msgError) {
-            this.logger.error("TelegramClient", "Failed to send startup message", { error: msgError });
+            this.logger.error(
+                "TelegramClient",
+                "Failed to send startup message",
+                { error: msgError }
+            );
         }
     }
 
@@ -309,7 +353,7 @@ export class TelegramClient {
 
     /**
      * Create an output for sending Telegram message
-    */
+     */
     public createSendMessageOutput() {
         return {
             name: "telegram_send_message",
@@ -325,8 +369,8 @@ export class TelegramClient {
     }
 
     /**
- * Create a handler for periodic chat list updates
- */
+     * Create a handler for periodic chat list updates
+     */
     public createChatListScraper() {
         return {
             name: "telegram_chat_list_scraper",
@@ -336,54 +380,67 @@ export class TelegramClient {
 
                     if (env.TELEGRAM_STARTUP_CHAT_ID) {
                         // Limit to first 20 chats and split into chunks
-                        const chatChunks = chats.slice(0, 20).reduce((acc: string[], chat, index) => {
-                            const chatInfo =
-                                `${index + 1}. ${chat.type}: ${chat.title || chat.username || chat.id}\n` +
-                                `ID: ${chat.id}\n` +
-                                `Members: ${chat.memberCount || 'N/A'}\n`;
+                        const chatChunks = chats
+                            .slice(0, 20)
+                            .reduce((acc: string[], chat, index) => {
+                                const chatInfo =
+                                    `${index + 1}. ${chat.type}: ${chat.title || chat.username || chat.id}\n` +
+                                    `ID: ${chat.id}\n` +
+                                    `Members: ${chat.memberCount || "N/A"}\n`;
 
-                            if (!acc.length || (acc[acc.length - 1].length + chatInfo.length) > 4000) {
-                                acc.push(chatInfo);
-                            } else {
-                                acc[acc.length - 1] += '\n' + chatInfo;
-                            }
-                            return acc;
-                        }, []);
+                                if (
+                                    !acc.length ||
+                                    acc[acc.length - 1].length +
+                                        chatInfo.length >
+                                        4000
+                                ) {
+                                    acc.push(chatInfo);
+                                } else {
+                                    acc[acc.length - 1] += "\n" + chatInfo;
+                                }
+                                return acc;
+                            }, []);
 
                         // Send each chunk as a separate message
                         for (let i = 0; i < chatChunks.length; i++) {
                             const header = `📊 Chat List Update (Part ${i + 1}/${chatChunks.length})\n\n`;
                             await this.sendMessage({
                                 chatId: parseInt(env.TELEGRAM_STARTUP_CHAT_ID),
-                                content: header + chatChunks[i]
+                                content: header + chatChunks[i],
                             });
                         }
                     }
 
                     return {
                         success: true,
-                        chats: chats
+                        chats: chats,
                     };
                 } catch (error) {
-                    this.logger.error("TelegramClient.chatListScraper", "Error scraping chats", { error });
+                    this.logger.error(
+                        "TelegramClient.chatListScraper",
+                        "Error scraping chats",
+                        { error }
+                    );
                     return {
                         success: false,
-                        error: error
+                        error: error,
                     };
                 }
             },
             response: {
                 success: "boolean",
-                chats: "array"
-            }
+                chats: "array",
+            },
         };
     }
 
-    private async sendMessage(data: SendMessageData): Promise<{ success: boolean, chatId?: number, messageId?: number }> {
+    private async sendMessage(
+        data: SendMessageData
+    ): Promise<{ success: boolean; chatId?: number; messageId?: number }> {
         try {
             this.logger.info("TelegramClient.sendMessage", "Sending message", {
                 chatId: data.chatId,
-                contentLength: data.content.length
+                contentLength: data.content.length,
             });
 
             if (!this.client) {
@@ -391,7 +448,11 @@ export class TelegramClient {
             }
 
             if (env.DRY_RUN) {
-                this.logger.info("TelegramClient.sendMessage", "DRY_RUN: Would send message", { data });
+                this.logger.info(
+                    "TelegramClient.sendMessage",
+                    "DRY_RUN: Would send message",
+                    { data }
+                );
                 return { success: true };
             }
 
@@ -399,17 +460,23 @@ export class TelegramClient {
             try {
                 const entity = await this.client.getEntity(data.chatId);
                 if (!entity) {
-                    throw new Error(`No entity found for chat ID: ${data.chatId}`);
+                    throw new Error(
+                        `No entity found for chat ID: ${data.chatId}`
+                    );
                 }
 
                 const result = await this.client.sendMessage(entity, {
                     message: data.content,
                 });
 
-                this.logger.info("TelegramClient.sendMessage", "Message sent successfully", {
-                    messageId: result.id,
-                    chatId: data.chatId
-                });
+                this.logger.info(
+                    "TelegramClient.sendMessage",
+                    "Message sent successfully",
+                    {
+                        messageId: result.id,
+                        chatId: data.chatId,
+                    }
+                );
 
                 return {
                     success: true,
@@ -418,10 +485,17 @@ export class TelegramClient {
                 };
             } catch (entityError) {
                 // If entity not found, try sending directly to chat ID as fallback
-                this.logger.warn("TelegramClient.sendMessage", "Failed to get entity, trying direct send", { error: entityError });
-                const result = await this.client.sendMessage(data.chatId.toString(), {
-                    message: data.content,
-                });
+                this.logger.warn(
+                    "TelegramClient.sendMessage",
+                    "Failed to get entity, trying direct send",
+                    { error: entityError }
+                );
+                const result = await this.client.sendMessage(
+                    data.chatId.toString(),
+                    {
+                        message: data.content,
+                    }
+                );
 
                 return {
                     success: true,
@@ -430,7 +504,11 @@ export class TelegramClient {
                 };
             }
         } catch (error) {
-            this.logger.error("TelegramClient.sendMessage", "Error sending message", { error });
+            this.logger.error(
+                "TelegramClient.sendMessage",
+                "Error sending message",
+                { error }
+            );
             throw error;
         }
     }
@@ -441,20 +519,28 @@ export class TelegramClient {
                 throw new Error("Client not initialized");
             }
 
-            this.logger.info("TelegramClient.getChats", "Fetching all chats...");
+            this.logger.info(
+                "TelegramClient.getChats",
+                "Fetching all chats..."
+            );
 
             if (this.credentials.is_bot) {
                 // For bots, we need to use getUpdates to get chat information
-                const chats = await this.client.invoke(new Api.messages.GetChats({
-                    id: []
-                }));
+                const chats = await this.client.invoke(
+                    new Api.messages.GetChats({
+                        id: [],
+                    })
+                );
 
-                return (chats.chats || []).map(chat => ({
+                return (chats.chats || []).map((chat) => ({
                     id: Number(chat.id),
-                    title: 'title' in chat ? chat.title : undefined,
+                    title: "title" in chat ? chat.title : undefined,
                     type: chat.className,
-                    memberCount: 'participantsCount' in chat ? chat.participantsCount : undefined,
-                    username: 'username' in chat ? chat.username : undefined
+                    memberCount:
+                        "participantsCount" in chat
+                            ? chat.participantsCount
+                            : undefined,
+                    username: "username" in chat ? chat.username : undefined,
                 }));
             } else {
                 // For users, we can use getDialogs
@@ -469,13 +555,17 @@ export class TelegramClient {
                         title: (chat as any).title || undefined,
                         type: chat.className,
                         memberCount: (chat as any).participantsCount,
-                        username: (chat as any).username || undefined
+                        username: (chat as any).username || undefined,
                     });
                 }
                 return chats;
             }
         } catch (error) {
-            this.logger.error("TelegramClient.getChats", "Error fetching chats", { error });
+            this.logger.error(
+                "TelegramClient.getChats",
+                "Error fetching chats",
+                { error }
+            );
             throw error;
         }
     }
