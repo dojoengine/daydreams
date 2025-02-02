@@ -285,7 +285,7 @@ export class DiscordClient {
                 throw error;
             }
 
-            const sentMessage = await (channel as TextChannel).send(
+            const sentMessage = await channel.send(
                 data.content
             );
             return {
