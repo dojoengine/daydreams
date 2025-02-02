@@ -1,16 +1,22 @@
 import {
+    ChannelType,
     Client,
     GatewayIntentBits,
     Events,
     Message,
-    ChannelType,
     Partials,
     TextChannel,
     GuildMember,
+    type Channel,
 } from "discord.js";
 import { z } from "zod";
-import { HandlerRole, LogLevel, type IOHandler } from "../types";
 import { Logger } from "../../core/logger";
+import {
+    HandlerRole,
+    LogLevel,
+    type IOHandler,
+    type ProcessableContent,
+} from "../types";
 import { env } from "../../core/env";
 
 export interface DiscordCredentials {
@@ -104,7 +110,9 @@ export class DiscordClient {
      *  Optionally start listening to Discord messages.
      *  The onData callback typically feeds data into Orchestrator or similar.
      */
-    public startMessageStream(onData: (data: any) => void) {
+    public startMessageStream(
+        onData: (data: ProcessableContent | ProcessableContent[]) => void
+    ) {
         this.logger.info("DiscordClient", "Starting message stream...");
 
         // If you want to capture the listener reference for removal:
@@ -122,9 +130,13 @@ export class DiscordClient {
             }
 
             onData({
-                content: message.content,
-                channelId: message.channelId,
-                sentBy: message.author?.id,
+                userId: message.author?.displayName,
+                platformId: "discord",
+                threadId: message.channel.id,
+                contentId: message.id,
+                data: {
+                    content: message.content,
+                },
             });
         };
 
@@ -179,8 +191,10 @@ export class DiscordClient {
             role: HandlerRole.OUTPUT,
             name: "discord_message",
             execute: async (data: T) => {
-                const parsed = messageSchema.parse(data);
-                return await this.sendMessage(parsed);
+                // Cast the result to ProcessableContent to satisfy the IOHandler signature.
+                return (await this.sendMessage(
+                    data as MessageData
+                )) as unknown as ProcessableContent;
             },
             outputSchema: messageSchema,
         };
@@ -219,6 +233,10 @@ export class DiscordClient {
         };
     }
 
+    private getIsValidTextChannel(channel?: Channel): channel is TextChannel {
+        return channel?.type === ChannelType.GuildText;
+    }
+
     private async sendMessage(data: MessageData): Promise<{
         success: boolean;
         messageId?: string;
@@ -253,7 +271,7 @@ export class DiscordClient {
             }
 
             const channel = this.client.channels.cache.get(data?.channelId);
-            if (!channel?.isTextBased()) {
+            if (!this.getIsValidTextChannel(channel)) {
                 const error = new Error(
                     `Invalid or unsupported channel: ${data.channelId}`
                 );
@@ -270,7 +288,6 @@ export class DiscordClient {
             const sentMessage = await (channel as TextChannel).send(
                 data.content
             );
-
             return {
                 success: true,
                 messageId: sentMessage.id,

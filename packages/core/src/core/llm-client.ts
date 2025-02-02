@@ -11,7 +11,12 @@ import type {
     LLMResponse,
     StructuredAnalysis,
 } from "./types";
-import { generateText } from "ai";
+import {
+    generateText,
+    type CoreMessage,
+    type FilePart,
+    type ImagePart,
+} from "ai";
 
 import { openai } from "@ai-sdk/openai";
 import { azure } from "@ai-sdk/azure";
@@ -78,6 +83,7 @@ type ProviderFunction<T> = (modelId: string, config?: any) => T;
  */
 export class LLMClient extends EventEmitter {
     private readonly config: Required<LLMClientConfig>;
+    private lastRunAt = 0;
     private readonly provider: keyof ProviderMap;
 
     /**
@@ -113,6 +119,7 @@ export class LLMClient extends EventEmitter {
             config.model || this.getDefaultModel()
         );
 
+
         this.config = {
             model: config.model || this.getDefaultModel(),
             maxRetries: config.maxRetries || 3,
@@ -121,12 +128,14 @@ export class LLMClient extends EventEmitter {
             maxTokens: config.maxTokens || 8192,
             baseDelay: config.baseDelay || 1000,
             maxDelay: config.maxDelay || 10000,
+            // Defaults to 5 calls per second
+            throttleInterval: config.throttleInterval || 1000 / 5
         };
 
         this.initializeClient();
     }
 
-    private initializeClient(): void {}
+    private initializeClient(): void { }
 
     /**
      * Extracts the provider name from a model identifier.
@@ -264,6 +273,8 @@ export class LLMClient extends EventEmitter {
         prompt: string,
         signal: AbortSignal
     ): Promise<LLMResponse> {
+        await this.throttle();
+
         const modelId = this.getModelIdentifier();
         const model = this.getProviderModel(this.provider, modelId);
 
@@ -341,8 +352,11 @@ export class LLMClient extends EventEmitter {
      */
     async analyze(
         prompt: string,
-        options: AnalysisOptions = {}
+        options: AnalysisOptions = {},
+        filesAndImages?: Array<ImagePart | FilePart>
     ): Promise<string | StructuredAnalysis> {
+        await this.throttle();
+
         const {
             temperature = this.config.temperature,
             maxTokens = this.config.maxTokens,
@@ -352,19 +366,31 @@ export class LLMClient extends EventEmitter {
         const modelId = this.getModelIdentifier();
         const model = this.getProviderModel(this.provider, modelId);
 
+        // Initialize messages array with system and user messages
+        const messages: CoreMessage[] = [
+            {
+                role: "system",
+                content: "Provide response in JSON format.",
+            },
+        ];
+
+        // If files/images are provided, add them before the prompt
+        if (filesAndImages?.length) {
+            messages.push({
+                role: "user",
+                content: filesAndImages,
+            });
+        }
+
+        messages.push({
+            role: "user",
+            content: prompt,
+        });
+
         let response = await generateText({
             model,
             temperature,
-            messages: [
-                {
-                    role: "system",
-                    content: "\n\nProvide response in JSON format.",
-                },
-                {
-                    role: "user",
-                    content: prompt,
-                },
-            ],
+            messages,
             maxTokens,
         });
 
@@ -387,5 +413,15 @@ export class LLMClient extends EventEmitter {
         }
 
         return result;
+    }
+
+    private async throttle() {
+        let diff = (Date.now() - this.lastRunAt);
+
+        if (diff < this.config.throttleInterval) {
+            await setTimeout(this.config.throttleInterval - diff);
+        }
+
+        this.lastRunAt = Date.now();
     }
 }

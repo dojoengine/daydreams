@@ -1,33 +1,33 @@
 import { createHash } from "crypto";
-import type { RoomMetadata } from "./types";
+import type { ConversationMetadata } from "./types";
 import type { Memory } from "./types";
 
 /**
- * Represents a room/conversation context that can store memories and metadata.
+ * Represents a conversation context that can store memories and metadata.
  */
-export class Room {
-    /** Unique identifier for the room */
+export class Conversation {
+    /** Unique identifier for the conversation */
     public readonly id: string;
-    /** Collection of memories associated with this room */
+    /** Collection of memories associated with this conversation */
     private memories: Memory[] = [];
-    /** Metadata about the room like name, description, participants etc */
-    private metadata: RoomMetadata;
+    /** Metadata about the conversation like name, description, participants etc */
+    private metadata: ConversationMetadata;
 
     /**
-     * Creates a new Room instance
+     * Creates a new Conversation instance
      * @param platformId - Platform-specific identifier (e.g. tweet thread ID, chat ID)
-     * @param platform - Platform name where this room exists
-     * @param metadata - Optional metadata to initialize the room with
+     * @param platform - Platform name where this conversation exists
+     * @param metadata - Optional metadata to initialize the conversation with
      */
     constructor(
         public readonly platformId: string,
         public readonly platform: string,
-        metadata?: Partial<RoomMetadata>
+        metadata?: Partial<ConversationMetadata>
     ) {
-        this.id = Room.createDeterministicId(platform, platformId);
+        this.id = Conversation.createDeterministicId(platform, platformId);
 
         this.metadata = {
-            name: metadata?.name || `Room ${platformId}`,
+            name: metadata?.name || `Conversation ${platformId}`,
             description: metadata?.description,
             participants: metadata?.participants || [],
             createdAt: metadata?.createdAt || new Date(),
@@ -37,10 +37,10 @@ export class Room {
     }
 
     /**
-     * Creates a deterministic room ID based on platform and platformId
+     * Creates a deterministic conversation ID based on platform and platformId
      * @param platform - Platform name
      * @param platformId - Platform-specific identifier
-     * @returns A deterministic room ID string
+     * @returns A deterministic conversation ID string
      */
     public static createDeterministicId(
         platform: string,
@@ -55,7 +55,7 @@ export class Room {
     }
 
     /**
-     * Adds a new memory to the room
+     * Adds a new memory to the conversation
      * @param content - Content of the memory
      * @param metadata - Optional metadata for the memory
      * @returns The created Memory object
@@ -64,12 +64,15 @@ export class Room {
         content: string,
         metadata?: Record<string, any>
     ): Promise<Memory> {
-        // Create deterministic memory ID based on room ID and content
-        const memoryId = Room.createDeterministicMemoryId(this.id, content);
+        // Create deterministic memory ID based on Conversation ID and content
+        const memoryId = Conversation.createDeterministicMemoryId(
+            this.id,
+            content
+        );
 
         const memory: Memory = {
             id: memoryId,
-            roomId: this.id,
+            conversationId: this.id,
             content,
             timestamp: new Date(),
             metadata,
@@ -82,17 +85,17 @@ export class Room {
     }
 
     /**
-     * Creates a deterministic memory ID based on room ID and content
-     * @param roomId - ID of the room
+     * Creates a deterministic memory ID based on conversation ID and content
+     * @param conversationId - ID of the conversation
      * @param content - Content of the memory
      * @returns A deterministic memory ID string
      */
     public static createDeterministicMemoryId(
-        roomId: string,
+        conversationId: string,
         content: string
     ): string {
         const hash = createHash("sha256")
-            .update(`${roomId}:${content}`)
+            .update(`${conversationId}:${content}`)
             .digest("hex")
             .slice(0, 16);
 
@@ -100,7 +103,7 @@ export class Room {
     }
 
     /**
-     * Retrieves memories from the room
+     * Retrieves memories from the conversation
      * @param limit - Optional limit on number of memories to return
      * @returns Array of Memory objects
      */
@@ -109,18 +112,18 @@ export class Room {
     }
 
     /**
-     * Gets a copy of the room's metadata
-     * @returns Copy of room metadata
+     * Gets a copy of the conversation's metadata
+     * @returns Copy of conversation metadata
      */
-    public getMetadata(): RoomMetadata {
+    public getMetadata(): ConversationMetadata {
         return { ...this.metadata };
     }
 
     /**
-     * Updates the room's metadata
+     * Updates the conversation's metadata
      * @param update - Partial metadata object with fields to update
      */
-    public updateMetadata(update: Partial<RoomMetadata>): void {
+    public updateMetadata(update: Partial<ConversationMetadata>): void {
         this.metadata = {
             ...this.metadata,
             ...update,
@@ -129,8 +132,8 @@ export class Room {
     }
 
     /**
-     * Converts the room instance to a plain object
-     * @returns Plain object representation of the room
+     * Converts the conversation instance to a plain object
+     * @returns Plain object representation of the conversation
      */
     public toJSON() {
         return {

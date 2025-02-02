@@ -1,31 +1,20 @@
-import { LLMClient } from "./llm-client";
+// processor.ts
+
 import { Logger } from "./logger";
+import { LogLevel, type Character, type ProcessedResult } from "./types";
+import type { IOHandler, ProcessableContent } from "./types";
 
-import type { Character, ProcessedResult } from "./types";
-import { LogLevel } from "./types";
-
-import { type IOHandler } from "./types";
-
-/**
- * Base abstract class for content processors that handle different types of input
- * and generate appropriate responses using LLM.
- */
 export abstract class BaseProcessor {
     /** Logger instance for this processor */
     protected logger: Logger;
+    /** Map of child processors (sub-processors) that this processor can delegate to */
+    public processors: Map<string, BaseProcessor> = new Map();
 
-    /**
-     * Creates a new BaseProcessor instance
-     * @param metadata - Metadata about this processor including name and description
-     * @param loggerLevel - The logging level to use
-     * @param character - The character personality to use for responses
-     * @param llmClient - The LLM client instance to use for processing
-     */
     constructor(
         protected metadata: { name: string; description: string },
-        protected loggerLevel: LogLevel = LogLevel.ERROR,
+        protected loggerLevel: LogLevel,
         protected character: Character,
-        protected llmClient: LLMClient,
+        protected llmClient: any, // your LLM client type
         protected contentLimit: number = 1000
     ) {
         this.logger = new Logger({
@@ -37,34 +26,55 @@ export abstract class BaseProcessor {
 
     /**
      * Gets the name of this processor
-     * @returns The processor name from metadata
      */
     public getName(): string {
         return this.metadata.name;
     }
 
     /**
+     * Gets the description of this processor
+     */
+    public getDescription(): string {
+        return this.metadata.description;
+    }
+
+    /**
      * Determines if this processor can handle the given content.
-     * @param content - The content to check
-     * @returns True if this processor can handle the content, false otherwise
      */
     public abstract canHandle(content: any): boolean;
 
     /**
      * Processes the given content and returns a result.
-     * @param content - The content to process
-     * @param otherContext - Additional context string to consider during processing
-     * @param ioContext - Optional context containing available outputs and actions
-     * @param ioContext.availableOutputs - Array of available output handlers
-     * @param ioContext.availableActions - Array of available action handlers
-     * @returns Promise resolving to the processed result
      */
     public abstract process(
-        content: any,
+        content: ProcessableContent,
         otherContext: string,
         ioContext?: {
-            availableOutputs: IOHandler[];
-            availableActions: IOHandler[];
+            availableOutputs?: IOHandler[];
+            availableActions?: IOHandler[];
         }
     ): Promise<ProcessedResult>;
+
+    /**
+     * Adds one or more child processors to this processor
+     */
+    public addProcessor(processors: BaseProcessor | BaseProcessor[]): this {
+        const toAdd = Array.isArray(processors) ? processors : [processors];
+
+        for (const processor of toAdd) {
+            const name = processor.getName();
+            if (this.processors.has(name)) {
+                throw new Error(`Processor with name '${name}' already exists`);
+            }
+            this.processors.set(name, processor);
+        }
+        return this;
+    }
+
+    /**
+     * Gets a child processor by name
+     */
+    public getProcessor(name: string): BaseProcessor | undefined {
+        return this.processors.get(name);
+    }
 }

@@ -2,33 +2,47 @@
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Daydreams is a powerful generative agent library for executing anything onchain. It is chain agnostic and can be used to perform tasks - by simply injecting context with api documentation. Whether you're building on Base, Solana, Ethereum, Starknet, or other chains, Daydreams has you covered.
+Daydreams is a powerful generative agent library for executing anything onchain.
+It is chain agnostic and can be used to perform tasks - by simply injecting
+context with api documentation. Whether you're building on Base, Solana,
+Ethereum, Starknet, or other chains, Daydreams has you covered.
 
 Think of it as an opinionated framework for building next generation agents.
 
 ## Key Features
 
-- 🤖 **Chain Agnostic** - Works with any blockchain through simple context injection
-- 🧠 **Chain of Thought Processing** - Sophisticated reasoning engine for complex decision making
-- 🔄 **Flexible Handler System** - Easy to compose input, action, and output handlers
-- 💾 **Built-in Memory** - Vector database integration for experience storage and retrieval
+- 🤖 **Chain Agnostic** - Works with any blockchain through simple context
+  injection
+- 🧠 **Chain of Thought Processing** - Sophisticated reasoning engine for
+  complex decision making
+- 🔄 **Flexible Handler System** - Easy to compose input, action, and output
+  handlers
+- 💾 **Built-in Memory** - Vector database integration for experience storage
+  and retrieval
 - 🎯 **Goal-Oriented** - Hierarchical goal planning and execution
-- 🤝 **Multi-Agent Ready** - Built for swarm intelligence and agent collaboration
+- 🤝 **Multi-Agent Ready** - Built for swarm intelligence and agent
+  collaboration
 
 ## Generative Framework
 
-Unlike traditional frameworks that require explicit integrations, Daydreams uses a generative approach where the agent dynamically creates and executes actions through Chain of Thought processing. This means:
+Unlike traditional frameworks that require explicit integrations, Daydreams uses
+a generative approach where the agent dynamically creates and executes actions
+through Chain of Thought processing. This means:
 
-- **Zero-Shot Integration**: Agents can interact with new protocols without pre-built integrations
-- **Dynamic Function Creation**: Actions are generated on-the-fly based on context and goals
+- **Zero-Shot Integration**: Agents can interact with new protocols without
+  pre-built integrations
+- **Dynamic Function Creation**: Actions are generated on-the-fly based on
+  context and goals
 - **Adaptive Behavior**: Agents learn and evolve strategies through experience
-- **Minimal Setup**: Just provide context and goals - the agent figures out the rest
+- **Minimal Setup**: Just provide context and goals - the agent figures out the
+  rest
 
 ## LLM Support
 
 Daydreams supports all major LLM providers and open source models:
 
-- **OpenRouter**: Access to the latest open source models (Mistral, Llama, DeepSeek, etc.)
+- **OpenRouter**: Access to the latest open source models (Mistral, Llama,
+  DeepSeek, etc.)
 - **OpenAI**: o1, o1-mini
 - **Anthropic**: Claude 3.5 Sonnet
 - **Google**: Gemini
@@ -36,7 +50,10 @@ Daydreams supports all major LLM providers and open source models:
 
 ## Architecture
 
-At its core, Daydreams is built around a simple yet powerful concept: everything is an IO (Input/Output) operation. The Orchestrator acts as the central nervous system, managing a stream of IO handlers that can be composed together for maximum speed and flexibility.
+At its core, Daydreams is built around a simple yet powerful concept: everything
+is an IO (Input/Output) operation. The Orchestrator acts as the central nervous
+system, managing a stream of IO handlers that can be composed together for
+maximum speed and flexibility.
 
 ```typescript
 // Everything in Daydreams is an IO handler
@@ -85,36 +102,42 @@ bun add @daydreamsai/core
 Here's a simple example to get you started:
 
 ```typescript
-import { Orchestrator, MessageProcessor, LLMClient } from "@daydreamsai/core";
-
-// Initialize the LLM client
-const llm = new LLMClient({
+// Initialize LLM client
+const llmClient = new LLMClient({
   model: "openrouter:deepseek/deepseek-r1-distill-llama-70b",
   temperature: 0.3,
 });
 
-// Create a message processor
-const processor = new MessageProcessor(llm);
+// Initialize vector database for memory storage
+const vectorDb = new ChromaVectorDB("twitter_agent", {
+  chromaUrl: "http://localhost:8000",
+  logLevel: loglevel,
+});
 
-// Initialize core components
-const roomManager = new RoomManager(vectorDb);
-const vectorDb = new ChromaVectorDB("my_agent");
-const scheduledTaskDb = new MongoDb("mongodb://localhost:27017");
+// Create a Master Processor
+const masterProcessor = new MasterProcessor(
+  llmClient,
+  defaultCharacter,
+  loglevel
+);
+
+// Add message processor to master processor
+// You can define as many processors as you want and the master will decide which one to use
+masterProcessor.addProcessor([
+  new MessageProcessor(llmClient, defaultCharacter, loglevel),
+]);
 
 // Initialize the orchestrator
 const orchestrator = new Orchestrator(
-  roomManager,
-  vectorDb,
-  [processor],
-  scheduledTaskDb,
+  masterProcessor,
+  makeFlowLifecycle(new MongoDb(), new ConversationManager(vectorDb)),
   {
-    level: "debug",
+    level: loglevel,
     enableColors: true,
     enableTimestamp: true,
   }
 );
-
-// Register an action handler
+// Register an IO handler
 orchestrator.registerIOHandler({
   name: "simple_action",
   role: "action",
@@ -134,7 +157,8 @@ Daydreams is built around several key concepts:
 
 ### Orchestrator
 
-The central component that manages data flow, registers handlers, and maintains autonomous operation.
+The central component that manages data flow, registers handlers, and maintains
+autonomous operation.
 
 ### Handlers
 
@@ -155,162 +179,5 @@ The reasoning engine that:
 
 ### Memory System
 
-Stores and retrieves experiences using vector databases for contextual decision making.
-
-## Example: Twitter Bot
-
-Here's a glimpse of what you can build with Daydreams - a Twitter bot that autonomously interacts and generates content:
-
-```typescript
-import {
-  Orchestrator,
-  TwitterClient,
-  RoomManager,
-  ChromaVectorDB,
-  MessageProcessor,
-  LLMClient,
-  Consciousness,
-  HandlerRole,
-  LogLevel,
-} from "@daydreamsai/core";
-
-// 1. Initialize vector database for memory storage
-const vectorDb = new ChromaVectorDB("twitter_agent", {
-  chromaUrl: "http://localhost:8000",
-  logLevel: LogLevel.DEBUG,
-});
-
-// 2. Set up room management for conversation contexts
-const roomManager = new RoomManager(vectorDb);
-
-// 3. Initialize the LLM client for processing
-const llm = new LLMClient({
-  model: "openrouter:deepseek/deepseek-r1-distill-llama-70b",
-  temperature: 0.3,
-});
-
-// 4. Create message processor with default personality
-const processor = new MessageProcessor(llm, defaultCharacter, LogLevel.DEBUG);
-
-// 5. Initialize MongoDB for scheduled tasks
-const scheduledTaskDb = new MongoDb(
-  "mongodb://localhost:27017",
-  "myApp",
-  "scheduled_tasks"
-);
-
-// 6. Initialize the orchestrator to manage everything
-const orchestrator = new Orchestrator(
-  roomManager,
-  vectorDb,
-  [processor],
-  scheduledTaskDb,
-  {
-    level: LogLevel.DEBUG,
-    enableColors: true,
-    enableTimestamp: true,
-  }
-);
-
-// 7. Set up Twitter client
-const twitter = new TwitterClient(
-  {
-    username: process.env.TWITTER_USERNAME,
-    password: process.env.TWITTER_PASSWORD,
-    email: process.env.TWITTER_EMAIL,
-  },
-  LogLevel.DEBUG
-);
-
-// 8. Initialize autonomous thought generation
-const consciousness = new Consciousness(llm, roomManager, {
-  intervalMs: 300000, // Think every 5 minutes
-  minConfidence: 0.7,
-  logLevel: LogLevel.DEBUG,
-});
-
-// 9. Register handler to monitor Twitter mentions
-orchestrator.registerIOHandler({
-  name: "twitter_mentions",
-  role: HandlerRole.INPUT,
-  execute: async () => {
-    const mentions = await twitter.createMentionsInput(60000).handler();
-    if (!mentions?.length) return null;
-
-    return mentions.map((mention) => ({
-      type: "tweet",
-      room: mention.metadata.conversationId,
-      contentId: mention.metadata.tweetId,
-      user: mention.metadata.username,
-      content: mention.content,
-      metadata: mention,
-    }));
-  },
-});
-
-// 10. Register handler for posting tweets
-orchestrator.registerIOHandler({
-  name: "twitter_thought",
-  role: HandlerRole.OUTPUT,
-  execute: async (data) => {
-    const thoughtData = data as { content: string };
-    return twitter.createTweetOutput().handler({
-      content: thoughtData.content,
-    });
-  },
-  outputSchema: z
-    .object({
-      content: z
-        .string()
-        .regex(/^[\x20-\x7E]*$/, "No emojis or non-ASCII characters allowed"),
-    })
-    .describe("Content of the tweet, max 280 characters"),
-});
-
-// 11. Register handler for Twitter replies
-orchestrator.registerIOHandler({
-  name: "twitter_reply",
-  role: HandlerRole.OUTPUT,
-  execute: async (data) => {
-    const tweetData = data as { content: string; inReplyTo: string };
-    return twitter.createTweetOutput().handler(tweetData);
-  },
-  outputSchema: z
-    .object({
-      content: z.string(),
-      inReplyTo: z
-        .string()
-        .optional()
-        .describe("The tweet ID to reply to, if any"),
-    })
-    .describe("Use this for replying to tweets you've been mentioned in"),
-});
-
-// 12. Schedule recurring tasks
-await orchestrator.scheduleTaskInDb(
-  "twitter_bot",
-  "twitter_mentions",
-  {},
-  6000 // Check mentions every minute
-);
-
-await orchestrator.scheduleTaskInDb(
-  "twitter_bot",
-  "consciousness_thoughts",
-  {},
-  30000 // Generate thoughts every 30 seconds
-);
-
-// Start autonomous thought generation
-consciousness.start();
-```
-
-This example demonstrates:
-
-- Setting up a vector database for memory
-- Configuring room management for conversations
-- Initializing the LLM and message processor
-- Setting up Twitter integration
-- Registering handlers for mentions and posts
-- Implementing autonomous thought generation
-- Scheduling recurring tasks
+Stores and retrieves experiences using vector databases for contextual decision
+making.
