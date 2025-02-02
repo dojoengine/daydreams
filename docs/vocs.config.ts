@@ -73,6 +73,10 @@ export default defineConfig({
                                             text: "Twitter",
                                             link: "/api-reference/namespaces/IO/namespaces/Twitter",
                                         },
+                                        {
+                                            text: "Discord",
+                                            link: "/api-reference/namespaces/IO/namespaces/Discord",
+                                        }
                                     ],
                                 },
                                 {
