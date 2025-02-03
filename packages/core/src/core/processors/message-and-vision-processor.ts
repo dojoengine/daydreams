@@ -4,18 +4,18 @@ import type {
     ActionIOHandler,
     Character,
     OutputIOHandler,
-    ProcessableContent,
     ProcessedResult,
     SuggestedOutput,
 } from "../types";
+import { LogLevel } from "../types";
 
 import { getTimeContext, validateLLMResponseSchema } from "../utils";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { BaseProcessor } from "../processor";
-import { LogLevel } from "../types";
+import type { DataContent, FilePart, ImagePart } from "ai";
 
-export class MasterProcessor extends BaseProcessor {
+export class MessageAndVisionProcessor extends BaseProcessor {
     constructor(
         protected llmClient: LLMClient,
         protected character: Character,
@@ -23,9 +23,9 @@ export class MasterProcessor extends BaseProcessor {
     ) {
         super(
             {
-                name: "master",
+                name: "message-and-vision",
                 description:
-                    "This processor handles messages or short text inputs.",
+                    "This processor handles messages, short text inputs, images and files.",
             },
             logLevel,
             character,
@@ -47,7 +47,7 @@ export class MasterProcessor extends BaseProcessor {
     }
 
     async process(
-        content: ProcessableContent,
+        content: any,
         otherContext: string,
         ioContext?: {
             availableOutputs: OutputIOHandler[];
@@ -59,14 +59,21 @@ export class MasterProcessor extends BaseProcessor {
         });
 
         const contentStr =
-            typeof content === "string" ? content : JSON.stringify(content);
+            typeof content === "string" ? content : content.content;
 
-        // Add child processors context
-        const processorContext = Array.from(this.processors.entries())
-            .map(([name, processor]) => {
-                return `${name}: ${processor.getDescription()}`;
-            })
-            .join("\n");
+        const filesAndImages: Array<FilePart | ImagePart> = [
+            ...(content.images?.map((image: DataContent | string) => ({
+                type: "image" as const,
+                image,
+            })) || []),
+            ...(content.files?.map(
+                (data: { data: DataContent | string; mimeType: string }) => ({
+                    type: "file" as const,
+                    data: data.data,
+                    mimeType: data.mimeType,
+                })
+            ) || []),
+        ];
 
         const outputsSchemaPart = ioContext?.availableOutputs
             .map((handler) => {
@@ -80,16 +87,13 @@ export class MasterProcessor extends BaseProcessor {
             })
             .join("\n");
 
-        const prompt = `You are a master processor that can delegate to child processors. Decide on what do to with the following content:
+        const prompt = `Analyze the following content and provide a complete analysis:
 
-        # New Content to process: 
+        # New Content to process:
         ${contentStr}
 
         # Other context:
         ${otherContext}
-
-        # Available Child Processors:
-        ${processorContext}
 
         # Available Outputs:
         ${outputsSchemaPart}
@@ -97,39 +101,54 @@ export class MasterProcessor extends BaseProcessor {
         # Available Actions:
         ${actionsSchemaPart}
 
-        <thinking id="processor_decision">
-        1. Decide on what do to with the content. If you an output or action is suggested, you should use it.
-        2. If you can't decide, delegate to a child processor or just return.
-        </thinking>
-
         <thinking id="content_classification">
         1. Content classification and type
         2. Content enrichment (summary, topics, sentiment, entities, intent)
-        3. Determine if any child processors should handle this content
         </thinking>
 
         <thinking id="output_suggestion">
-        1. Suggested outputs/actions based on the available handlers based on the content and the available handlers. 
+        1. Suggested outputs/actions based on the available handlers based on the content and the available handlers.
         2. If the content is a message, use the personality of the character to determine if the output was successful.
         3. If possible you should include summary of the content in the output for the user to avoid more processing.
+        </thinking>
+
+        <thinking id="task_suggestion">
+        1. Suggested tasks based on the available handlers based on the content and the available handlers.
+        2. Only make tasks if you have been told, based off what you think is possible.
+        </thinking>
+
+        <thinking id="should_reply">
+        1. Should you reply to the message?
+        2. You should only reply if you have been mentioned in the message or you think you can help deeply.
+        3. You should never respond to yourself.
+        </thinking>
+
+        <thinking id="message_personality">
+
+        # Speak in the following voice:
+        ${JSON.stringify(this.character.voice)}
+
+        # Use the following traits to define your behavior:
+        ${JSON.stringify(this.character.traits)}
+
+        # Use the following examples to guide your behavior:
+        ${JSON.stringify(this.character.instructions)}
+
+        # Use the following template to craft your message:
+        ${JSON.stringify(this.character.templates?.tweetTemplate)}
         </thinking>
 `;
 
         try {
             const result = await validateLLMResponseSchema({
                 prompt,
+                filesAndImages,
                 systemPrompt:
-                    "You are an expert system that analyzes content and provides comprehensive analysis with appropriate automated responses. You can delegate to specialized processors when needed.",
+                    "You are an expert system that analyzes content and provides comprehensive analysis with appropriate automated responses.",
                 schema: z.object({
                     classification: z.object({
                         contentType: z.string(),
                         requiresProcessing: z.boolean(),
-                        delegateToProcessor: z
-                            .string()
-                            .optional()
-                            .describe(
-                                "The name of the processor to delegate to"
-                            ),
                         context: z.object({
                             topic: z.string(),
                             urgency: z.enum(["high", "medium", "low"]),
@@ -175,9 +194,9 @@ export class MasterProcessor extends BaseProcessor {
                                 .string()
                                 .describe("The name of the output or action"),
                             data: z
-                                .any()
+                                .string()
                                 .describe(
-                                    "The data that matches the output's schema. leave empty if you don't have any data to provide."
+                                    "The data that matches the output's schema."
                                 ),
                             confidence: z
                                 .number()
@@ -191,33 +210,6 @@ export class MasterProcessor extends BaseProcessor {
                 llmClient: this.llmClient,
                 logger: this.logger,
             });
-
-            this.logger.debug("MasterProcessor.process", "Result", {
-                result,
-            });
-
-            // Check if we should delegate to a child processor
-            // @dev maybe this should be elsewhere
-            if (result.classification.delegateToProcessor) {
-                const childProcessor = this.getProcessor(
-                    result.classification.delegateToProcessor
-                );
-                if (childProcessor && childProcessor.canHandle(content)) {
-                    this.logger.debug(
-                        "Processor.process",
-                        "Delegating to child processor",
-                        {
-                            processor:
-                                result.classification.delegateToProcessor,
-                        }
-                    );
-                    return childProcessor.process(
-                        content,
-                        otherContext,
-                        ioContext
-                    );
-                }
-            }
 
             this.logger.debug("Processor.process", "Processed content", {
                 content,
@@ -240,7 +232,7 @@ export class MasterProcessor extends BaseProcessor {
                 },
                 updateTasks: result.updateTasks,
                 suggestedOutputs:
-                    result.suggestedOutputs as SuggestedOutput<any>[],
+                    result.suggestedOutputs as SuggestedOutput<string>[],
                 alreadyProcessed: false,
             };
         } catch (error) {

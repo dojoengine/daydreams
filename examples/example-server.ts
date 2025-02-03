@@ -12,33 +12,35 @@ import { ChromaVectorDB } from "../packages/core/src/core/vector-db";
 
 import { Orchestrator } from "../packages/core/src/core/orchestrator";
 import { HandlerRole } from "../packages/core/src/core/types";
-import { RoomManager } from "../packages/core/src/core/room-manager";
+import { ConversationManager } from "../packages/core/src/core/conversation-manager";
 import { MessageProcessor } from "../packages/core/src/core/processors/message-processor";
-import { defaultCharacter } from "../packages/core/src/core/character";
+import { defaultCharacter } from "../packages/core/src/core/characters/character";
 
 import { LogLevel } from "../packages/core/src/core/types";
 import { MongoDb } from "../packages/core/src/core/db/mongo-db";
 import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
+import { makeFlowLifecycle } from "../packages/core/src/core/life-cycle";
 import { MongoStorage } from "../packages/mongodb-storage/src";
-import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND } from '../packages/storage/src';
+import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND, CHATS_KIND } from '../packages/storage/src';
 
-const scheduledTaskDb = new MongoStorage(
+const kvDb = new MongoStorage(
     "mongodb://localhost:27017",
     "myApp",
 );
 
-await scheduledTaskDb.connect();
+await kvDb.connect();
 console.log(chalk.green("✅ Scheduled task database connected"));
 
-await scheduledTaskDb.migrate();
+await kvDb.migrate();
 console.log(chalk.green("✅ Scheduled task indexes created"));
 
 await Promise.all([
-    scheduledTaskDb.getRepository(SCHEDULED_TASKS_KIND).deleteAll(),
-    scheduledTaskDb.getRepository(ORCHESTRATORS_KIND).deleteAll(),
+    kvDb.getRepository(SCHEDULED_TASKS_KIND).deleteAll(),
+    kvDb.getRepository(ORCHESTRATORS_KIND).deleteAll(),
+    kvDb.getRepository(CHATS_KIND).deleteAll(),
 ]);
 
-const orchestratorDb = new MongoDb(scheduledTaskDb);
+const orchestratorDb = new MongoDb(kvDb);
 
 // ------------------------------------------------------
 // 1) CREATE DAYDREAMS AGENT
@@ -59,7 +61,7 @@ async function createDaydreamsAgent() {
     });
 
     // 1.3. Room manager initialization
-    const roomManager = new RoomManager(vectorDb);
+    const conversationManager = new ConversationManager(vectorDb);
 
     const masterProcessor = new MasterProcessor(
         llmClient,
@@ -78,10 +80,8 @@ async function createDaydreamsAgent() {
 
     // 1.5. Initialize core system
     const orchestrator = new Orchestrator(
-        roomManager,
-        vectorDb,
         masterProcessor,
-        orchestratorDb,
+        makeFlowLifecycle(orchestratorDb, conversationManager),
         {
             level: loglevel,
             enableColors: true,
@@ -111,6 +111,10 @@ async function createDaydreamsAgent() {
                 message: string;
             };
             console.log(`Reply to user ${userId ?? "??"}: ${message}`);
+            return {
+                userId,
+                message,
+            };
         },
     });
 
@@ -160,16 +164,13 @@ wss.on("connection", (ws) => {
             }
 
             // Process the message using the orchestrator with the provided userId
-            const outputs = await orchestrator.dispatchToInput(
-                "user_chat",
-                {
-                    headers: {
-                        "x-user-id": userId,
-                    },
-                },
-                userMessage,
-                orchestratorId ? orchestratorId : undefined
-            );
+            const outputs = await orchestrator.dispatchToInput("user_chat", {
+                userId,
+                platformId: "discord",
+                threadId: orchestratorId,
+                data: { content: userMessage },
+                contentId: orchestratorId,
+            });
 
             // Send responses back through WebSocket
             if (outputs && (outputs as any).length > 0) {

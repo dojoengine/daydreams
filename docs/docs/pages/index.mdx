@@ -102,32 +102,32 @@ bun add @daydreamsai/core
 Here's a simple example to get you started:
 
 ```typescript
-import {
-  Orchestrator,
-  MasterProcessor,
-  MessageProcessor,
-  MongoDb,
-  LLMClient,
-  defaultCharacter,
-} from "@daydreamsai/core";
 import { MongoStorage } from "@daydreamsai/mongodb-storage";
 
-// Initialize the LLM client
-const llm = new LLMClient({
+// Initialize LLM client
+const llmClient = new LLMClient({
   model: "openrouter:deepseek/deepseek-r1-distill-llama-70b",
   temperature: 0.3,
 });
 
-// Create a message processor
-const processor = new MessageProcessor(llm, defaultCharacter);
+// Initialize vector database for memory storage
+const vectorDb = new ChromaVectorDB("twitter_agent", {
+  chromaUrl: "http://localhost:8000",
+  logLevel: loglevel,
+});
 
-// Add processors to the master processor
-const masterProcessor = new MasterProcessor(llmClient, defaultCharacter);
-masterProcessor.addProcessor([messageProcessor]);
+// Create a Master Processor
+const masterProcessor = new MasterProcessor(
+  llmClient,
+  defaultCharacter,
+  loglevel
+);
 
-// Initialize core components
-const roomManager = new RoomManager(vectorDb);
-const vectorDb = new ChromaVectorDB("my_agent");
+// Add message processor to master processor
+// You can define as many processors as you want and the master will decide which one to use
+masterProcessor.addProcessor([
+  new MessageProcessor(llmClient, defaultCharacter, loglevel),
+]);
 
 // Connect to MongoDb and provision indexes
 const scheduledTaskDb = new MongoStorage("mongodb://localhost:27017", "myApp");
@@ -139,18 +139,15 @@ const orchestratorDb = new MongoDb(scheduledTaskDb);
 
 // Initialize the orchestrator
 const orchestrator = new Orchestrator(
-  roomManager,
-  vectorDb,
-  processor,
-  orchestratorDb,
+  masterProcessor,
+  makeFlowLifecycle(orchestratorDb, new ConversationManager(vectorDb)),
   {
-    level: "debug",
+    level: loglevel,
     enableColors: true,
     enableTimestamp: true,
   }
 );
-
-// Register an action handler
+// Register an IO handler
 orchestrator.registerIOHandler({
   name: "simple_action",
   role: "action",
@@ -194,169 +191,3 @@ The reasoning engine that:
 
 Stores and retrieves experiences using vector databases for contextual decision
 making.
-
-## Example: Twitter Bot
-
-Here's a glimpse of what you can build with Daydreams - a Twitter bot that
-autonomously interacts and generates content:
-
-```typescript
-import {
-  Orchestrator,
-  MongoDb,
-  TwitterClient,
-  RoomManager,
-  ChromaVectorDB,
-  MasterProcessor,
-  MessageProcessor,
-  LLMClient,
-  Consciousness,
-  HandlerRole,
-  LogLevel,
-} from "@daydreamsai/core";
-import { MongoStorage } from "@daydreamsai/mongodb-storage";
-
-// 1. Initialize vector database for memory storage
-const vectorDb = new ChromaVectorDB("twitter_agent", {
-  chromaUrl: "http://localhost:8000",
-  logLevel: LogLevel.DEBUG,
-});
-
-// 2. Set up room management for conversation contexts
-const roomManager = new RoomManager(vectorDb);
-
-// 3. Initialize the LLM client for processing
-const llm = new LLMClient({
-  model: "openrouter:deepseek/deepseek-r1-distill-llama-70b",
-  temperature: 0.3,
-});
-
-// 4. Create message processor with default personality
-const masterProcessor = new MasterProcessor(
-  llmClient,
-  defaultCharacter,
-  LogLevel.DEBUG
-);
-const processor = new MessageProcessor(llm, defaultCharacter, LogLevel.DEBUG);
-masterProcessor.addProcessor([messageProcessor]);
-
-// 5. Initialize MongoDB for scheduled tasks
-const scheduledTaskDb = new MongoStorage("mongodb://localhost:27017", "myApp");
-await scheduledTaskDb.connect();
-await scheduledTaskDb.migrate();
-
-// 6. Initialize the orchestrator to manage everything
-const orchestrator = new Orchestrator(
-  roomManager,
-  vectorDb,
-  masterProcessor,
-  new MongoDb(scheduledTaskDb),
-  {
-    level: LogLevel.DEBUG,
-    enableColors: true,
-    enableTimestamp: true,
-  }
-);
-
-// 7. Set up Twitter client
-const twitter = new TwitterClient(
-  {
-    username: process.env.TWITTER_USERNAME,
-    password: process.env.TWITTER_PASSWORD,
-    email: process.env.TWITTER_EMAIL,
-  },
-  LogLevel.DEBUG
-);
-
-// 8. Initialize autonomous thought generation
-const consciousness = new Consciousness(llm, roomManager, {
-  intervalMs: 300000, // Think every 5 minutes
-  minConfidence: 0.7,
-  logLevel: LogLevel.DEBUG,
-});
-
-// 9. Register handler to monitor Twitter mentions
-orchestrator.registerIOHandler({
-  name: "twitter_mentions",
-  role: HandlerRole.INPUT,
-  execute: async () => {
-    const mentions = await twitter.createMentionsInput(60000).handler();
-    if (!mentions?.length) return null;
-
-    return mentions.map((mention) => ({
-      type: "tweet",
-      room: mention.metadata.conversationId,
-      contentId: mention.metadata.tweetId,
-      user: mention.metadata.username,
-      content: mention.content,
-      metadata: mention,
-    }));
-  },
-});
-
-// 10. Register handler for posting tweets
-orchestrator.registerIOHandler({
-  name: "twitter_thought",
-  role: HandlerRole.OUTPUT,
-  execute: async (data) => {
-    const thoughtData = data as { content: string };
-    return twitter.createTweetOutput().handler({
-      content: thoughtData.content,
-    });
-  },
-  outputSchema: z
-    .object({
-      content: z
-        .string()
-        .regex(/^[\x20-\x7E]*$/, "No emojis or non-ASCII characters allowed"),
-    })
-    .describe("Content of the tweet, max 280 characters"),
-});
-
-// 11. Register handler for Twitter replies
-orchestrator.registerIOHandler({
-  name: "twitter_reply",
-  role: HandlerRole.OUTPUT,
-  execute: async (data) => {
-    const tweetData = data as { content: string; inReplyTo: string };
-    return twitter.createTweetOutput().handler(tweetData);
-  },
-  outputSchema: z
-    .object({
-      content: z.string(),
-      inReplyTo: z
-        .string()
-        .optional()
-        .describe("The tweet ID to reply to, if any"),
-    })
-    .describe("Use this for replying to tweets you've been mentioned in"),
-});
-
-// 12. Schedule recurring tasks
-await orchestrator.scheduleTaskInDb(
-  "twitter_bot",
-  "twitter_mentions",
-  {},
-  6000 // Check mentions every minute
-);
-
-await orchestrator.scheduleTaskInDb(
-  "twitter_bot",
-  "consciousness_thoughts",
-  {},
-  30000 // Generate thoughts every 30 seconds
-);
-
-// Start autonomous thought generation
-consciousness.start();
-```
-
-This example demonstrates:
-
-- Setting up a vector database for memory
-- Configuring room management for conversations
-- Initializing the LLM and message processor
-- Setting up Twitter integration
-- Registering handlers for mentions and posts
-- Implementing autonomous thought generation
-- Scheduling recurring tasks

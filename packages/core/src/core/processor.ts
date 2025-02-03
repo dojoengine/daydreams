@@ -2,7 +2,7 @@
 
 import { Logger } from "./logger";
 import { LogLevel, type Character, type ProcessedResult } from "./types";
-import type { IOHandler } from "./types";
+import type { IOHandler, ProcessableContent } from "./types";
 
 export abstract class BaseProcessor {
     /** Logger instance for this processor */
@@ -47,7 +47,7 @@ export abstract class BaseProcessor {
      * Processes the given content and returns a result.
      */
     public abstract process(
-        content: any,
+        content: ProcessableContent,
         otherContext: string,
         ioContext?: {
             availableOutputs?: IOHandler[];

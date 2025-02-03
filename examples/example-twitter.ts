@@ -14,77 +14,79 @@ import readline from "readline";
 import { Orchestrator } from "../packages/core/src/core/orchestrator";
 import { HandlerRole } from "../packages/core/src/core/types";
 import { TwitterClient } from "../packages/core/src/core/io/twitter";
-import { RoomManager } from "../packages/core/src/core/room-manager";
+import { ConversationManager } from "../packages/core/src/core/conversation-manager";
 import { ChromaVectorDB } from "../packages/core/src/core/vector-db";
 import { MessageProcessor } from "../packages/core/src/core/processors/message-processor";
 import { LLMClient } from "../packages/core/src/core/llm-client";
 import { env } from "../packages/core/src/core/env";
 import { LogLevel } from "../packages/core/src/core/types";
-import { defaultCharacter } from "../packages/core/src/core/character";
+import { defaultCharacter } from "../packages/core/src/core/characters/character";
 import { Consciousness } from "../packages/core/src/core/consciousness";
 import { MongoDb } from "../packages/core/src/core/db/mongo-db";
 import { SchedulerService } from "../packages/core/src/core/schedule-service";
 import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
 import { Logger } from "../packages/core/src/core/logger";
+import { makeFlowLifecycle } from "../packages/core/src/core/life-cycle";
 import { MongoStorage } from "../packages/mongodb-storage/src";
-import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND } from '../packages/storage/src';
+import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND, CHATS_KIND } from '../packages/storage/src';
 
 async function main() {
     const loglevel = LogLevel.DEBUG;
+
     // Initialize core dependencies
     const vectorDb = new ChromaVectorDB("twitter_agent", {
         chromaUrl: "http://localhost:8000",
         logLevel: loglevel,
     });
 
-    await vectorDb.purge(); // Clear previous session data
+    // Clear previous session data
+    await vectorDb.purge();
 
-    const roomManager = new RoomManager(vectorDb);
+    // Initialize room manager
+    const conversationManager = new ConversationManager(vectorDb);
 
+    // Initialize LLM client
     const llmClient = new LLMClient({
-        model: "openrouter:deepseek/deepseek-r1-distill-llama-70b",
+        model: "anthropic/claude-3-5-sonnet-latest",
         temperature: 0.3,
     });
 
+    // Initialize master processor
     const masterProcessor = new MasterProcessor(
         llmClient,
         defaultCharacter,
         loglevel
     );
 
-    // Initialize processor with default character personality
-    const messageProcessor = new MessageProcessor(
-        llmClient,
-        defaultCharacter,
-        loglevel
-    );
+    // Add message processor to master processor
+    masterProcessor.addProcessor([
+        new MessageProcessor(llmClient, defaultCharacter, loglevel),
+    ]);
 
-    masterProcessor.addProcessor(messageProcessor);
-
-    const scheduledTaskDb = new MongoStorage(
+    const kvDb = new MongoStorage(
         "mongodb://localhost:27017",
         "myApp",
     );
 
-    await scheduledTaskDb.connect();
+    // Connect to MongoDB
+    await kvDb.connect();
     console.log(chalk.green("✅ Scheduled task database connected"));
 
-    await scheduledTaskDb.migrate();
+    await kvDb.migrate();
     console.log(chalk.green("✅ Scheduled task indexes created"));
 
     await Promise.all([
-        scheduledTaskDb.getRepository(SCHEDULED_TASKS_KIND).deleteAll(),
-        scheduledTaskDb.getRepository(ORCHESTRATORS_KIND).deleteAll(),
+        kvDb.getRepository(SCHEDULED_TASKS_KIND).deleteAll(),
+        kvDb.getRepository(ORCHESTRATORS_KIND).deleteAll(),
+        kvDb.getRepository(CHATS_KIND).deleteAll(),
     ]);
 
-    const orchestratorDb = new MongoDb(scheduledTaskDb);
+    const orchestratorDb = new MongoDb(kvDb);
 
     // Initialize core system
     const orchestrator = new Orchestrator(
-        roomManager,
-        vectorDb,
         masterProcessor,
-        orchestratorDb,
+        makeFlowLifecycle(orchestratorDb, conversationManager),
         {
             level: loglevel,
             enableColors: true,
@@ -92,6 +94,7 @@ async function main() {
         }
     );
 
+    // Initialize scheduler service
     const scheduler = new SchedulerService(
         {
             logger: new Logger({
@@ -100,13 +103,14 @@ async function main() {
                 enableTimestamp: true,
             }),
             orchestratorDb,
-            roomManager: roomManager,
+            conversationManager: conversationManager,
             vectorDb: vectorDb,
         },
         orchestrator,
         10000
     );
 
+    // Start scheduler service
     scheduler.start();
 
     // Set up Twitter client with credentials
@@ -120,13 +124,13 @@ async function main() {
     );
 
     // Initialize autonomous thought generation
-    const consciousness = new Consciousness(llmClient, roomManager, {
+    const consciousness = new Consciousness(llmClient, conversationManager, {
         intervalMs: 300000, // Think every 5 minutes
         minConfidence: 0.7,
         logLevel: loglevel,
     });
 
-    //   Register input handler for Twitter mentions
+    // Register input handler for Twitter mentions
     orchestrator.registerIOHandler({
         name: "twitter_mentions",
         role: HandlerRole.INPUT,
@@ -136,19 +140,26 @@ async function main() {
             const mentionsInput = twitter.createMentionsInput(60000);
             const mentions = await mentionsInput.handler();
 
-            // If no new mentions, return null to skip processing
-            if (!mentions || mentions.length === 0) {
-                return null;
+            // If no new mentions, return an empty array to skip processing
+            if (!mentions || !mentions.length) {
+                return [];
             }
 
-            return mentions.map((mention) => ({
-                type: "tweet",
-                room: mention.metadata.conversationId,
-                contentId: mention.metadata.tweetId,
-                user: mention.metadata.username,
-                content: mention.content,
-                metadata: mention,
-            }));
+            // Filter out mentions that do not have the required non-null properties before mapping
+            return mentions
+                .filter(
+                    (mention) =>
+                        mention.metadata.tweetId !== undefined &&
+                        mention.metadata.conversationId !== undefined &&
+                        mention.metadata.userId !== undefined
+                )
+                .map((mention) => ({
+                    userId: mention.metadata.userId!,
+                    threadId: mention.metadata.conversationId!,
+                    contentId: mention.metadata.tweetId!,
+                    platformId: "twitter",
+                    data: mention,
+                }));
         },
     });
 
@@ -162,10 +173,16 @@ async function main() {
 
             // If no thought was generated or it was already processed, skip
             if (!thought || !thought.content) {
-                return null;
+                return [];
             }
 
-            return thought;
+            return {
+                userId: "internal",
+                threadId: "internal",
+                contentId: "internal",
+                platformId: "internal",
+                data: thought,
+            };
         },
     });
 
@@ -176,6 +193,7 @@ async function main() {
         execute: async (data: unknown) => {
             const thoughtData = data as { content: string };
 
+            // Post thought to Twitter
             return twitter.createTweetOutput().handler({
                 content: thoughtData.content,
             });
@@ -194,14 +212,16 @@ async function main() {
             ),
     });
 
-    // Schedule a task to run every minute
-    await scheduler.scheduleTaskInDb("sleever", "twitter_mentions", {}, 6000); // Check mentions every minute
+    // Schedule a task to check mentions every minute
+    await scheduler.scheduleTaskInDb("sleever", "twitter_mentions", {}, 60000);
+
+    // Schedule a task to generate thoughts every 5 minutes
     await scheduler.scheduleTaskInDb(
         "sleever",
         "consciousness_thoughts",
         {},
-        30000
-    ); // Think every 5 minutes
+        300000
+    );
 
     // Register output handler for Twitter replies
     orchestrator.registerIOHandler({
@@ -210,6 +230,7 @@ async function main() {
         execute: async (data: unknown) => {
             const tweetData = data as { content: string; inReplyTo: string };
 
+            // Post reply to Twitter
             return twitter.createTweetOutput().handler(tweetData);
         },
         outputSchema: z

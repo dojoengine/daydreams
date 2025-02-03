@@ -24,3 +24,4 @@
 
 export const SCHEDULED_TASKS_KIND = "scheduled_tasks";
 export const ORCHESTRATORS_KIND = "orchestrators";
+export const CHATS_KIND = "chats";

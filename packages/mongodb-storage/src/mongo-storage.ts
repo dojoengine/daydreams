@@ -30,7 +30,7 @@ import { MongoClient, Db } from "mongodb";
 /**
  * Daydreams dependencies
  */
-import { SCHEDULED_TASKS_KIND, ORCHESTRATORS_KIND } from "@daydreamsai/storage";
+import { SCHEDULED_TASKS_KIND, ORCHESTRATORS_KIND, CHATS_KIND } from "@daydreamsai/storage";
 import type { Repository, Storage } from "@daydreamsai/storage";
 
 /**
@@ -98,15 +98,18 @@ export class MongoStorage implements Storage {
         // Initialize the repositories
         this.getRepository(SCHEDULED_TASKS_KIND);
         this.getRepository(ORCHESTRATORS_KIND);
+        this.getRepository(CHATS_KIND);
 
         const tasksCollection = this.repositories[SCHEDULED_TASKS_KIND].getCollection();
         const orchestratorsCollection = this.repositories[ORCHESTRATORS_KIND].getCollection();
+        const chatsCollection = this.repositories[CHATS_KIND].getCollection();
 
         // Create indexes
         await Promise.all([
             tasksCollection.createIndex({ nextRunAt: 1 }),
             tasksCollection.createIndex({ status: 1 }),
             orchestratorsCollection.createIndex({ userId: 1 }),
+            chatsCollection.createIndex({ userId: 1, platformId: 1, threadId: 1 }, { unique: true }),
         ]);
     }
 

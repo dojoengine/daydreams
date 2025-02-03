@@ -1,6 +1,6 @@
 import { Orchestrator } from "./orchestrator";
-import { RoomManager } from "./room-manager";
-import { Room } from "./room";
+import { ConversationManager } from "./conversation-manager";
+import { Conversation } from "./conversation";
 import { ChromaVectorDB } from "./vector-db";
 import { BaseProcessor } from "./processor";
 import { GoalManager } from "./goal-manager";
@@ -9,7 +9,7 @@ import { Logger } from "./logger";
 import { Consciousness } from "./consciousness";
 import { LLMClient } from "./llm-client";
 import { StepManager } from "./step-manager";
-import { defaultCharacter } from "./character";
+import { defaultCharacter } from "./characters/character-helpful-assistant";
 import * as Utils from "./utils";
 import * as Providers from "./providers";
 import * as Chains from "./chains";
@@ -33,8 +33,8 @@ export {
     Orchestrator,
     Processors,
     Providers,
-    Room,
-    RoomManager,
+    Conversation,
+    ConversationManager,
     StepManager,
     Types,
     Utils,

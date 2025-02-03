@@ -5,18 +5,20 @@ import readline from "readline";
 import { Orchestrator } from "../packages/core/src/core/orchestrator";
 import { HandlerRole } from "../packages/core/src/core/types";
 import { TelegramClient } from "../packages/core/src/core/io/telegram";
-import { RoomManager } from "../packages/core/src/core/room-manager";
+import { ConversationManager } from "../packages/core/src/core/conversation-manager";
 import { ChromaVectorDB } from "../packages/core/src/core/vector-db";
 import { MessageProcessor } from "../packages/core/src/core/processors/message-processor";
 import { LLMClient } from "../packages/core/src/core/llm-client";
 import { env } from "../packages/core/src/core/env";
 import { LogLevel } from "../packages/core/src/core/types";
-import { defaultCharacter } from "../packages/core/src/core/character";
+import { defaultCharacter } from "../packages/core/src/core/characters/character-helpful-assistant";
 import { MongoDb } from "../packages/core/src/core/db/mongo-db";
 import { SchedulerService } from "../packages/core/src/core/schedule-service";
 import { Logger } from "../packages/core/src/core/logger";
+import { makeFlowLifecycle } from "../packages/core/src/core/life-cycle";
 import { MongoStorage } from "../packages/mongodb-storage/src";
 import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND } from '../packages/storage/src';
+
 
 async function main() {
     const loglevel = LogLevel.DEBUG;
@@ -34,7 +36,7 @@ async function main() {
 
     await vectorDb.purge(); // Clear previous session data
 
-    const roomManager = new RoomManager(vectorDb);
+    const conversationManager = new ConversationManager(vectorDb);
 
     const llmClient = new LLMClient({
         // model: "openrouter:deepseek/deepseek-r1", // Using a supported model
@@ -67,13 +69,10 @@ async function main() {
 
     const orchestratorDb = new MongoDb(scheduledTaskDb);
 
-
     // Initialize core system
     const orchestrator = new Orchestrator(
-        roomManager,
-        vectorDb,
         processor,
-        orchestratorDb,
+        makeFlowLifecycle(orchestratorDb, conversationManager),
         {
             level: loglevel,
             enableColors: true,
@@ -89,7 +88,7 @@ async function main() {
                 enableTimestamp: true,
             }),
             orchestratorDb,
-            roomManager: roomManager,
+            conversationManager: conversationManager,
             vectorDb: vectorDb,
         },
         orchestrator,
@@ -107,18 +106,6 @@ async function main() {
         },
         loglevel,
     );
-
-    // Set up Telegram bot client with credentials
-    // const telegram = new TelegramClient(
-    //     {
-    //         bot_token: env.TELEGRAM_TOKEN,
-    //         api_id: parseInt(env.TELEGRAM_API_ID as string),
-    //         api_hash: env.TELEGRAM_API_HASH,
-    //         is_bot: true,
-    //         session: undefined,
-    //     },
-    //     loglevel,
-    // );
 
     // Wait for login to complete before setting up handlers
     await telegram.initialize();
@@ -149,12 +136,28 @@ async function main() {
             try {
                 console.log(chalk.blue("📊 Fetching chat list..."));
                 const result = await telegram.createChatListScraper().handler();
-                return result;
+                // Return default string values for required identifiers since the result object
+                // does not include userId, threadId, and contentId.
+                return {
+                    userId: "telegram_scraper",
+                    threadId: "telegram_scraper",
+                    contentId: "telegram_scraper",
+                    platformId: "telegram",
+                    data: result,
+                };
             } catch (error) {
                 console.error(chalk.red("Error in chat list scraper:"), error);
-                return null;
+                // In the error case, provide fallback values with empty strings for the id fields
+                // and a default error structure for data.
+                return {
+                    userId: "telegram_scraper",
+                    threadId: "telegram_scraper",
+                    contentId: "telegram_scraper",
+                    platformId: "telegram",
+                    data: { success: false, error, chats: [] },
+                };
             }
-        }
+        },
     });
 
     scheduler.start();

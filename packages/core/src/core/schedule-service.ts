@@ -1,13 +1,13 @@
 import { Orchestrator } from "./orchestrator";
 import { HandlerRole, type VectorDB } from "./types";
 import type { Logger } from "./logger";
-import type { RoomManager } from "./room-manager";
+import type { ConversationManager } from "./conversation-manager";
 import type { OrchestratorDb } from "./memory";
 
 export interface IOrchestratorContext {
     logger: Logger;
     orchestratorDb: OrchestratorDb;
-    roomManager: RoomManager;
+    conversationManager: ConversationManager;
     vectorDb: VectorDB;
 }
 
@@ -56,33 +56,20 @@ export class SchedulerService {
                     case HandlerRole.INPUT:
                         await this.orchestrator.dispatchToInput(
                             task.handlerName,
-                            {
-                                headers: {
-                                    "x-user-id": task.userId,
-                                },
-                            },
+
                             data
                         );
                         break;
                     case HandlerRole.ACTION:
                         await this.orchestrator.dispatchToAction(
                             task.handlerName,
-                            {
-                                headers: {
-                                    "x-user-id": task.userId,
-                                },
-                            },
+
                             data
                         );
                         break;
                     case HandlerRole.OUTPUT:
                         await this.orchestrator.dispatchToOutput(
                             task.handlerName,
-                            {
-                                headers: {
-                                    "x-user-id": task.userId,
-                                },
-                            },
                             data
                         );
                         break;

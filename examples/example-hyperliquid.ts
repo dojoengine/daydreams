@@ -18,17 +18,17 @@ import chalk from "chalk";
 import { Orchestrator } from "../packages/core/src/core/orchestrator";
 import { HandlerRole } from "../packages/core/src/core/types";
 import { HyperliquidClient } from "../packages/core/src/core/io/hyperliquid";
-import { RoomManager } from "../packages/core/src/core/room-manager";
+import { ConversationManager } from "../packages/core/src/core/conversation-manager";
 import { ChromaVectorDB } from "../packages/core/src/core/vector-db";
 import { MessageProcessor } from "../packages/core/src/core/processors/message-processor";
 import { LLMClient } from "../packages/core/src/core/llm-client";
 import { env } from "../packages/core/src/core/env";
 import { LogLevel } from "../packages/core/src/core/types";
-import { defaultCharacter } from "../packages/core/src/core/character_trading_sage";
+import { defaultCharacter } from "../packages/core/src/core/characters/character-trading-sage";
 import { MongoDb } from "../packages/core/src/core/db/mongo-db";
-import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
+import { makeFlowLifecycle } from "../packages/core/src/core/life-cycle";
 import { MongoStorage } from "../packages/mongodb-storage/src";
-import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND } from '../packages/storage/src';
+import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND, CHATS_KIND } from '../packages/storage/src';
 
 async function main() {
     const loglevel = LogLevel.ERROR;
@@ -41,7 +41,7 @@ async function main() {
 
     await vectorDb.purge(); // Clear previous session data
 
-    const roomManager = new RoomManager(vectorDb);
+    const conversationManager = new ConversationManager(vectorDb);
     const userId = "console-user";
 
     const llmClient = new LLMClient({
@@ -49,22 +49,14 @@ async function main() {
         temperature: 0.3,
     });
 
-    const masterProcessor = new MasterProcessor(
-        llmClient,
-        defaultCharacter,
-        loglevel
-    );
-
     // Initialize processor with default character personality
-    const messageProcessor = new MessageProcessor(
+    const processor = new MessageProcessor(
         llmClient,
         defaultCharacter,
         loglevel
     );
 
-    // Add processors to the master processor
-    masterProcessor.addProcessor([messageProcessor]);
-
+    // Initialize core system
     const scheduledTaskDb = new MongoStorage(
         "mongodb://localhost:27017",
         "myApp",
@@ -79,16 +71,14 @@ async function main() {
     await Promise.all([
         scheduledTaskDb.getRepository(SCHEDULED_TASKS_KIND).deleteAll(),
         scheduledTaskDb.getRepository(ORCHESTRATORS_KIND).deleteAll(),
+        scheduledTaskDb.getRepository(CHATS_KIND).deleteAll(),
     ]);
 
     const orchestratorDb = new MongoDb(scheduledTaskDb);
 
-    // Initialize core system
     const core = new Orchestrator(
-        roomManager,
-        vectorDb,
-        masterProcessor,
-        orchestratorDb,
+        processor,
+        makeFlowLifecycle(orchestratorDb, conversationManager),
         {
             level: loglevel,
             enableColors: true,
@@ -358,10 +348,12 @@ async function main() {
                 await core.dispatchToInput(
                     "user_chat",
                     {
-                        content: userMessage,
+                        contentId: userMessage,
                         userId,
+                        platformId: "console",
+                        threadId: "console",
+                        data: {},
                     },
-                    userId
                 );
 
                 // Continue prompting

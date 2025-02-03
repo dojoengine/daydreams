@@ -125,7 +125,7 @@ export class MemoryRepository implements Repository {
 
         return Promise.resolve(
             limits?.limit
-                ? items.slice(limits.skip || 0, limits.skip + limits.limit)
+                ? items.slice(limits.skip || 0, (limits.skip || 0) + limits.limit)
                 : items
         );
     }

@@ -143,17 +143,17 @@ describe("ChromaVectorDB", () => {
         });
     });
 
-    // Room Operations
-    describe("Room Operations", () => {
-        test("listRooms() should return room collections", async () => {
+    // Conversation Operations
+    describe("Conversation Operations", () => {
+        test("listConversations() should return conversation collections", async () => {
             mockClient.listCollections.mockResolvedValueOnce([
-                "room_123",
-                "room_456",
+                "conversation_123",
+                "conversation_456",
                 "other_collection",
             ]);
 
-            const rooms = await db.listRooms();
-            expect(rooms).toEqual(["123", "456"]);
+            const conversations = await db.listConversations();
+            expect(conversations).toEqual(["123", "456"]);
         });
     });
 
