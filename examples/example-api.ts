@@ -25,7 +25,7 @@ import { MongoDb } from "../packages/core/src/core/db/mongo-db";
 import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
 import { makeFlowLifecycle } from "../packages/core/src/core/life-cycle";
 import { MongoStorage } from "../packages/mongodb-storage/src";
-import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND } from '../packages/storage/src';
+import { ORCHESTRATORS_KIND, SCHEDULED_TASKS_KIND, CHATS_KIND } from '../packages/storage/src';
 
 async function main() {
     const loglevel = LogLevel.DEBUG;
@@ -81,6 +81,7 @@ async function main() {
     await Promise.all([
         scheduledTaskDb.getRepository(SCHEDULED_TASKS_KIND).deleteAll(),
         scheduledTaskDb.getRepository(ORCHESTRATORS_KIND).deleteAll(),
+        scheduledTaskDb.getRepository(CHATS_KIND).deleteAll(),
     ]);
 
     const orchestratorDb = new MongoDb(scheduledTaskDb);
