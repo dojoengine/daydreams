@@ -25,7 +25,7 @@
 /**
  * Internal dependencies
  */
-import type { Limits, Sort } from './find-types';
+import type { Filter, Limits, Sort } from './query-types';
 
 /**
  * Repository interface defines operations available for a certain collection.
@@ -61,7 +61,7 @@ export interface Repository {
      * @param sort The sorting to be applied to the query.
      * @returns A promise that resolves with found documents.
      */
-    find<T>(query: Record<string, any>, limits?: Limits, sort?: Sort): Promise<T[]>;
+    find<T>(query: Filter, limits?: Limits, sort?: Sort): Promise<T[]>;
 
     /**
      * Finds a document in the collection.
@@ -69,7 +69,7 @@ export interface Repository {
      * @param query The query to search for.
      * @returns A promise that resolves with the found document.
      */
-    findOne<T>(query: Record<string, any>): Promise<T | null>;
+    findOne<T>(query: Filter): Promise<T | null>;
 
     /**
      * Delete a document from the collection.

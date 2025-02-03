@@ -26,11 +26,12 @@
  * External dependencies
  */
 import { Db, Collection } from "mongodb";
+import type { Filter as Query } from "mongodb";
 
 /**
  * Daydreams dependencies
  */
-import type { Repository, Limits, Sort } from "@daydreamsai/storage";
+import type { Repository, Filter, Limits, Sort } from "@daydreamsai/storage";
 
 /**
  * The repository class that represents a MongoDB collection.
@@ -108,8 +109,42 @@ export class MongoRepository implements Repository {
      * @param sort The sorting to be applied to the query.
      * @returns A promise that resolves with the found documents.
      */
-    public async find<T>(query: Record<string, any>, limits?: Limits, sort?: Sort): Promise<T[]> {
-        const find = this.collection.find(query)
+    public async find<T>(query: Filter, limits?: Limits, sort?: Sort): Promise<T[]> {
+        const _query: Query<any> = {};
+
+        for (const key in query) {
+            if (typeof query[key] === 'string') {
+                _query[key] = query[key];
+            } else if (typeof query[key] === 'object') {
+                _query[key] = {};
+                if (query[key].eq) {
+                    _query[key].$eq = query[key].eq;
+                }
+                if (query[key].gt) {
+                    _query[key].$gt = query[key].gt;
+                }
+                if (query[key].gte) {
+                    _query[key].$gte = query[key].gte;
+                }
+                if (query[key].in) {
+                    _query[key].$in = query[key].in;
+                }
+                if (query[key].lt) {
+                    _query[key].$lt = query[key].lt;
+                }
+                if (query[key].lte) {
+                    _query[key].$lte = query[key].lte;
+                }
+                if (query[key].ne) {
+                    _query[key].$ne = query[key].ne;
+                }
+                if (query[key].nin) {
+                    _query[key].$nin = query[key].nin;
+                }
+            }
+        }
+
+        const find = this.collection.find(_query)
 
         if (limits) {
             if (limits.limit) {
@@ -134,7 +169,7 @@ export class MongoRepository implements Repository {
      * @param query The query to search for.
      * @returns A promise that resolves with the found document.
      */
-    public async findOne<T>(query: Record<string, any>): Promise<T | null> {
+    public async findOne<T>(query: Filter): Promise<T | null> {
         return this.collection.findOne(query);
     }
 

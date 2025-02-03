@@ -25,7 +25,7 @@
 /**
  * Daydreams dependencies
  */
-import type { Repository, Limits, Sort } from "@daydreamsai/storage";
+import type { Repository, Filter, Limits, Sort } from "@daydreamsai/storage";
 
 /**
  * Memory repository class keeps all collection items in memory.
@@ -80,11 +80,36 @@ export class MemoryRepository implements Repository {
      * @param sort The sorting to be applied to the query.
      * @returns A promise that resolves with found documents.
      */
-    public find<T>(query: Record<string, any>, limits?: Limits, sort?: Sort): Promise<T[]> {
+    public find<T>(query: Filter, limits?: Limits, sort?: Sort): Promise<T[]> {
         const items = Object.values(this.data).filter((item) => {
             for (const key in query) {
-                if (query[key] !== item[key]) {
+                if (typeof query[key] === 'string' && query[key] !== item[key]) {
                     return false;
+                } else if (typeof query[key] === 'object') {
+                    if (query[key].eq && query[key].eq !== item[key]) {
+                        return false;
+                    }
+                    if (query[key].gt && query[key].gt >= item[key]) {
+                        return false;
+                    }
+                    if (query[key].gte && query[key].gte > item[key]) {
+                        return false;
+                    }
+                    if (query[key].lt && query[key].lt <= item[key]) {
+                        return false;
+                    }
+                    if (query[key].lte && query[key].lte < item[key]) {
+                        return false;
+                    }
+                    if (query[key].ne && query[key].ne === item[key]) {
+                        return false;
+                    }
+                    if (query[key].in && !query[key].in.includes(item[key])) {
+                        return false;
+                    }
+                    if (query[key].nin && query[key].nin.includes(item[key])) {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -136,7 +161,7 @@ export class MemoryRepository implements Repository {
      * @param query The query to search for.
      * @returns A promise that resolves with the found document.
      */
-    public findOne<T>(query: Record<string, any>): Promise<T | null> {
+    public findOne<T>(query: Filter): Promise<T | null> {
         const item = Object.values(this.data).find((item) => {
             for (const key in query) {
                 if (query[key] !== item[key]) {

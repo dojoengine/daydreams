@@ -23,6 +23,54 @@
  */
 
 /**
+ * Filter options for queries.
+ */
+export type Filter = {
+	/**
+	 * The field to filter by.
+	 */
+	[key: string]: FilterOperation | any;
+}
+
+/**
+ * Filter options for queries.
+ */
+export type FilterOperation = {
+	/**
+	 * Equality comparison.
+	 */
+	eq?: any;
+	/**
+	 * Greater than comparison.
+	 */
+	gt?: any;
+	/**
+	 * Greater than or equal to comparison.
+	 */
+	gte?: any;
+	/**
+	 * In comparison.
+	 */
+	in?: ReadonlyArray<any>;
+	/**
+	 * Less than comparison.
+	 */
+	lt?: any;
+	/**
+	 * Less than or equal to comparison.
+	 */
+	lte?: any;
+	/**
+	 * Not equal comparison.
+	 */
+	ne?: any;
+	/**
+	 * Not in comparison.
+	 */
+	nin?: ReadonlyArray<any>;
+}
+
+/**
  * Limits for pagination in queries.
  */
 export type Limits = {

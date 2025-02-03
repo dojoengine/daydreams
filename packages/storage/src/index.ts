@@ -23,6 +23,6 @@
  */
 
 export * from './constants';
-export type { Limits, Sort } from "./find-types";
+export type { Filter, Limits, Sort } from "./query-types";
 export type { Repository } from "./repository";
 export type { Storage } from "./storage";

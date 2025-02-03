@@ -72,8 +72,7 @@ export class MongoDb implements OrchestratorDb {
         const tasks = await this.tasks
             .find<ScheduledTask>({
                 status: "pending",
-                // TODO: this $lte condition is very specific to MongoDB, we need to abstract this.
-                nextRunAt: { $lte: now },
+                nextRunAt: { lte: now },
             }, { limit }, { nextRunAt: "asc" });
 
         return tasks;
