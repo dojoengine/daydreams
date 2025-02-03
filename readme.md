@@ -32,10 +32,10 @@ It is designed to be as lite as possible while remaining powerful and flexible.
 
 Prerequisites:
 
-- Node.js 16+
-- pnpm
-- Bun
-- Docker Desktop
+- Node.js 18+ using [nvm](https://github.com/nvm-sh/nvm)
+- [pnpm](https://pnpm.io/)
+- [Bun](https://bun.sh/)
+- [Docker Desktop](https://www.docker.com/)
 
 ```bash
 # Install dependencies

@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { ChromaClient, IncludeEnum, OpenAIEmbeddingFunction } from "chromadb";
 import { env } from "./env";
 import { Logger } from "./logger";
-import { Room } from "./room";
+import { Conversation } from "./conversation";
 import {
     LogLevel,
     type ClusterMetadata,
@@ -18,7 +18,6 @@ import {
     type VectorDB,
 } from "./types";
 import { isValidDateValue } from "./utils";
-import { CharacterTextSplitter } from "@langchain/textsplitters";
 
 export class ChromaVectorDB implements VectorDB {
     // Static collection names
@@ -191,7 +190,10 @@ export class ChromaVectorDB implements VectorDB {
         try {
             const collection = await this.getCollection();
             // Generate deterministic ID so we don't accidentally store duplicates
-            const id = Room.createDeterministicMemoryId("global", content);
+            const id = Conversation.createDeterministicMemoryId(
+                "global",
+                content
+            );
 
             this.logger.debug("ChromaVectorDB.store", "Storing content", {
                 id,
@@ -240,22 +242,22 @@ export class ChromaVectorDB implements VectorDB {
         }
     }
 
-    // ======================= ROOM-SPECIFIC METHODS =======================
+    // ======================= conversation-SPECIFIC METHODS =======================
 
     /**
-     * Returns (and creates if necessary) a separate collection for a given room.
-     * Rooms are typically namespaced as `room_<roomId>`.
+     * Returns (and creates if necessary) a separate collection for a given conversation.
+     * conversations are typically namespaced as `conversation_<conversationId>`.
      */
-    public async getCollectionForRoom(roomId: string) {
-        const collectionName = `room_${roomId}`;
+    public async getCollectionForConversation(conversationId: string) {
+        const collectionName = `conversation_${conversationId}`;
         return this.client.getOrCreateCollection({
             name: collectionName,
             embeddingFunction: this.embedder,
             metadata: {
-                description: "Room-specific memory storage",
-                roomId,
-                platform: roomId.split("_")[0],
-                platformId: roomId.split("_")[0] + "_platform", // TODO: This is a hack to get the platform ID
+                description: "Conversation-specific memory storage",
+                conversationId,
+                platform: conversationId.split("_")[0],
+                platformId: conversationId.split("_")[0] + "_platform", // TODO: This is a hack to get the platform ID
                 created: new Date().toISOString(),
                 lastActive: new Date().toISOString(),
             },
@@ -263,39 +265,51 @@ export class ChromaVectorDB implements VectorDB {
     }
 
     /**
-     * Stores content in a specific room's memory, also associating it with a cluster ID.
+     * Stores content in a specific conversation's memory, also associating it with a cluster ID.
      */
-    public async storeInRoom(
+    public async storeInConversation(
         content: string,
-        roomId: string,
+        conversationId: string,
         metadata: Record<string, any> = {}
     ): Promise<void> {
         try {
             // Add detailed logging
-            this.logger.debug("ChromaVectorDB.storeInRoom", "Storing content", {
-                content,
-                contentType: typeof content,
-                contentLength: content?.length,
-                roomId,
-                metadata,
-            });
+            this.logger.debug(
+                "ChromaVectorDB.storeInConversation",
+                "Storing content",
+                {
+                    content,
+                    contentType: typeof content,
+                    contentLength: content?.length,
+                    conversationId,
+                    metadata,
+                }
+            );
 
             // Ensure content is a non-empty string
             if (!content || typeof content !== "string") {
                 throw new Error(`Invalid content: ${typeof content}`);
             }
 
-            const collection = await this.getCollectionForRoom(roomId);
-            const id = Room.createDeterministicMemoryId(roomId, content);
+            const collection =
+                await this.getCollectionForConversation(conversationId);
+            const id = Conversation.createDeterministicMemoryId(
+                conversationId,
+                content
+            );
             const timestamp = new Date(metadata.timestamp || Date.now());
 
-            this.logger.debug("ChromaVectorDB.storeInRoom", "Generated ID", {
-                id,
-                roomId,
-                timestamp: timestamp.toISOString(),
-            });
+            this.logger.debug(
+                "ChromaVectorDB.storeInConversation",
+                "Generated ID",
+                {
+                    id,
+                    conversationId,
+                    timestamp: timestamp.toISOString(),
+                }
+            );
 
-            // Update the room's metadata
+            // Update the conversation's metadata
             await collection.modify({
                 metadata: {
                     ...collection.metadata,
@@ -310,52 +324,57 @@ export class ChromaVectorDB implements VectorDB {
                 metadatas: [
                     {
                         ...metadata,
-                        roomId,
+                        conversationId,
                         timestamp: timestamp.toISOString(),
                     },
                 ],
             });
 
             this.logger.debug(
-                "ChromaVectorDB.storeInRoom",
+                "ChromaVectorDB.storeInConversation",
                 "Successfully stored",
                 {
                     id,
-                    roomId,
+                    conversationId,
                     contentLength: content.length,
                 }
             );
         } catch (error) {
-            this.logger.error("ChromaVectorDB.storeInRoom", "Storage failed", {
-                error: error instanceof Error ? error.message : String(error),
-                content,
-                contentType: typeof content,
-                roomId,
-            });
+            this.logger.error(
+                "ChromaVectorDB.storeInConversation",
+                "Storage failed",
+                {
+                    error:
+                        error instanceof Error ? error.message : String(error),
+                    content,
+                    contentType: typeof content,
+                    conversationId,
+                }
+            );
             throw error;
         }
     }
 
     /**
-     * Finds similar items in a given room's collection. If no cluster match,
-     * falls back to "global" search in that room's collection.
+     * Finds similar items in a given conversation's collection. If no cluster match,
+     * falls back to "global" search in that conversation's collection.
      */
-    public async findSimilarInRoom(
+    public async findSimilarInConversation(
         content: string,
-        roomId: string,
+        conversationId: string,
         limit = 5,
         metadata?: Record<string, any>
     ): Promise<SearchResult[]> {
         try {
             // Add detailed logging
             this.logger.debug(
-                "ChromaVectorDB.findSimilarInRoom",
+                "ChromaVectorDB.findSimilarInconversation",
                 "Input content details",
                 {
                     content,
                     contentType: typeof content,
                     contentLength: content?.length,
-                    roomId,
+                    conversationId,
                     metadata,
                 }
             );
@@ -363,25 +382,26 @@ export class ChromaVectorDB implements VectorDB {
             // Ensure content is a non-empty string
             if (!content || typeof content !== "string") {
                 this.logger.warn(
-                    "ChromaVectorDB.findSimilarInRoom",
+                    "ChromaVectorDB.findSimilarInconversation",
                     "Invalid content",
                     {
                         content,
                         contentType: typeof content,
-                        roomId,
+                        conversationId,
                     }
                 );
                 return [];
             }
 
-            const collection = await this.getCollectionForRoom(roomId);
+            const collection =
+                await this.getCollectionForConversation(conversationId);
 
             this.logger.debug(
-                "ChromaVectorDB.findSimilarInRoom",
+                "ChromaVectorDB.findSimilarInConversation",
                 "Querying collection",
                 {
                     queryText: content,
-                    roomId,
+                    conversationId,
                     limit,
                     metadata,
                 }
@@ -405,14 +425,14 @@ export class ChromaVectorDB implements VectorDB {
             }));
         } catch (error) {
             this.logger.error(
-                "ChromaVectorDB.findSimilarInRoom",
+                "ChromaVectorDB.findSimilarInconversation",
                 "Search failed",
                 {
                     error:
                         error instanceof Error ? error.message : String(error),
                     content,
                     contentType: typeof content,
-                    roomId,
+                    conversationId,
                 }
             );
             return [];
@@ -420,15 +440,16 @@ export class ChromaVectorDB implements VectorDB {
     }
 
     /**
-     * Fallback search for a room: no cluster restriction, just raw similarity.
+     * Fallback search for a conversation: no cluster restriction, just raw similarity.
      */
-    private async findSimilarInRoomGlobal(
+    private async findSimilarInConversationGlobal(
         content: string,
-        roomId: string,
+        conversationId: string,
         limit = 5,
         metadata?: Record<string, any>
     ): Promise<SearchResult[]> {
-        const collection = await this.getCollectionForRoom(roomId);
+        const collection =
+            await this.getCollectionForConversation(conversationId);
         const results = await collection.query({
             queryTexts: [content],
             nResults: limit,
@@ -462,41 +483,55 @@ export class ChromaVectorDB implements VectorDB {
     }
 
     /**
-     * Lists the known "room_..." collections.
+     * Lists the known "conversation_..." collections.
      */
-    public async listRooms(): Promise<string[]> {
+    public async listConversations(): Promise<string[]> {
         const collections = await this.client.listCollections();
 
         // If .listCollections() returns an array of objects that contain `name`,
         // you may need to adapt the .filter / .map
         return collections
             .map((c) => c)
-            .filter((name: string) => name.startsWith("room_"))
-            .map((name: string) => name.replace("room_", ""));
+            .filter((name: string) => name.startsWith("conversation_"))
+            .map((name: string) => name.replace("conversation_", ""));
     }
 
     /**
-     * Gets the memory count for a specific room.
+     * Gets the memory count for a specific conversation.
      */
-    public async getRoomMemoryCount(roomId: string): Promise<number> {
-        const collection = await this.getCollectionForRoom(roomId);
+    public async getConversationMemoryCount(
+        conversationId: string
+    ): Promise<number> {
+        const collection =
+            await this.getCollectionForConversation(conversationId);
         return collection.count();
     }
 
     /**
-     * Deletes an entire room's collection.
+     * Deletes an entire conversation's collection.
      */
-    public async deleteRoom(roomId: string): Promise<void> {
+    public async deleteConversation(conversationId: string): Promise<void> {
         try {
-            await this.client.deleteCollection({ name: `room_${roomId}` });
-            this.logger.info("ChromaVectorDB.deleteRoom", "Room deleted", {
-                roomId,
+            await this.client.deleteCollection({
+                name: `conversation_${conversationId}`,
             });
+            this.logger.info(
+                "ChromaVectorDB.deleteConversation",
+                "Conversation deleted",
+                {
+                    conversationId,
+                }
+            );
         } catch (error) {
-            this.logger.error("ChromaVectorDB.deleteRoom", "Deletion failed", {
-                error: error instanceof Error ? error.message : String(error),
-                roomId,
-            });
+            this.logger.error(
+                "ChromaVectorDB.deleteConversation",
+                "Deletion failed",
+                {
+                    error:
+                        error instanceof Error ? error.message : String(error),
+                    conversationId,
+                }
+            );
             throw error;
         }
     }
@@ -1593,10 +1628,12 @@ export class ChromaVectorDB implements VectorDB {
     // Check if we've already processed this content
     public async hasProcessedContent(
         contentId: string,
-        room: Room
+        conversation: Conversation
     ): Promise<boolean> {
         try {
-            const collection = await this.getCollectionForRoom(room.id);
+            const collection = await this.getCollectionForConversation(
+                conversation.id
+            );
 
             // Search for exact match of the content ID in metadata
             const results = await collection.get({
@@ -1617,7 +1654,7 @@ export class ChromaVectorDB implements VectorDB {
                     error:
                         error instanceof Error ? error.message : String(error),
                     contentId,
-                    roomId: room.id,
+                    conversationId: conversation.id,
                 }
             );
             return false;
@@ -1627,10 +1664,12 @@ export class ChromaVectorDB implements VectorDB {
     // Mark content as processed
     public async markContentAsProcessed(
         contentId: string,
-        room: Room
+        conversation: Conversation
     ): Promise<void> {
         try {
-            const collection = await this.getCollectionForRoom(room.id);
+            const collection = await this.getCollectionForConversation(
+                conversation.id
+            );
             const markerId = `processed_${contentId}`;
 
             await collection.add({
@@ -1650,7 +1689,7 @@ export class ChromaVectorDB implements VectorDB {
                 "Marked content as processed",
                 {
                     contentId,
-                    roomId: room.id,
+                    conversationId: conversation.id,
                     markerId,
                 }
             );
@@ -1662,7 +1701,7 @@ export class ChromaVectorDB implements VectorDB {
                     error:
                         error instanceof Error ? error.message : String(error),
                     contentId,
-                    roomId: room.id,
+                    conversationId: conversation.id,
                 }
             );
             throw error;
@@ -1670,14 +1709,15 @@ export class ChromaVectorDB implements VectorDB {
     }
 
     /**
-     * Gets all memories from a specific room's collection, optionally limited to a certain number
+     * Gets all memories from a specific conversation's collection, optionally limited to a certain number
      */
-    public async getMemoriesFromRoom(
-        roomId: string,
+    public async getMemoriesFromConversation(
+        conversationId: string,
         limit?: number
     ): Promise<{ content: string; metadata?: Record<string, any> }[]> {
         try {
-            const collection = await this.getCollectionForRoom(roomId);
+            const collection =
+                await this.getCollectionForConversation(conversationId);
 
             // Get all documents from the collection, with optional limit
             const results = await collection.get({
@@ -1695,12 +1735,12 @@ export class ChromaVectorDB implements VectorDB {
             }));
         } catch (error) {
             this.logger.error(
-                "ChromaVectorDB.getMemoriesFromRoom",
+                "ChromaVectorDB.getMemoriesFromConversation",
                 "Failed to get memories",
                 {
                     error:
                         error instanceof Error ? error.message : String(error),
-                    roomId,
+                    conversationId,
                 }
             );
             throw error;

@@ -6,7 +6,7 @@
 
 > **calculateImportance**(`result`): `number`
 
-Defined in: [packages/core/src/core/utils.ts:75](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/utils.ts#L75)
+Defined in: [packages/core/src/core/utils.ts:75](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/utils.ts#L75)
 
 #### Parameters
 
@@ -24,7 +24,7 @@ Defined in: [packages/core/src/core/utils.ts:75](https://github.com/daydreamsai/
 
 > **determineEmotions**(`action`, `result`, `importance`): `string`[]
 
-Defined in: [packages/core/src/core/utils.ts:36](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/utils.ts#L36)
+Defined in: [packages/core/src/core/utils.ts:36](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/utils.ts#L36)
 
 #### Parameters
 
@@ -50,7 +50,7 @@ Defined in: [packages/core/src/core/utils.ts:36](https://github.com/daydreamsai/
 
 > **generateContentId**(`content`): `string`
 
-Defined in: [packages/core/src/core/utils.ts:266](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/utils.ts#L266)
+Defined in: [packages/core/src/core/utils.ts:269](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/utils.ts#L269)
 
 #### Parameters
 
@@ -68,7 +68,7 @@ Defined in: [packages/core/src/core/utils.ts:266](https://github.com/daydreamsai
 
 > **generateUniqueId**(): `string`
 
-Defined in: [packages/core/src/core/utils.ts:31](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/utils.ts#L31)
+Defined in: [packages/core/src/core/utils.ts:31](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/utils.ts#L31)
 
 #### Returns
 
@@ -80,7 +80,7 @@ Defined in: [packages/core/src/core/utils.ts:31](https://github.com/daydreamsai/
 
 > **getTimeContext**(`timestamp`): `string`
 
-Defined in: [packages/core/src/core/utils.ts:255](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/utils.ts#L255)
+Defined in: [packages/core/src/core/utils.ts:258](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/utils.ts#L258)
 
 #### Parameters
 
@@ -98,7 +98,7 @@ Defined in: [packages/core/src/core/utils.ts:255](https://github.com/daydreamsai
 
 > **hashString**(`str`): `string`
 
-Defined in: [packages/core/src/core/utils.ts:245](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/utils.ts#L245)
+Defined in: [packages/core/src/core/utils.ts:248](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/utils.ts#L248)
 
 #### Parameters
 
@@ -116,7 +116,7 @@ Defined in: [packages/core/src/core/utils.ts:245](https://github.com/daydreamsai
 
 > **injectTags**(`tags`, `text`): `string`
 
-Defined in: [packages/core/src/core/utils.ts:5](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/utils.ts#L5)
+Defined in: [packages/core/src/core/utils.ts:5](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/utils.ts#L5)
 
 #### Parameters
 
@@ -138,7 +138,7 @@ Defined in: [packages/core/src/core/utils.ts:5](https://github.com/daydreamsai/d
 
 > **isValidDateValue**(`value`): value is string \| number \| Date
 
-Defined in: [packages/core/src/core/utils.ts:235](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/utils.ts#L235)
+Defined in: [packages/core/src/core/utils.ts:238](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/utils.ts#L238)
 
 #### Parameters
 
@@ -156,7 +156,7 @@ value is string \| number \| Date
 
 > **validateLLMResponseSchema**\<`T`\>(`__namedParameters`): `Promise`\<`T`\>
 
-Defined in: [packages/core/src/core/utils.ts:135](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/utils.ts#L135)
+Defined in: [packages/core/src/core/utils.ts:135](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/utils.ts#L135)
 
 #### Type Parameters
 

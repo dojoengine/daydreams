@@ -28,7 +28,7 @@ import { LogLevel } from "./types";
 const ajv = new Ajv();
 
 export class ChainOfThought extends EventEmitter {
-    private stepManager: StepManager;
+    stepManager: StepManager;
     private context: ChainOfThoughtContext;
     private snapshots: ChainOfThoughtContext[];
     private logger: Logger;

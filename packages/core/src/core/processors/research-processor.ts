@@ -4,7 +4,6 @@ import { LogLevel } from "../types";
 import { getTimeContext, validateLLMResponseSchema } from "../utils";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { type IOHandler } from "../types";
 import { BaseProcessor } from "../processor";
 import { encodingForModel } from "js-tiktoken";
 

@@ -1,4 +1,4 @@
-import type { Character } from "./types";
+import type { Character } from "../types";
 export const defaultCharacter: Character = {
     name: "Trading Sage",
     bio: `

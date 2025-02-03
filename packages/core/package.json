@@ -1,8 +1,9 @@
 {
     "name": "@daydreamsai/core",
     "module": "index.ts",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "type": "module",
+    "main": "dist/index.js",
     "devDependencies": {
         "@types/bun": "latest"
     },

@@ -12,23 +12,25 @@ import { ChromaVectorDB } from "../packages/core/src/core/vector-db";
 
 import { Orchestrator } from "../packages/core/src/core/orchestrator";
 import { HandlerRole } from "../packages/core/src/core/types";
-import { RoomManager } from "../packages/core/src/core/room-manager";
+import { ConversationManager } from "../packages/core/src/core/conversation-manager";
 import { MessageProcessor } from "../packages/core/src/core/processors/message-processor";
-import { defaultCharacter } from "../packages/core/src/core/character";
+import { defaultCharacter } from "../packages/core/src/core/characters/character";
 
 import { LogLevel } from "../packages/core/src/core/types";
-import { MongoDb } from "../packages/core/src/core/mongo-db";
+import { MongoDb } from "../packages/core/src/core/db/mongo-db";
+import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
+import { makeFlowLifecycle } from "../packages/core/src/core/life-cycle";
 
-const scheduledTaskDb = new MongoDb(
+const kvDb = new MongoDb(
     "mongodb://localhost:27017",
     "myApp",
     "scheduled_tasks"
 );
 
-await scheduledTaskDb.connect();
+await kvDb.connect();
 console.log(chalk.green("✅ Scheduled task database connected"));
 
-await scheduledTaskDb.deleteAll();
+await kvDb.deleteAll();
 
 // ------------------------------------------------------
 // 1) CREATE DAYDREAMS AGENT
@@ -49,21 +51,27 @@ async function createDaydreamsAgent() {
     });
 
     // 1.3. Room manager initialization
-    const roomManager = new RoomManager(vectorDb);
+    const conversationManager = new ConversationManager(vectorDb);
 
-    // 1.4. Initialize processor with default character
-    const processor = new MessageProcessor(
+    const masterProcessor = new MasterProcessor(
         llmClient,
         defaultCharacter,
         loglevel
     );
 
+    // Initialize processor with default character personality
+    const messageProcessor = new MessageProcessor(
+        llmClient,
+        defaultCharacter,
+        loglevel
+    );
+
+    masterProcessor.addProcessor(messageProcessor);
+
     // 1.5. Initialize core system
     const orchestrator = new Orchestrator(
-        roomManager,
-        vectorDb,
-        [processor],
-        scheduledTaskDb,
+        masterProcessor,
+        makeFlowLifecycle(kvDb, conversationManager),
         {
             level: loglevel,
             enableColors: true,
@@ -75,10 +83,6 @@ async function createDaydreamsAgent() {
     orchestrator.registerIOHandler({
         name: "user_chat",
         role: HandlerRole.INPUT,
-        outputSchema: z.object({
-            content: z.string(),
-            userId: z.string().optional(),
-        }),
         execute: async (payload) => {
             return payload;
         },
@@ -97,6 +101,10 @@ async function createDaydreamsAgent() {
                 message: string;
             };
             console.log(`Reply to user ${userId ?? "??"}: ${message}`);
+            return {
+                userId,
+                message,
+            };
         },
     });
 
@@ -145,18 +153,14 @@ wss.on("connection", (ws) => {
                 throw new Error("userId is required");
             }
 
-            orchestrator.initializeOrchestrator(userId);
-
             // Process the message using the orchestrator with the provided userId
-            const outputs = await orchestrator.dispatchToInput(
-                "user_chat",
-                {
-                    content: userMessage,
-                    userId: userId,
-                },
+            const outputs = await orchestrator.dispatchToInput("user_chat", {
                 userId,
-                orchestratorId ? new ObjectId(orchestratorId) : undefined
-            );
+                platformId: "discord",
+                threadId: orchestratorId,
+                data: { content: userMessage },
+                contentId: orchestratorId,
+            });
 
             // Send responses back through WebSocket
             if (outputs && (outputs as any).length > 0) {
@@ -207,8 +211,7 @@ app.get("/api/history/:userId", async (req, res) => {
         console.log("Fetching history for userId:", userId);
 
         // Get all orchestrator records for this user
-        const histories =
-            await scheduledTaskDb.getOrchestratorsByUserId(userId);
+        const histories = await kvDb.getOrchestratorsByUserId(userId);
 
         if (!histories || histories.length === 0) {
             console.log("No histories found");
@@ -237,7 +240,7 @@ app.get("/api/history/:userId/:chatId", async (req, res) => {
             return res.status(400).json({ error: "Invalid chat ID format" });
         }
 
-        const history = await scheduledTaskDb.getOrchestratorById(objectId);
+        const history = await kvDb.getOrchestratorById(objectId);
 
         if (!history) {
             return res.status(404).json({ error: "History not found" });

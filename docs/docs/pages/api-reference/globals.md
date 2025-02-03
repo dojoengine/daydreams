@@ -4,7 +4,7 @@
 
 ### `abstract` BaseProcessor
 
-Defined in: [packages/core/src/core/processor.ts:13](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/processor.ts#L13)
+Defined in: [packages/core/src/core/processor.ts:13](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/processor.ts#L13)
 
 Base abstract class for content processors that handle different types of input
 and generate appropriate responses using LLM.
@@ -12,14 +12,15 @@ and generate appropriate responses using LLM.
 #### Extended by
 
 - [`MessageProcessor`](namespaces/Processors.md#messageprocessor)
+- [`ResearchQuantProcessor`](namespaces/Processors.md#researchquantprocessor)
 
 #### Constructors
 
 ##### new BaseProcessor()
 
-> **new BaseProcessor**(`metadata`, `loggerLevel`, `character`, `llmClient`): [`BaseProcessor`](globals.md#baseprocessor)
+> **new BaseProcessor**(`metadata`, `loggerLevel`, `character`, `llmClient`, `contentLimit`): [`BaseProcessor`](globals.md#baseprocessor)
 
-Defined in: [packages/core/src/core/processor.ts:24](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/processor.ts#L24)
+Defined in: [packages/core/src/core/processor.ts:24](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/processor.ts#L24)
 
 Creates a new BaseProcessor instance
 
@@ -55,6 +56,10 @@ The character personality to use for responses
 
 The LLM client instance to use for processing
 
+###### contentLimit
+
+`number` = `1000`
+
 ###### Returns
 
 [`BaseProcessor`](globals.md#baseprocessor)
@@ -65,15 +70,21 @@ The LLM client instance to use for processing
 
 > `protected` **character**: [`Character`](namespaces/Types.md#character)
 
-Defined in: [packages/core/src/core/processor.ts:27](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/processor.ts#L27)
+Defined in: [packages/core/src/core/processor.ts:27](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/processor.ts#L27)
 
 The character personality to use for responses
+
+##### contentLimit
+
+> `protected` **contentLimit**: `number` = `1000`
+
+Defined in: [packages/core/src/core/processor.ts:29](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/processor.ts#L29)
 
 ##### llmClient
 
 > `protected` **llmClient**: [`LLMClient`](globals.md#llmclient-1)
 
-Defined in: [packages/core/src/core/processor.ts:28](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/processor.ts#L28)
+Defined in: [packages/core/src/core/processor.ts:28](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/processor.ts#L28)
 
 The LLM client instance to use for processing
 
@@ -81,7 +92,7 @@ The LLM client instance to use for processing
 
 > `protected` **logger**: [`Logger`](globals.md#logger-1)
 
-Defined in: [packages/core/src/core/processor.ts:15](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/processor.ts#L15)
+Defined in: [packages/core/src/core/processor.ts:15](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/processor.ts#L15)
 
 Logger instance for this processor
 
@@ -89,7 +100,7 @@ Logger instance for this processor
 
 > `protected` **loggerLevel**: [`LogLevel`](namespaces/Types.md#loglevel) = `LogLevel.ERROR`
 
-Defined in: [packages/core/src/core/processor.ts:26](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/processor.ts#L26)
+Defined in: [packages/core/src/core/processor.ts:26](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/processor.ts#L26)
 
 The logging level to use
 
@@ -97,7 +108,7 @@ The logging level to use
 
 > `protected` **metadata**: `object`
 
-Defined in: [packages/core/src/core/processor.ts:25](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/processor.ts#L25)
+Defined in: [packages/core/src/core/processor.ts:25](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/processor.ts#L25)
 
 Metadata about this processor including name and description
 
@@ -115,7 +126,7 @@ Metadata about this processor including name and description
 
 > `abstract` **canHandle**(`content`): `boolean`
 
-Defined in: [packages/core/src/core/processor.ts:50](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/processor.ts#L50)
+Defined in: [packages/core/src/core/processor.ts:51](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/processor.ts#L51)
 
 Determines if this processor can handle the given content.
 
@@ -137,7 +148,7 @@ True if this processor can handle the content, false otherwise
 
 > **getName**(): `string`
 
-Defined in: [packages/core/src/core/processor.ts:41](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/processor.ts#L41)
+Defined in: [packages/core/src/core/processor.ts:42](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/processor.ts#L42)
 
 Gets the name of this processor
 
@@ -151,7 +162,7 @@ The processor name from metadata
 
 > `abstract` **process**(`content`, `otherContext`, `ioContext`?): `Promise`\<[`ProcessedResult`](namespaces/Types.md#processedresult)\>
 
-Defined in: [packages/core/src/core/processor.ts:61](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/processor.ts#L61)
+Defined in: [packages/core/src/core/processor.ts:62](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/processor.ts#L62)
 
 Processes the given content and returns a result.
 
@@ -195,7 +206,7 @@ Promise resolving to the processed result
 
 ### ChainOfThought
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:30](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L30)
+Defined in: [packages/core/src/core/chain-of-thought.ts:29](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L29)
 
 #### Extends
 
@@ -207,7 +218,7 @@ Defined in: [packages/core/src/core/chain-of-thought.ts:30](https://github.com/d
 
 > **new ChainOfThought**(`llmClient`, `memory`, `initialContext`?, `config`?): [`ChainOfThought`](globals.md#chainofthought)
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:40](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L40)
+Defined in: [packages/core/src/core/chain-of-thought.ts:39](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L39)
 
 ###### Parameters
 
@@ -243,19 +254,19 @@ Defined in: [packages/core/src/core/chain-of-thought.ts:40](https://github.com/d
 
 > **goalManager**: [`GoalManager`](globals.md#goalmanager-1)
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:35](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L35)
+Defined in: [packages/core/src/core/chain-of-thought.ts:34](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L34)
 
 ##### memory
 
 > **memory**: [`VectorDB`](namespaces/Types.md#vectordb)
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:36](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L36)
+Defined in: [packages/core/src/core/chain-of-thought.ts:35](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L35)
 
 ##### captureRejections
 
 > `static` **captureRejections**: `boolean`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:459
+Defined in: docs/node\_modules/@types/node/events.d.ts:459
 
 Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -273,7 +284,7 @@ v13.4.0, v12.16.0
 
 > `readonly` `static` **captureRejectionSymbol**: *typeof* [`captureRejectionSymbol`](globals.md#capturerejectionsymbol)
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:452
+Defined in: docs/node\_modules/@types/node/events.d.ts:452
 
 Value: `Symbol.for('nodejs.rejection')`
 
@@ -291,7 +302,7 @@ v13.4.0, v12.16.0
 
 > `static` **defaultMaxListeners**: `number`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:498
+Defined in: docs/node\_modules/@types/node/events.d.ts:498
 
 By default, a maximum of `10` listeners can be registered for any single
 event. This limit can be changed for individual `EventEmitter` instances
@@ -341,7 +352,7 @@ v0.11.2
 
 > `readonly` `static` **errorMonitor**: *typeof* [`errorMonitor`](globals.md#errormonitor)
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:445
+Defined in: docs/node\_modules/@types/node/events.d.ts:445
 
 This symbol shall be used to install a listener for only monitoring `'error'` events. Listeners installed using this symbol are called before the regular `'error'` listeners are called.
 
@@ -362,7 +373,7 @@ v13.6.0, v12.17.0
 
 > `optional` **\[captureRejectionSymbol\]**\<`K`\>(`error`, `event`, ...`args`): `void`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:136
+Defined in: docs/node\_modules/@types/node/events.d.ts:136
 
 ###### Type Parameters
 
@@ -394,7 +405,7 @@ Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/ev
 
 > **addListener**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:597
+Defined in: docs/node\_modules/@types/node/events.d.ts:597
 
 Alias for `emitter.on(eventName, listener)`.
 
@@ -428,7 +439,7 @@ v0.1.26
 
 > **decomposeObjectiveIntoGoals**(`objective`): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:79](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L79)
+Defined in: [packages/core/src/core/chain-of-thought.ts:78](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L78)
 
 Plans a strategic approach to achieve a given objective by breaking it down into hierarchical goals.
 
@@ -462,7 +473,7 @@ goal:created - When each new goal is created
 
 > **emit**\<`K`\>(`eventName`, ...`args`): `boolean`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:859
+Defined in: docs/node\_modules/@types/node/events.d.ts:859
 
 Synchronously calls each of the listeners registered for the event named `eventName`, in the order they were registered, passing the supplied arguments
 to each.
@@ -532,7 +543,7 @@ v0.1.26
 
 > **eventNames**(): (`string` \| `symbol`)[]
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:922
+Defined in: docs/node\_modules/@types/node/events.d.ts:922
 
 Returns an array listing the events for which the emitter has registered
 listeners. The values in the array are strings or `Symbol`s.
@@ -567,7 +578,7 @@ v6.0.0
 
 > **executeAction**(`action`): `Promise`\<`string`\>
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:1091](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L1091)
+Defined in: [packages/core/src/core/chain-of-thought.ts:1072](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L1072)
 
 Executes a Chain of Thought action triggered by the LLM.
 
@@ -600,6 +611,7 @@ corresponding handler function.
 ```ts
 const result = await chain.executeAction({
   type: "sendMessage",
+  context: "Sending a message to user"
   payload: {
     message: "Hello world"
   }
@@ -610,7 +622,7 @@ const result = await chain.executeAction({
 
 > **getBlackboardHistory**(`type`?, `key`?, `limit`?): `Promise`\<`any`[]\>
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:1747](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L1747)
+Defined in: [packages/core/src/core/chain-of-thought.ts:1690](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L1690)
 
 Retrieves the history of blackboard updates, optionally filtered by type and key.
 Returns updates in reverse chronological order (newest first).
@@ -655,7 +667,7 @@ Array of blackboard updates, each containing the update details and metadata
 
 > **getBlackboardState**(): `Promise`\<`Record`\<`string`, `any`\>\>
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:1695](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L1695)
+Defined in: [packages/core/src/core/chain-of-thought.ts:1634](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L1634)
 
 Retrieves the current state of the blackboard by aggregating all stored updates.
 The blackboard state is built by applying updates in chronological order, organized by type and key.
@@ -682,7 +694,7 @@ and second level keys are the specific keys within each type, with their corresp
 
 > **getContextHistory**(): [`ChainOfThoughtContext`](namespaces/Types.md#chainofthoughtcontext)[]
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:1020](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L1020)
+Defined in: [packages/core/src/core/chain-of-thought.ts:1000](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L1000)
 
 Retrieves all context snapshots that have been captured.
 
@@ -709,10 +721,10 @@ console.log(`Number of snapshots: ${snapshots.length}`);
 
 > **getMaxListeners**(): `number`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:774
+Defined in: docs/node\_modules/@types/node/events.d.ts:774
 
 Returns the current max listener value for the `EventEmitter` which is either
-set by `emitter.setMaxListeners(n)` or defaults to [EventEmitter.defaultMaxListeners](globals.md#defaultmaxlisteners).
+set by `emitter.setMaxListeners(n)` or defaults to [defaultMaxListeners](globals.md#defaultmaxlisteners).
 
 ###### Returns
 
@@ -730,7 +742,7 @@ v1.0.0
 
 > **listenerCount**\<`K`\>(`eventName`, `listener`?): `number`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:868
+Defined in: docs/node\_modules/@types/node/events.d.ts:868
 
 Returns the number of listeners listening for the event named `eventName`.
 If `listener` is provided, it will return how many times the listener is found
@@ -770,7 +782,7 @@ v3.2.0
 
 > **listeners**\<`K`\>(`eventName`): `Function`[]
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:787
+Defined in: docs/node\_modules/@types/node/events.d.ts:787
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -808,7 +820,7 @@ v0.1.26
 
 > **off**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:747
+Defined in: docs/node\_modules/@types/node/events.d.ts:747
 
 Alias for `emitter.removeListener()`.
 
@@ -842,7 +854,7 @@ v10.0.0
 
 > **on**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:629
+Defined in: docs/node\_modules/@types/node/events.d.ts:629
 
 Adds the `listener` function to the end of the listeners array for the event
 named `eventName`. No checks are made to see if the `listener` has already
@@ -905,7 +917,7 @@ v0.1.101
 
 > **once**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:659
+Defined in: docs/node\_modules/@types/node/events.d.ts:659
 
 Adds a **one-time** `listener` function for the event named `eventName`. The
 next time `eventName` is triggered, this listener is removed and then invoked.
@@ -966,7 +978,7 @@ v0.3.0
 
 > **prependListener**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:886
+Defined in: docs/node\_modules/@types/node/events.d.ts:886
 
 Adds the `listener` function to the _beginning_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -1015,7 +1027,7 @@ v6.0.0
 
 > **prependOnceListener**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:902
+Defined in: docs/node\_modules/@types/node/events.d.ts:902
 
 Adds a **one-time**`listener` function for the event named `eventName` to the _beginning_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
@@ -1062,7 +1074,7 @@ v6.0.0
 
 > **processHighestPriorityGoal**(): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:572](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L572)
+Defined in: [packages/core/src/core/chain-of-thought.ts:556](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L556)
 
 Executes the next highest priority goal that is ready for execution.
 
@@ -1093,7 +1105,7 @@ goal:blocked - When a goal cannot be executed
 
 > **rawListeners**\<`K`\>(`eventName`): `Function`[]
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:818
+Defined in: docs/node\_modules/@types/node/events.d.ts:818
 
 Returns a copy of the array of listeners for the event named `eventName`,
 including any wrappers (such as those created by `.once()`).
@@ -1149,7 +1161,7 @@ v9.4.0
 
 > **recordReasoningStep**(`content`, `type`, `tags`?, `meta`?): [`Step`](namespaces/Types.md#step-1)
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:932](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L932)
+Defined in: [packages/core/src/core/chain-of-thought.ts:912](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L912)
 
 Adds a new step to the chain of thought sequence.
 
@@ -1200,7 +1212,7 @@ chain.recordReasoningStep("Analyzing user request", "reasoning", ["analysis"]);
 
 > **registerOutput**(`output`): `void`
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:1043](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L1043)
+Defined in: [packages/core/src/core/chain-of-thought.ts:1023](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L1023)
 
 Registers an output handler for a specific action type.
 
@@ -1208,7 +1220,7 @@ Registers an output handler for a specific action type.
 
 ###### output
 
-[`Output`](namespaces/Types.md#outputt)
+[`IOHandler`](namespaces/Types.md#iohandler)
 
 The output handler configuration containing the name and schema
 
@@ -1237,7 +1249,7 @@ chain.registerOutput({
 
 > **removeAllListeners**(`eventName`?): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:758
+Defined in: docs/node\_modules/@types/node/events.d.ts:758
 
 Removes all listeners, or those of the specified `eventName`.
 
@@ -1269,7 +1281,7 @@ v0.1.26
 
 > **removeListener**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:742
+Defined in: docs/node\_modules/@types/node/events.d.ts:742
 
 Removes the specified `listener` from the listener array for the event named `eventName`.
 
@@ -1381,7 +1393,7 @@ v0.1.26
 
 > **removeOutput**(`name`): `void`
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:1063](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L1063)
+Defined in: [packages/core/src/core/chain-of-thought.ts:1043](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L1043)
 
 Removes a registered output handler.
 
@@ -1408,45 +1420,11 @@ If no handler exists with the given name, this method will do nothing.
 chain.removeOutput("sendMessage");
 ```
 
-##### removeStep()
-
-> **removeStep**(`stepId`): `void`
-
-Defined in: [packages/core/src/core/chain-of-thought.ts:1171](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L1171)
-
-Removes a step from the chain by its ID.
-
-###### Parameters
-
-###### stepId
-
-`string`
-
-The unique identifier of the step to remove
-
-###### Returns
-
-`void`
-
-###### Throws
-
-When no step exists with the given ID
-
-###### Remarks
-
-This method will remove the step from the chain's history and cannot be undone
-
-###### Example
-
-```ts
-chain.removeStep("step-123");
-```
-
 ##### saveContextSnapshot()
 
 > **saveContextSnapshot**(): `void`
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:997](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L997)
+Defined in: [packages/core/src/core/chain-of-thought.ts:977](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L977)
 
 Creates and stores a snapshot of the current context state.
 
@@ -1470,7 +1448,7 @@ chain.saveContextSnapshot(); // Creates a snapshot of current context state
 
 > **setMaxListeners**(`n`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:768
+Defined in: docs/node\_modules/@types/node/events.d.ts:768
 
 By default `EventEmitter`s will print a warning if more than `10` listeners are
 added for a particular event. This is a useful default that helps finding
@@ -1501,7 +1479,7 @@ v0.3.5
 
 > **think**(`userQuery`, `maxIterations`): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:1293](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L1293)
+Defined in: [packages/core/src/core/chain-of-thought.ts:1230](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L1230)
 
 ###### Parameters
 
@@ -1521,7 +1499,7 @@ Defined in: [packages/core/src/core/chain-of-thought.ts:1293](https://github.com
 
 > **updateContextState**(`newContext`): `void`
 
-Defined in: [packages/core/src/core/chain-of-thought.ts:971](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/chain-of-thought.ts#L971)
+Defined in: [packages/core/src/core/chain-of-thought.ts:951](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/chain-of-thought.ts#L951)
 
 Merges new data into the current chain of thought context.
 
@@ -1560,7 +1538,7 @@ chain.updateContextState({
 
 > `static` **addAbortListener**(`signal`, `resource`): `Disposable`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:437
+Defined in: docs/node\_modules/@types/node/events.d.ts:437
 
 **`Experimental`**
 
@@ -1622,7 +1600,7 @@ v20.5.0
 
 > `static` **getEventListeners**(`emitter`, `name`): `Function`[]
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:358
+Defined in: docs/node\_modules/@types/node/events.d.ts:358
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -1675,7 +1653,7 @@ v15.2.0, v14.17.0
 
 > `static` **getMaxListeners**(`emitter`): `number`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:387
+Defined in: docs/node\_modules/@types/node/events.d.ts:387
 
 Returns the currently set max amount of listeners.
 
@@ -1725,7 +1703,7 @@ v19.9.0
 
 > `static` **listenerCount**(`emitter`, `eventName`): `number`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:330
+Defined in: docs/node\_modules/@types/node/events.d.ts:330
 
 A class method that returns the number of listeners for the given `eventName` registered on the given `emitter`.
 
@@ -1773,9 +1751,9 @@ Since v3.2.0 - Use `listenerCount` instead.
 
 ###### Call Signature
 
-> `static` **on**(`emitter`, `eventName`, `options`?): `AsyncIterator`\<`any`[]\>
+> `static` **on**(`emitter`, `eventName`, `options`?): `AsyncIterableIterator`\<`any`[]\>
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:303
+Defined in: docs/node\_modules/@types/node/events.d.ts:303
 
 ```js
 import { on, EventEmitter } from 'node:events';
@@ -1870,7 +1848,7 @@ console.log('done'); // prints 'done'
 
 ###### Returns
 
-`AsyncIterator`\<`any`[]\>
+`AsyncIterableIterator`\<`any`[]\>
 
 An `AsyncIterator` that iterates `eventName` events emitted by the `emitter`
 
@@ -1884,9 +1862,9 @@ v13.6.0, v12.16.0
 
 ###### Call Signature
 
-> `static` **on**(`emitter`, `eventName`, `options`?): `AsyncIterator`\<`any`[]\>
+> `static` **on**(`emitter`, `eventName`, `options`?): `AsyncIterableIterator`\<`any`[]\>
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:308
+Defined in: docs/node\_modules/@types/node/events.d.ts:308
 
 ```js
 import { on, EventEmitter } from 'node:events';
@@ -1981,7 +1959,7 @@ console.log('done'); // prints 'done'
 
 ###### Returns
 
-`AsyncIterator`\<`any`[]\>
+`AsyncIterableIterator`\<`any`[]\>
 
 An `AsyncIterator` that iterates `eventName` events emitted by the `emitter`
 
@@ -1999,7 +1977,7 @@ v13.6.0, v12.16.0
 
 > `static` **once**(`emitter`, `eventName`, `options`?): `Promise`\<`any`[]\>
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:217
+Defined in: docs/node\_modules/@types/node/events.d.ts:217
 
 Creates a `Promise` that is fulfilled when the `EventEmitter` emits the given
 event or that is rejected if the `EventEmitter` emits `'error'` while waiting.
@@ -2108,7 +2086,7 @@ v11.13.0, v10.16.0
 
 > `static` **once**(`emitter`, `eventName`, `options`?): `Promise`\<`any`[]\>
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:222
+Defined in: docs/node\_modules/@types/node/events.d.ts:222
 
 Creates a `Promise` that is fulfilled when the `EventEmitter` emits the given
 event or that is rejected if the `EventEmitter` emits `'error'` while waiting.
@@ -2217,7 +2195,7 @@ v11.13.0, v10.16.0
 
 > `static` **setMaxListeners**(`n`?, ...`eventTargets`?): `void`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:402
+Defined in: docs/node\_modules/@types/node/events.d.ts:402
 
 ```js
 import { setMaxListeners, EventEmitter } from 'node:events';
@@ -2259,7 +2237,7 @@ v15.4.0
 
 ### ChromaVectorDB
 
-Defined in: [packages/core/src/core/vector-db.ts:23](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L23)
+Defined in: [packages/core/src/core/vector-db.ts:23](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L23)
 
 #### Implements
 
@@ -2271,7 +2249,7 @@ Defined in: [packages/core/src/core/vector-db.ts:23](https://github.com/daydream
 
 > **new ChromaVectorDB**(`collectionName`, `config`): [`ChromaVectorDB`](globals.md#chromavectordb)
 
-Defined in: [packages/core/src/core/vector-db.ts:35](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L35)
+Defined in: [packages/core/src/core/vector-db.ts:35](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L35)
 
 ###### Parameters
 
@@ -2299,25 +2277,25 @@ Defined in: [packages/core/src/core/vector-db.ts:35](https://github.com/daydream
 
 > `readonly` `static` **CLUSTER\_COLLECTION**: `"clusters"` = `"clusters"`
 
-Defined in: [packages/core/src/core/vector-db.ts:25](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L25)
+Defined in: [packages/core/src/core/vector-db.ts:25](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L25)
 
 ##### DOCUMENTATION\_COLLECTION
 
 > `readonly` `static` **DOCUMENTATION\_COLLECTION**: `"documentation"` = `"documentation"`
 
-Defined in: [packages/core/src/core/vector-db.ts:28](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L28)
+Defined in: [packages/core/src/core/vector-db.ts:28](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L28)
 
 ##### EPISODIC\_COLLECTION
 
 > `readonly` `static` **EPISODIC\_COLLECTION**: `"episodic_memory"` = `"episodic_memory"`
 
-Defined in: [packages/core/src/core/vector-db.ts:27](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L27)
+Defined in: [packages/core/src/core/vector-db.ts:27](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L27)
 
 ##### SYSTEM\_COLLECTION
 
 > `readonly` `static` **SYSTEM\_COLLECTION**: `"system_metadata"` = `"system_metadata"`
 
-Defined in: [packages/core/src/core/vector-db.ts:26](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L26)
+Defined in: [packages/core/src/core/vector-db.ts:26](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L26)
 
 #### Methods
 
@@ -2325,7 +2303,7 @@ Defined in: [packages/core/src/core/vector-db.ts:26](https://github.com/daydream
 
 > **clear**(): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1479](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1479)
+Defined in: [packages/core/src/core/vector-db.ts:1479](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1479)
 
 Clears all items from the main collection.
 
@@ -2337,7 +2315,7 @@ Clears all items from the main collection.
 
 > **count**(): `Promise`\<`number`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1471](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1471)
+Defined in: [packages/core/src/core/vector-db.ts:1471](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1471)
 
 Returns the total count of items in the main collection.
 
@@ -2349,7 +2327,7 @@ Returns the total count of items in the main collection.
 
 > **delete**(`id`): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:223](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L223)
+Defined in: [packages/core/src/core/vector-db.ts:223](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L223)
 
 Deletes an item by ID from the main "memories" collection.
 
@@ -2371,7 +2349,7 @@ Deletes an item by ID from the main "memories" collection.
 
 > **deleteRoom**(`roomId`): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:489](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L489)
+Defined in: [packages/core/src/core/vector-db.ts:489](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L489)
 
 Deletes an entire room's collection.
 
@@ -2389,7 +2367,7 @@ Deletes an entire room's collection.
 
 > **findSimilar**(`content`, `limit`, `metadata`?): `Promise`\<[`SearchResult`](namespaces/Types.md#searchresult)[]\>
 
-Defined in: [packages/core/src/core/vector-db.ts:142](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L142)
+Defined in: [packages/core/src/core/vector-db.ts:142](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L142)
 
 Finds similar items in the main "memories" collection.
 
@@ -2419,7 +2397,7 @@ Finds similar items in the main "memories" collection.
 
 > **findSimilarDocuments**(`query`, `limit`): `Promise`\<[`Documentation`](namespaces/Types.md#documentation)[]\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1351](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1351)
+Defined in: [packages/core/src/core/vector-db.ts:1351](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1351)
 
 Finds similar documentation records by matching the user query text.
 
@@ -2445,7 +2423,7 @@ Finds similar documentation records by matching the user query text.
 
 > **findSimilarEpisodes**(`action`, `limit`): `Promise`\<[`EpisodicMemory`](namespaces/Types.md#episodicmemory)[]\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1048](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1048)
+Defined in: [packages/core/src/core/vector-db.ts:1048](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1048)
 
 Finds similar episodes by matching the "action" field.
 
@@ -2471,7 +2449,7 @@ Finds similar episodes by matching the "action" field.
 
 > **findSimilarInRoom**(`content`, `roomId`, `limit`, `metadata`?): `Promise`\<[`SearchResult`](namespaces/Types.md#searchresult)[]\>
 
-Defined in: [packages/core/src/core/vector-db.ts:343](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L343)
+Defined in: [packages/core/src/core/vector-db.ts:343](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L343)
 
 Finds similar items in a given room's collection. If no cluster match,
 falls back to "global" search in that room's collection.
@@ -2506,7 +2484,7 @@ falls back to "global" search in that room's collection.
 
 > **getCollectionForRoom**(`roomId`): `Promise`\<`Collection`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:249](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L249)
+Defined in: [packages/core/src/core/vector-db.ts:249](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L249)
 
 Returns (and creates if necessary) a separate collection for a given room.
 Rooms are typically namespaced as `room_<roomId>`.
@@ -2525,7 +2503,7 @@ Rooms are typically namespaced as `room_<roomId>`.
 
 > **getMemoriesFromRoom**(`roomId`, `limit`?): `Promise`\<`object`[]\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1675](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1675)
+Defined in: [packages/core/src/core/vector-db.ts:1675](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1675)
 
 Gets all memories from a specific room's collection, optionally limited to a certain number
 
@@ -2547,7 +2525,7 @@ Gets all memories from a specific room's collection, optionally limited to a cer
 
 > **getRecentEpisodes**(`limit`): `Promise`\<[`EpisodicMemory`](namespaces/Types.md#episodicmemory)[]\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1079](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1079)
+Defined in: [packages/core/src/core/vector-db.ts:1079](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1079)
 
 Retrieves the most recent episodic memories (peeking at the underlying collection).
 
@@ -2569,7 +2547,7 @@ Retrieves the most recent episodic memories (peeking at the underlying collectio
 
 > **getRoomMemoryCount**(`roomId`): `Promise`\<`number`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:481](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L481)
+Defined in: [packages/core/src/core/vector-db.ts:481](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L481)
 
 Gets the memory count for a specific room.
 
@@ -2587,7 +2565,7 @@ Gets the memory count for a specific room.
 
 > **getSystemMetadata**(`key`): `Promise`\<`null` \| `Record`\<`string`, `any`\>\>
 
-Defined in: [packages/core/src/core/vector-db.ts:983](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L983)
+Defined in: [packages/core/src/core/vector-db.ts:983](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L983)
 
 Retrieves system metadata by key.
 
@@ -2609,7 +2587,7 @@ Retrieves system metadata by key.
 
 > **hasProcessedContent**(`contentId`, `room`): `Promise`\<`boolean`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1594](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1594)
+Defined in: [packages/core/src/core/vector-db.ts:1594](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1594)
 
 ###### Parameters
 
@@ -2629,7 +2607,7 @@ Defined in: [packages/core/src/core/vector-db.ts:1594](https://github.com/daydre
 
 > **listRooms**(): `Promise`\<`string`[]\>
 
-Defined in: [packages/core/src/core/vector-db.ts:467](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L467)
+Defined in: [packages/core/src/core/vector-db.ts:467](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L467)
 
 Lists the known "room_..." collections.
 
@@ -2641,7 +2619,7 @@ Lists the known "room_..." collections.
 
 > **markContentAsProcessed**(`contentId`, `room`): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1628](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1628)
+Defined in: [packages/core/src/core/vector-db.ts:1628](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1628)
 
 ###### Parameters
 
@@ -2661,7 +2639,7 @@ Defined in: [packages/core/src/core/vector-db.ts:1628](https://github.com/daydre
 
 > **peek**(`limit`): `Promise`\<[`SearchResult`](namespaces/Types.md#searchresult)[]\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1487](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1487)
+Defined in: [packages/core/src/core/vector-db.ts:1487](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1487)
 
 Retrieves the first N items from the main collection (for debugging).
 
@@ -2679,7 +2657,7 @@ Retrieves the first N items from the main collection (for debugging).
 
 > **purge**(): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1554](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1554)
+Defined in: [packages/core/src/core/vector-db.ts:1554](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1554)
 
 Purges all collections and data from the database.
 Use with caution - this is irreversible!
@@ -2696,7 +2674,7 @@ Use with caution - this is irreversible!
 
 > **searchDocumentsByTag**(`tags`, `limit`): `Promise`\<[`Documentation`](namespaces/Types.md#documentation)[]\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1385](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1385)
+Defined in: [packages/core/src/core/vector-db.ts:1385](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1385)
 
 Searches documents by exact match on tags (joined by commas).
 
@@ -2722,7 +2700,7 @@ Searches documents by exact match on tags (joined by commas).
 
 > **store**(`content`, `metadata`?): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:187](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L187)
+Defined in: [packages/core/src/core/vector-db.ts:187](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L187)
 
 Stores a piece of content in the main "memories" collection.
 
@@ -2748,7 +2726,7 @@ Stores a piece of content in the main "memories" collection.
 
 > **storeDocument**(`doc`): `Promise`\<`string`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1315](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1315)
+Defined in: [packages/core/src/core/vector-db.ts:1315](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1315)
 
 Stores a documentation record (knowledge resource).
 
@@ -2770,7 +2748,7 @@ Stores a documentation record (knowledge resource).
 
 > **storeEpisode**(`memory`): `Promise`\<`string`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1011](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1011)
+Defined in: [packages/core/src/core/vector-db.ts:1011](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1011)
 
 Stores an episodic memory (action + outcome + context).
 
@@ -2792,7 +2770,7 @@ Stores an episodic memory (action + outcome + context).
 
 > **storeInRoom**(`content`, `roomId`, `metadata`): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:268](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L268)
+Defined in: [packages/core/src/core/vector-db.ts:268](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L268)
 
 Stores content in a specific room's memory, also associating it with a cluster ID.
 
@@ -2822,7 +2800,7 @@ Stores content in a specific room's memory, also associating it with a cluster I
 
 > **storeSystemMetadata**(`key`, `value`): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:960](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L960)
+Defined in: [packages/core/src/core/vector-db.ts:960](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L960)
 
 Stores arbitrary metadata in the "system_metadata" collection.
 
@@ -2848,7 +2826,7 @@ Stores arbitrary metadata in the "system_metadata" collection.
 
 > **updateDocument**(`id`, `updates`): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/vector-db.ts:1434](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/vector-db.ts#L1434)
+Defined in: [packages/core/src/core/vector-db.ts:1434](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/vector-db.ts#L1434)
 
 Updates an existing documentation record by ID.
 
@@ -2874,7 +2852,7 @@ Updates an existing documentation record by ID.
 
 ### Consciousness
 
-Defined in: [packages/core/src/core/consciousness.ts:9](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/consciousness.ts#L9)
+Defined in: [packages/core/src/core/consciousness.ts:9](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/consciousness.ts#L9)
 
 #### Constructors
 
@@ -2882,7 +2860,7 @@ Defined in: [packages/core/src/core/consciousness.ts:9](https://github.com/daydr
 
 > **new Consciousness**(`llmClient`, `roomManager`, `config`): [`Consciousness`](globals.md#consciousness)
 
-Defined in: [packages/core/src/core/consciousness.ts:15](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/consciousness.ts#L15)
+Defined in: [packages/core/src/core/consciousness.ts:15](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/consciousness.ts#L15)
 
 ###### Parameters
 
@@ -2918,7 +2896,7 @@ Defined in: [packages/core/src/core/consciousness.ts:15](https://github.com/dayd
 
 > **start**(): `Promise`\<[`Thought`](namespaces/Types.md#thought)\>
 
-Defined in: [packages/core/src/core/consciousness.ts:31](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/consciousness.ts#L31)
+Defined in: [packages/core/src/core/consciousness.ts:31](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/consciousness.ts#L31)
 
 ###### Returns
 
@@ -2928,7 +2906,7 @@ Defined in: [packages/core/src/core/consciousness.ts:31](https://github.com/dayd
 
 > **stop**(): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/consciousness.ts:35](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/consciousness.ts#L35)
+Defined in: [packages/core/src/core/consciousness.ts:35](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/consciousness.ts#L35)
 
 ###### Returns
 
@@ -2938,7 +2916,7 @@ Defined in: [packages/core/src/core/consciousness.ts:35](https://github.com/dayd
 
 ### GoalManager
 
-Defined in: [packages/core/src/core/goal-manager.ts:6](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L6)
+Defined in: [packages/core/src/core/goal-manager.ts:6](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L6)
 
 Manages a collection of goals, their relationships, and their lifecycle states.
 Provides methods for creating, updating, and querying goals and their hierarchies.
@@ -2953,13 +2931,23 @@ Provides methods for creating, updating, and querying goals and their hierarchie
 
 [`GoalManager`](globals.md#goalmanager-1)
 
+#### Properties
+
+##### goals
+
+> **goals**: `Map`\<`string`, [`Goal`](namespaces/Types.md#goal)\>
+
+Defined in: [packages/core/src/core/goal-manager.ts:8](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L8)
+
+Internal map storing all goals indexed by their IDs
+
 #### Methods
 
 ##### addGoal()
 
 > **addGoal**(`goal`): [`Goal`](namespaces/Types.md#goal)
 
-Defined in: [packages/core/src/core/goal-manager.ts:16](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L16)
+Defined in: [packages/core/src/core/goal-manager.ts:16](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L16)
 
 Creates a new goal and adds it to the goal collection.
 If the goal is a subgoal, updates the parent goal's subgoals array.
@@ -2982,7 +2970,7 @@ The newly created goal with generated ID
 
 > **arePrerequisitesMet**(`goalId`): `boolean`
 
-Defined in: [packages/core/src/core/goal-manager.ts:221](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L221)
+Defined in: [packages/core/src/core/goal-manager.ts:270](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L270)
 
 Checks if all prerequisites for a goal are met.
 
@@ -3004,7 +2992,7 @@ True if all dependencies are completed
 
 > **blockGoalHierarchy**(`goalId`, `reason`): `void`
 
-Defined in: [packages/core/src/core/goal-manager.ts:283](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L283)
+Defined in: [packages/core/src/core/goal-manager.ts:332](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L332)
 
 Blocks a goal and all its subgoals recursively.
 
@@ -3030,7 +3018,7 @@ Reason for blocking
 
 > **canBeRefined**(`goalId`): `boolean`
 
-Defined in: [packages/core/src/core/goal-manager.ts:267](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L267)
+Defined in: [packages/core/src/core/goal-manager.ts:316](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L316)
 
 Checks if a goal can be refined into subgoals.
 
@@ -3052,7 +3040,7 @@ True if the goal can be refined
 
 > **estimateCompletionTime**(`goalId`): `number`
 
-Defined in: [packages/core/src/core/goal-manager.ts:322](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L322)
+Defined in: [packages/core/src/core/goal-manager.ts:371](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L371)
 
 Estimates completion time based on horizon and dependencies.
 
@@ -3074,7 +3062,7 @@ Estimated time units to complete
 
 > **getBlockingGoals**(`goalId`): [`Goal`](namespaces/Types.md#goal)[]
 
-Defined in: [packages/core/src/core/goal-manager.ts:170](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L170)
+Defined in: [packages/core/src/core/goal-manager.ts:219](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L219)
 
 Gets all incomplete goals that are blocking a given goal.
 
@@ -3096,7 +3084,7 @@ Array of blocking goals
 
 > **getChildGoals**(`parentId`): [`Goal`](namespaces/Types.md#goal)[]
 
-Defined in: [packages/core/src/core/goal-manager.ts:196](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L196)
+Defined in: [packages/core/src/core/goal-manager.ts:245](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L245)
 
 Gets all direct child goals of a parent goal.
 
@@ -3118,7 +3106,7 @@ Array of child goals
 
 > **getDependentGoals**(`goalId`): [`Goal`](namespaces/Types.md#goal)[]
 
-Defined in: [packages/core/src/core/goal-manager.ts:210](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L210)
+Defined in: [packages/core/src/core/goal-manager.ts:259](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L259)
 
 Gets all goals that depend on a given goal.
 
@@ -3140,7 +3128,7 @@ Array of dependent goals
 
 > **getGoalById**(`id`): `undefined` \| [`Goal`](namespaces/Types.md#goal)
 
-Defined in: [packages/core/src/core/goal-manager.ts:187](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L187)
+Defined in: [packages/core/src/core/goal-manager.ts:236](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L236)
 
 Retrieves a goal by its ID.
 
@@ -3162,7 +3150,7 @@ The goal or undefined if not found
 
 > **getGoalHierarchy**(`goalId`): [`Goal`](namespaces/Types.md#goal)[]
 
-Defined in: [packages/core/src/core/goal-manager.ts:150](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L150)
+Defined in: [packages/core/src/core/goal-manager.ts:199](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L199)
 
 Gets a goal and all its subgoals as a flattened array.
 
@@ -3184,7 +3172,7 @@ Array containing the goal and all its subgoals
 
 > **getGoalPath**(`goalId`): [`Goal`](namespaces/Types.md#goal)[]
 
-Defined in: [packages/core/src/core/goal-manager.ts:305](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L305)
+Defined in: [packages/core/src/core/goal-manager.ts:354](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L354)
 
 Gets the full path from root goal to specified goal.
 
@@ -3206,7 +3194,7 @@ Array of goals representing the path
 
 > **getGoalsByHorizon**(`horizon`): [`Goal`](namespaces/Types.md#goal)[]
 
-Defined in: [packages/core/src/core/goal-manager.ts:118](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L118)
+Defined in: [packages/core/src/core/goal-manager.ts:165](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L165)
 
 Retrieves all goals for a specific time horizon, sorted by priority.
 
@@ -3228,7 +3216,7 @@ Array of matching goals
 
 > **getGoalsByScore**(): [`Goal`](namespaces/Types.md#goal)[]
 
-Defined in: [packages/core/src/core/goal-manager.ts:412](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L412)
+Defined in: [packages/core/src/core/goal-manager.ts:461](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L461)
 
 Gets all goals sorted by their outcome scores.
 
@@ -3242,7 +3230,7 @@ Array of goals with outcome scores, sorted highest to lowest
 
 > **getGoalsByStatus**(`status`): [`Goal`](namespaces/Types.md#goal)[]
 
-Defined in: [packages/core/src/core/goal-manager.ts:256](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L256)
+Defined in: [packages/core/src/core/goal-manager.ts:305](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L305)
 
 Gets all goals with a specific status.
 
@@ -3264,7 +3252,7 @@ Array of matching goals, sorted by priority
 
 > **getReadyGoals**(`horizon`?): [`Goal`](namespaces/Types.md#goal)[]
 
-Defined in: [packages/core/src/core/goal-manager.ts:130](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L130)
+Defined in: [packages/core/src/core/goal-manager.ts:177](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L177)
 
 Returns goals that are ready to be worked on.
 A goal is ready if its status is "ready" or all its dependencies are completed.
@@ -3283,11 +3271,56 @@ Optional horizon to filter by
 
 Array of ready goals, sorted by priority
 
+##### getReadyGoalsByPriority()
+
+> **getReadyGoalsByPriority**(): [`Goal`](namespaces/Types.md#goal)[]
+
+Defined in: [packages/core/src/core/goal-manager.ts:62](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L62)
+
+**`Internal`**
+
+Gets a prioritized list of goals that are ready to be worked on.
+Goals are sorted first by horizon (short-term > medium-term > long-term)
+and then by their individual priority values.
+
+###### Returns
+
+[`Goal`](namespaces/Types.md#goal)[]
+
+An array of Goal objects sorted by priority
+
+##### processGoalFailure()
+
+> **processGoalFailure**(`goal`): `Promise`\<`void`\>
+
+Defined in: [packages/core/src/core/goal-manager.ts:45](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L45)
+
+**`Internal`**
+
+Handles the failure of a goal by updating its status and notifying relevant systems.
+
+This method:
+1. Updates the failed goal's status
+2. If the goal has a parent, marks the parent as blocked
+3. Emits a goal:failed event
+
+###### Parameters
+
+###### goal
+
+[`Goal`](namespaces/Types.md#goal)
+
+The goal that failed
+
+###### Returns
+
+`Promise`\<`void`\>
+
 ##### recordGoalFailure()
 
 > **recordGoalFailure**(`goalId`, `reason`, `outcomeScore`): `void`
 
-Defined in: [packages/core/src/core/goal-manager.ts:387](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L387)
+Defined in: [packages/core/src/core/goal-manager.ts:436](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L436)
 
 Records a goal failure with reason and score.
 
@@ -3319,7 +3352,7 @@ Optional failure score (defaults to 0)
 
 > **recordGoalOutcome**(`goalId`, `outcomeScore`, `comment`?): `void`
 
-Defined in: [packages/core/src/core/goal-manager.ts:360](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L360)
+Defined in: [packages/core/src/core/goal-manager.ts:409](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L409)
 
 Records an outcome score and optional comment for a completed goal.
 
@@ -3351,7 +3384,7 @@ Optional comment about the outcome
 
 > **updateGoalDependencies**(`goalId`, `dependencies`): `void`
 
-Defined in: [packages/core/src/core/goal-manager.ts:39](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L39)
+Defined in: [packages/core/src/core/goal-manager.ts:86](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L86)
 
 Updates an existing goal with new dependencies.
 Used to map generated thought IDs to goal IDs.
@@ -3378,7 +3411,7 @@ The new array of dependency IDs
 
 > **updateGoalProgress**(`id`, `progress`): `void`
 
-Defined in: [packages/core/src/core/goal-manager.ts:236](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L236)
+Defined in: [packages/core/src/core/goal-manager.ts:285](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L285)
 
 Updates the progress percentage of a goal.
 
@@ -3404,7 +3437,7 @@ New progress value (0-100)
 
 > **updateGoalStatus**(`id`, `status`): `void`
 
-Defined in: [packages/core/src/core/goal-manager.ts:55](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/goal-manager.ts#L55)
+Defined in: [packages/core/src/core/goal-manager.ts:102](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/goal-manager.ts#L102)
 
 Updates the status of a goal. When marking as "completed",
 sets completed_at timestamp, progress to 100%, and updates related goals.
@@ -3431,7 +3464,7 @@ The new status to set
 
 ### LLMClient
 
-Defined in: [packages/core/src/core/llm-client.ts:79](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/llm-client.ts#L79)
+Defined in: [packages/core/src/core/llm-client.ts:79](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/llm-client.ts#L79)
 
 Main client class for interacting with LLM providers
 
@@ -3445,7 +3478,7 @@ Main client class for interacting with LLM providers
 
 > **new LLMClient**(`config`): [`LLMClient`](globals.md#llmclient-1)
 
-Defined in: [packages/core/src/core/llm-client.ts:108](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/llm-client.ts#L108)
+Defined in: [packages/core/src/core/llm-client.ts:108](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/llm-client.ts#L108)
 
 Creates a new LLM client instance - supports all major LLM providers
 
@@ -3487,7 +3520,7 @@ const llmOpenRouter = new LLMClient({
 
 > `static` **captureRejections**: `boolean`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:459
+Defined in: docs/node\_modules/@types/node/events.d.ts:459
 
 Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -3505,7 +3538,7 @@ v13.4.0, v12.16.0
 
 > `readonly` `static` **captureRejectionSymbol**: *typeof* [`captureRejectionSymbol`](globals.md#capturerejectionsymbol)
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:452
+Defined in: docs/node\_modules/@types/node/events.d.ts:452
 
 Value: `Symbol.for('nodejs.rejection')`
 
@@ -3523,7 +3556,7 @@ v13.4.0, v12.16.0
 
 > `static` **defaultMaxListeners**: `number`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:498
+Defined in: docs/node\_modules/@types/node/events.d.ts:498
 
 By default, a maximum of `10` listeners can be registered for any single
 event. This limit can be changed for individual `EventEmitter` instances
@@ -3573,7 +3606,7 @@ v0.11.2
 
 > `readonly` `static` **errorMonitor**: *typeof* [`errorMonitor`](globals.md#errormonitor)
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:445
+Defined in: docs/node\_modules/@types/node/events.d.ts:445
 
 This symbol shall be used to install a listener for only monitoring `'error'` events. Listeners installed using this symbol are called before the regular `'error'` listeners are called.
 
@@ -3594,7 +3627,7 @@ v13.6.0, v12.17.0
 
 > `optional` **\[captureRejectionSymbol\]**\<`K`\>(`error`, `event`, ...`args`): `void`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:136
+Defined in: docs/node\_modules/@types/node/events.d.ts:136
 
 ###### Type Parameters
 
@@ -3626,7 +3659,7 @@ Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/ev
 
 > **addListener**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:597
+Defined in: docs/node\_modules/@types/node/events.d.ts:597
 
 Alias for `emitter.on(eventName, listener)`.
 
@@ -3660,7 +3693,7 @@ v0.1.26
 
 > **analyze**(`prompt`, `options`): `Promise`\<`string` \| [`StructuredAnalysis`](namespaces/Types.md#structuredanalysis)\>
 
-Defined in: [packages/core/src/core/llm-client.ts:342](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/llm-client.ts#L342)
+Defined in: [packages/core/src/core/llm-client.ts:342](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/llm-client.ts#L342)
 
 Analyzes text using the LLM with optional structured output
 
@@ -3688,7 +3721,7 @@ Promise resolving to analysis result
 
 > **complete**(`prompt`): `Promise`\<[`LLMResponse`](namespaces/Types.md#llmresponse)\>
 
-Defined in: [packages/core/src/core/llm-client.ts:206](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/llm-client.ts#L206)
+Defined in: [packages/core/src/core/llm-client.ts:206](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/llm-client.ts#L206)
 
 Completes a prompt using the configured LLM
 
@@ -3710,7 +3743,7 @@ Promise resolving to the completion response
 
 > **emit**\<`K`\>(`eventName`, ...`args`): `boolean`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:859
+Defined in: docs/node\_modules/@types/node/events.d.ts:859
 
 Synchronously calls each of the listeners registered for the event named `eventName`, in the order they were registered, passing the supplied arguments
 to each.
@@ -3780,7 +3813,7 @@ v0.1.26
 
 > **eventNames**(): (`string` \| `symbol`)[]
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:922
+Defined in: docs/node\_modules/@types/node/events.d.ts:922
 
 Returns an array listing the events for which the emitter has registered
 listeners. The values in the array are strings or `Symbol`s.
@@ -3815,10 +3848,10 @@ v6.0.0
 
 > **getMaxListeners**(): `number`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:774
+Defined in: docs/node\_modules/@types/node/events.d.ts:774
 
 Returns the current max listener value for the `EventEmitter` which is either
-set by `emitter.setMaxListeners(n)` or defaults to [EventEmitter.defaultMaxListeners](globals.md#defaultmaxlisteners).
+set by `emitter.setMaxListeners(n)` or defaults to [defaultMaxListeners](globals.md#defaultmaxlisteners-1).
 
 ###### Returns
 
@@ -3836,7 +3869,7 @@ v1.0.0
 
 > **getModelName**(): `string`
 
-Defined in: [packages/core/src/core/llm-client.ts:231](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/llm-client.ts#L231)
+Defined in: [packages/core/src/core/llm-client.ts:231](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/llm-client.ts#L231)
 
 Gets the full model name
 
@@ -3848,7 +3881,7 @@ Gets the full model name
 
 > **getModelVersion**(): `string`
 
-Defined in: [packages/core/src/core/llm-client.ts:238](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/llm-client.ts#L238)
+Defined in: [packages/core/src/core/llm-client.ts:238](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/llm-client.ts#L238)
 
 Extracts the version number from the model name
 
@@ -3860,7 +3893,7 @@ Extracts the version number from the model name
 
 > **listenerCount**\<`K`\>(`eventName`, `listener`?): `number`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:868
+Defined in: docs/node\_modules/@types/node/events.d.ts:868
 
 Returns the number of listeners listening for the event named `eventName`.
 If `listener` is provided, it will return how many times the listener is found
@@ -3900,7 +3933,7 @@ v3.2.0
 
 > **listeners**\<`K`\>(`eventName`): `Function`[]
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:787
+Defined in: docs/node\_modules/@types/node/events.d.ts:787
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -3938,7 +3971,7 @@ v0.1.26
 
 > **off**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:747
+Defined in: docs/node\_modules/@types/node/events.d.ts:747
 
 Alias for `emitter.removeListener()`.
 
@@ -3972,7 +4005,7 @@ v10.0.0
 
 > **on**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:629
+Defined in: docs/node\_modules/@types/node/events.d.ts:629
 
 Adds the `listener` function to the end of the listeners array for the event
 named `eventName`. No checks are made to see if the `listener` has already
@@ -4035,7 +4068,7 @@ v0.1.101
 
 > **once**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:659
+Defined in: docs/node\_modules/@types/node/events.d.ts:659
 
 Adds a **one-time** `listener` function for the event named `eventName`. The
 next time `eventName` is triggered, this listener is removed and then invoked.
@@ -4096,7 +4129,7 @@ v0.3.0
 
 > **prependListener**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:886
+Defined in: docs/node\_modules/@types/node/events.d.ts:886
 
 Adds the `listener` function to the _beginning_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -4145,7 +4178,7 @@ v6.0.0
 
 > **prependOnceListener**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:902
+Defined in: docs/node\_modules/@types/node/events.d.ts:902
 
 Adds a **one-time**`listener` function for the event named `eventName` to the _beginning_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
@@ -4192,7 +4225,7 @@ v6.0.0
 
 > **rawListeners**\<`K`\>(`eventName`): `Function`[]
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:818
+Defined in: docs/node\_modules/@types/node/events.d.ts:818
 
 Returns a copy of the array of listeners for the event named `eventName`,
 including any wrappers (such as those created by `.once()`).
@@ -4248,7 +4281,7 @@ v9.4.0
 
 > **removeAllListeners**(`eventName`?): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:758
+Defined in: docs/node\_modules/@types/node/events.d.ts:758
 
 Removes all listeners, or those of the specified `eventName`.
 
@@ -4280,7 +4313,7 @@ v0.1.26
 
 > **removeListener**\<`K`\>(`eventName`, `listener`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:742
+Defined in: docs/node\_modules/@types/node/events.d.ts:742
 
 Removes the specified `listener` from the listener array for the event named `eventName`.
 
@@ -4392,7 +4425,7 @@ v0.1.26
 
 > **setMaxListeners**(`n`): `this`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:768
+Defined in: docs/node\_modules/@types/node/events.d.ts:768
 
 By default `EventEmitter`s will print a warning if more than `10` listeners are
 added for a particular event. This is a useful default that helps finding
@@ -4423,7 +4456,7 @@ v0.3.5
 
 > `static` **addAbortListener**(`signal`, `resource`): `Disposable`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:437
+Defined in: docs/node\_modules/@types/node/events.d.ts:437
 
 **`Experimental`**
 
@@ -4485,7 +4518,7 @@ v20.5.0
 
 > `static` **getEventListeners**(`emitter`, `name`): `Function`[]
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:358
+Defined in: docs/node\_modules/@types/node/events.d.ts:358
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -4538,7 +4571,7 @@ v15.2.0, v14.17.0
 
 > `static` **getMaxListeners**(`emitter`): `number`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:387
+Defined in: docs/node\_modules/@types/node/events.d.ts:387
 
 Returns the currently set max amount of listeners.
 
@@ -4588,7 +4621,7 @@ v19.9.0
 
 > `static` **listenerCount**(`emitter`, `eventName`): `number`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:330
+Defined in: docs/node\_modules/@types/node/events.d.ts:330
 
 A class method that returns the number of listeners for the given `eventName` registered on the given `emitter`.
 
@@ -4636,9 +4669,9 @@ Since v3.2.0 - Use `listenerCount` instead.
 
 ###### Call Signature
 
-> `static` **on**(`emitter`, `eventName`, `options`?): `AsyncIterator`\<`any`[]\>
+> `static` **on**(`emitter`, `eventName`, `options`?): `AsyncIterableIterator`\<`any`[]\>
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:303
+Defined in: docs/node\_modules/@types/node/events.d.ts:303
 
 ```js
 import { on, EventEmitter } from 'node:events';
@@ -4733,7 +4766,7 @@ console.log('done'); // prints 'done'
 
 ###### Returns
 
-`AsyncIterator`\<`any`[]\>
+`AsyncIterableIterator`\<`any`[]\>
 
 An `AsyncIterator` that iterates `eventName` events emitted by the `emitter`
 
@@ -4747,9 +4780,9 @@ v13.6.0, v12.16.0
 
 ###### Call Signature
 
-> `static` **on**(`emitter`, `eventName`, `options`?): `AsyncIterator`\<`any`[]\>
+> `static` **on**(`emitter`, `eventName`, `options`?): `AsyncIterableIterator`\<`any`[]\>
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:308
+Defined in: docs/node\_modules/@types/node/events.d.ts:308
 
 ```js
 import { on, EventEmitter } from 'node:events';
@@ -4844,7 +4877,7 @@ console.log('done'); // prints 'done'
 
 ###### Returns
 
-`AsyncIterator`\<`any`[]\>
+`AsyncIterableIterator`\<`any`[]\>
 
 An `AsyncIterator` that iterates `eventName` events emitted by the `emitter`
 
@@ -4862,7 +4895,7 @@ v13.6.0, v12.16.0
 
 > `static` **once**(`emitter`, `eventName`, `options`?): `Promise`\<`any`[]\>
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:217
+Defined in: docs/node\_modules/@types/node/events.d.ts:217
 
 Creates a `Promise` that is fulfilled when the `EventEmitter` emits the given
 event or that is rejected if the `EventEmitter` emits `'error'` while waiting.
@@ -4971,7 +5004,7 @@ v11.13.0, v10.16.0
 
 > `static` **once**(`emitter`, `eventName`, `options`?): `Promise`\<`any`[]\>
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:222
+Defined in: docs/node\_modules/@types/node/events.d.ts:222
 
 Creates a `Promise` that is fulfilled when the `EventEmitter` emits the given
 event or that is rejected if the `EventEmitter` emits `'error'` while waiting.
@@ -5080,7 +5113,7 @@ v11.13.0, v10.16.0
 
 > `static` **setMaxListeners**(`n`?, ...`eventTargets`?): `void`
 
-Defined in: node\_modules/.pnpm/@types+node@22.10.5/node\_modules/@types/node/events.d.ts:402
+Defined in: docs/node\_modules/@types/node/events.d.ts:402
 
 ```js
 import { setMaxListeners, EventEmitter } from 'node:events';
@@ -5122,7 +5155,7 @@ v15.4.0
 
 ### Logger
 
-Defined in: [packages/core/src/core/logger.ts:5](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/logger.ts#L5)
+Defined in: [packages/core/src/core/logger.ts:5](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/logger.ts#L5)
 
 #### Constructors
 
@@ -5130,7 +5163,7 @@ Defined in: [packages/core/src/core/logger.ts:5](https://github.com/daydreamsai/
 
 > **new Logger**(`config`): [`Logger`](globals.md#logger-1)
 
-Defined in: [packages/core/src/core/logger.ts:9](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/logger.ts#L9)
+Defined in: [packages/core/src/core/logger.ts:9](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/logger.ts#L9)
 
 ###### Parameters
 
@@ -5148,7 +5181,7 @@ Defined in: [packages/core/src/core/logger.ts:9](https://github.com/daydreamsai/
 
 > **debug**(`context`, `message`, `data`?): `void`
 
-Defined in: [packages/core/src/core/logger.ts:35](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/logger.ts#L35)
+Defined in: [packages/core/src/core/logger.ts:35](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/logger.ts#L35)
 
 ###### Parameters
 
@@ -5172,7 +5205,7 @@ Defined in: [packages/core/src/core/logger.ts:35](https://github.com/daydreamsai
 
 > **error**(`context`, `message`, `data`?): `void`
 
-Defined in: [packages/core/src/core/logger.ts:23](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/logger.ts#L23)
+Defined in: [packages/core/src/core/logger.ts:23](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/logger.ts#L23)
 
 ###### Parameters
 
@@ -5196,7 +5229,7 @@ Defined in: [packages/core/src/core/logger.ts:23](https://github.com/daydreamsai
 
 > **info**(`context`, `message`, `data`?): `void`
 
-Defined in: [packages/core/src/core/logger.ts:31](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/logger.ts#L31)
+Defined in: [packages/core/src/core/logger.ts:31](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/logger.ts#L31)
 
 ###### Parameters
 
@@ -5220,7 +5253,7 @@ Defined in: [packages/core/src/core/logger.ts:31](https://github.com/daydreamsai
 
 > **trace**(`context`, `message`, `data`?): `void`
 
-Defined in: [packages/core/src/core/logger.ts:39](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/logger.ts#L39)
+Defined in: [packages/core/src/core/logger.ts:39](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/logger.ts#L39)
 
 ###### Parameters
 
@@ -5244,7 +5277,7 @@ Defined in: [packages/core/src/core/logger.ts:39](https://github.com/daydreamsai
 
 > **warn**(`context`, `message`, `data`?): `void`
 
-Defined in: [packages/core/src/core/logger.ts:27](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/logger.ts#L27)
+Defined in: [packages/core/src/core/logger.ts:27](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/logger.ts#L27)
 
 ###### Parameters
 
@@ -5268,7 +5301,7 @@ Defined in: [packages/core/src/core/logger.ts:27](https://github.com/daydreamsai
 
 ### Orchestrator
 
-Defined in: [packages/core/src/core/orchestrator.ts:15](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/orchestrator.ts#L15)
+Defined in: [packages/core/src/core/orchestrator.ts:15](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L15)
 
 Orchestrator system that manages both "input" and "output" handlers
 in a unified manner, along with scheduling recurring inputs.
@@ -5277,9 +5310,9 @@ in a unified manner, along with scheduling recurring inputs.
 
 ##### new Orchestrator()
 
-> **new Orchestrator**(`roomManager`, `vectorDb`, `processors`, `scheduledTaskDb`, `config`?): [`Orchestrator`](globals.md#orchestrator)
+> **new Orchestrator**(`roomManager`, `vectorDb`, `processors`, `mongoDb`, `config`?): [`Orchestrator`](globals.md#orchestrator)
 
-Defined in: [packages/core/src/core/orchestrator.ts:41](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/orchestrator.ts#L41)
+Defined in: [packages/core/src/core/orchestrator.ts:43](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L43)
 
 ###### Parameters
 
@@ -5295,9 +5328,9 @@ Defined in: [packages/core/src/core/orchestrator.ts:41](https://github.com/daydr
 
 [`BaseProcessor`](globals.md#baseprocessor)[]
 
-###### scheduledTaskDb
+###### mongoDb
 
-`ScheduledTaskMongoDb`
+`MongoDb`
 
 ###### config?
 
@@ -5309,11 +5342,17 @@ Defined in: [packages/core/src/core/orchestrator.ts:41](https://github.com/daydr
 
 #### Properties
 
+##### userId
+
+> **userId**: `string`
+
+Defined in: [packages/core/src/core/orchestrator.ts:37](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L37)
+
 ##### vectorDb
 
 > `readonly` **vectorDb**: [`VectorDB`](namespaces/Types.md#vectordb)
 
-Defined in: [packages/core/src/core/orchestrator.ts:40](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/orchestrator.ts#L40)
+Defined in: [packages/core/src/core/orchestrator.ts:42](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L42)
 
 Other references in your system. Adjust as needed.
 
@@ -5323,7 +5362,7 @@ Other references in your system. Adjust as needed.
 
 > **dispatchToAction**\<`T`\>(`name`, `data`): `Promise`\<`unknown`\>
 
-Defined in: [packages/core/src/core/orchestrator.ts:208](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/orchestrator.ts#L208)
+Defined in: [packages/core/src/core/orchestrator.ts:222](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L222)
 
 Dispatches data to a registered action handler and returns its result.
 
@@ -5377,9 +5416,9 @@ const result = await orchestrator.dispatchToAction("sendEmail", {
 
 ##### dispatchToInput()
 
-> **dispatchToInput**\<`T`\>(`name`, `data`): `Promise`\<`unknown`\>
+> **dispatchToInput**\<`T`\>(`name`, `data`, `userId`, `orchestratorId`?): `Promise`\<`unknown`\>
 
-Defined in: [packages/core/src/core/orchestrator.ts:370](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/orchestrator.ts#L370)
+Defined in: [packages/core/src/core/orchestrator.ts:499](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L499)
 
 Dispatches data to a registered input handler and processes the result through the autonomous flow.
 
@@ -5400,6 +5439,14 @@ The name of the input handler to dispatch to
 `T`
 
 The data to pass to the input handler
+
+###### userId
+
+`string`
+
+###### orchestratorId?
+
+`ObjectId`
 
 ###### Returns
 
@@ -5442,7 +5489,7 @@ If the handler's role is not "input"
 
 > **dispatchToOutput**\<`T`\>(`name`, `data`): `Promise`\<`unknown`\>
 
-Defined in: [packages/core/src/core/orchestrator.ts:115](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/orchestrator.ts#L115)
+Defined in: [packages/core/src/core/orchestrator.ts:125](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L125)
 
 Executes a handler with role="output" by name, passing data to it.
 This is effectively "dispatchToOutput."
@@ -5465,11 +5512,27 @@ This is effectively "dispatchToOutput."
 
 `Promise`\<`unknown`\>
 
+##### initializeOrchestrator()
+
+> **initializeOrchestrator**(`userId`): `void`
+
+Defined in: [packages/core/src/core/orchestrator.ts:77](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L77)
+
+###### Parameters
+
+###### userId
+
+`string`
+
+###### Returns
+
+`void`
+
 ##### processContent()
 
-> **processContent**(`content`, `source`): `Promise`\<[`ProcessedResult`](namespaces/Types.md#processedresult)[]\>
+> **processContent**(`content`, `source`, `userId`?): `Promise`\<[`ProcessedResult`](namespaces/Types.md#processedresult)[]\>
 
-Defined in: [packages/core/src/core/orchestrator.ts:541](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/orchestrator.ts#L541)
+Defined in: [packages/core/src/core/orchestrator.ts:686](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L686)
 
 ###### Parameters
 
@@ -5481,6 +5544,10 @@ Defined in: [packages/core/src/core/orchestrator.ts:541](https://github.com/dayd
 
 `string`
 
+###### userId?
+
+`string`
+
 ###### Returns
 
 `Promise`\<[`ProcessedResult`](namespaces/Types.md#processedresult)[]\>
@@ -5489,7 +5556,7 @@ Defined in: [packages/core/src/core/orchestrator.ts:541](https://github.com/dayd
 
 > **registerIOHandler**(`handler`): `void`
 
-Defined in: [packages/core/src/core/orchestrator.ts:76](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/orchestrator.ts#L76)
+Defined in: [packages/core/src/core/orchestrator.ts:86](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L86)
 
 Primary method to register any IOHandler (input or output).
 - If it's an input with an interval, schedule it for recurring runs.
@@ -5509,7 +5576,7 @@ Primary method to register any IOHandler (input or output).
 
 > **removeIOHandler**(`name`): `void`
 
-Defined in: [packages/core/src/core/orchestrator.ts:100](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/orchestrator.ts#L100)
+Defined in: [packages/core/src/core/orchestrator.ts:110](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L110)
 
 Removes a handler (input or output) by name, stopping scheduling if needed.
 
@@ -5525,11 +5592,15 @@ Removes a handler (input or output) by name, stopping scheduling if needed.
 
 ##### scheduleTaskInDb()
 
-> **scheduleTaskInDb**(`handlerName`, `data`, `intervalMs`?): `Promise`\<`ObjectId`\>
+> **scheduleTaskInDb**(`userId`, `handlerName`, `data`, `intervalMs`?): `Promise`\<`ObjectId`\>
 
-Defined in: [packages/core/src/core/orchestrator.ts:392](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/orchestrator.ts#L392)
+Defined in: [packages/core/src/core/orchestrator.ts:533](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L533)
 
 ###### Parameters
+
+###### userId
+
+`string`
 
 ###### handlerName
 
@@ -5551,7 +5622,7 @@ Defined in: [packages/core/src/core/orchestrator.ts:392](https://github.com/dayd
 
 > **startPolling**(`everyMs`): `void`
 
-Defined in: [packages/core/src/core/orchestrator.ts:420](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/orchestrator.ts#L420)
+Defined in: [packages/core/src/core/orchestrator.ts:563](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L563)
 
 ###### Parameters
 
@@ -5567,7 +5638,7 @@ Defined in: [packages/core/src/core/orchestrator.ts:420](https://github.com/dayd
 
 > **stop**(): `void`
 
-Defined in: [packages/core/src/core/orchestrator.ts:662](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/orchestrator.ts#L662)
+Defined in: [packages/core/src/core/orchestrator.ts:816](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/orchestrator.ts#L816)
 
 Stops all scheduled tasks and shuts down the orchestrator.
 
@@ -5579,7 +5650,7 @@ Stops all scheduled tasks and shuts down the orchestrator.
 
 ### Room
 
-Defined in: [packages/core/src/core/room.ts:8](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room.ts#L8)
+Defined in: [packages/core/src/core/room.ts:8](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room.ts#L8)
 
 Represents a room/conversation context that can store memories and metadata.
 
@@ -5589,7 +5660,7 @@ Represents a room/conversation context that can store memories and metadata.
 
 > **new Room**(`platformId`, `platform`, `metadata`?): [`Room`](globals.md#room)
 
-Defined in: [packages/core/src/core/room.ts:22](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room.ts#L22)
+Defined in: [packages/core/src/core/room.ts:22](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room.ts#L22)
 
 Creates a new Room instance
 
@@ -5623,7 +5694,7 @@ Optional metadata to initialize the room with
 
 > `readonly` **id**: `string`
 
-Defined in: [packages/core/src/core/room.ts:10](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room.ts#L10)
+Defined in: [packages/core/src/core/room.ts:10](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room.ts#L10)
 
 Unique identifier for the room
 
@@ -5631,7 +5702,7 @@ Unique identifier for the room
 
 > `readonly` **platform**: `string`
 
-Defined in: [packages/core/src/core/room.ts:24](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room.ts#L24)
+Defined in: [packages/core/src/core/room.ts:24](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room.ts#L24)
 
 Platform name where this room exists
 
@@ -5639,7 +5710,7 @@ Platform name where this room exists
 
 > `readonly` **platformId**: `string`
 
-Defined in: [packages/core/src/core/room.ts:23](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room.ts#L23)
+Defined in: [packages/core/src/core/room.ts:23](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room.ts#L23)
 
 Platform-specific identifier (e.g. tweet thread ID, chat ID)
 
@@ -5649,7 +5720,7 @@ Platform-specific identifier (e.g. tweet thread ID, chat ID)
 
 > **addMemory**(`content`, `metadata`?): `Promise`\<[`Memory`](namespaces/Types.md#memory)\>
 
-Defined in: [packages/core/src/core/room.ts:63](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room.ts#L63)
+Defined in: [packages/core/src/core/room.ts:63](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room.ts#L63)
 
 Adds a new memory to the room
 
@@ -5677,7 +5748,7 @@ The created Memory object
 
 > **getMemories**(`limit`?): [`Memory`](namespaces/Types.md#memory)[]
 
-Defined in: [packages/core/src/core/room.ts:107](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room.ts#L107)
+Defined in: [packages/core/src/core/room.ts:107](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room.ts#L107)
 
 Retrieves memories from the room
 
@@ -5699,7 +5770,7 @@ Array of Memory objects
 
 > **getMetadata**(): [`RoomMetadata`](namespaces/Types.md#roommetadata)
 
-Defined in: [packages/core/src/core/room.ts:115](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room.ts#L115)
+Defined in: [packages/core/src/core/room.ts:115](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room.ts#L115)
 
 Gets a copy of the room's metadata
 
@@ -5713,7 +5784,7 @@ Copy of room metadata
 
 > **toJSON**(): `object`
 
-Defined in: [packages/core/src/core/room.ts:135](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room.ts#L135)
+Defined in: [packages/core/src/core/room.ts:135](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room.ts#L135)
 
 Converts the room instance to a plain object
 
@@ -5747,7 +5818,7 @@ Plain object representation of the room
 
 > **updateMetadata**(`update`): `void`
 
-Defined in: [packages/core/src/core/room.ts:123](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room.ts#L123)
+Defined in: [packages/core/src/core/room.ts:123](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room.ts#L123)
 
 Updates the room's metadata
 
@@ -5767,7 +5838,7 @@ Partial metadata object with fields to update
 
 > `static` **createDeterministicId**(`platform`, `platformId`): `string`
 
-Defined in: [packages/core/src/core/room.ts:45](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room.ts#L45)
+Defined in: [packages/core/src/core/room.ts:45](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room.ts#L45)
 
 Creates a deterministic room ID based on platform and platformId
 
@@ -5795,7 +5866,7 @@ A deterministic room ID string
 
 > `static` **createDeterministicMemoryId**(`roomId`, `content`): `string`
 
-Defined in: [packages/core/src/core/room.ts:90](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room.ts#L90)
+Defined in: [packages/core/src/core/room.ts:90](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room.ts#L90)
 
 Creates a deterministic memory ID based on room ID and content
 
@@ -5823,7 +5894,7 @@ A deterministic memory ID string
 
 ### RoomManager
 
-Defined in: [packages/core/src/core/room-manager.ts:7](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L7)
+Defined in: [packages/core/src/core/room-manager.ts:7](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L7)
 
 #### Constructors
 
@@ -5831,7 +5902,7 @@ Defined in: [packages/core/src/core/room-manager.ts:7](https://github.com/daydre
 
 > **new RoomManager**(`vectorDb`?, `config`?): [`RoomManager`](globals.md#roommanager)
 
-Defined in: [packages/core/src/core/room-manager.ts:10](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L10)
+Defined in: [packages/core/src/core/room-manager.ts:10](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L10)
 
 ###### Parameters
 
@@ -5855,7 +5926,7 @@ Defined in: [packages/core/src/core/room-manager.ts:10](https://github.com/daydr
 
 > **addMemory**(`roomId`, `content`, `metadata`?): `Promise`\<[`Memory`](namespaces/Types.md#memory)\>
 
-Defined in: [packages/core/src/core/room-manager.ts:139](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L139)
+Defined in: [packages/core/src/core/room-manager.ts:141](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L141)
 
 ###### Parameters
 
@@ -5879,7 +5950,7 @@ Defined in: [packages/core/src/core/room-manager.ts:139](https://github.com/dayd
 
 > **createRoom**(`platformId`, `platform`, `metadata`?): `Promise`\<[`Room`](globals.md#room)\>
 
-Defined in: [packages/core/src/core/room-manager.ts:83](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L83)
+Defined in: [packages/core/src/core/room-manager.ts:83](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L83)
 
 ###### Parameters
 
@@ -5893,7 +5964,7 @@ Defined in: [packages/core/src/core/room-manager.ts:83](https://github.com/daydr
 
 ###### metadata?
 
-`Partial`\<[`RoomMetadata`](namespaces/Types.md#roommetadata)\>
+`Partial`\<[`RoomMetadata`](namespaces/Types.md#roommetadata) & `object`\>
 
 ###### Returns
 
@@ -5903,7 +5974,7 @@ Defined in: [packages/core/src/core/room-manager.ts:83](https://github.com/daydr
 
 > **deleteRoom**(`roomId`): `Promise`\<`void`\>
 
-Defined in: [packages/core/src/core/room-manager.ts:220](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L220)
+Defined in: [packages/core/src/core/room-manager.ts:228](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L228)
 
 ###### Parameters
 
@@ -5917,9 +5988,9 @@ Defined in: [packages/core/src/core/room-manager.ts:220](https://github.com/dayd
 
 ##### ensureRoom()
 
-> **ensureRoom**(`name`, `platform`): `Promise`\<[`Room`](globals.md#room)\>
+> **ensureRoom**(`name`, `platform`, `userId`?): `Promise`\<[`Room`](globals.md#room)\>
 
-Defined in: [packages/core/src/core/room-manager.ts:208](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L208)
+Defined in: [packages/core/src/core/room-manager.ts:211](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L211)
 
 ###### Parameters
 
@@ -5931,6 +6002,10 @@ Defined in: [packages/core/src/core/room-manager.ts:208](https://github.com/dayd
 
 `string`
 
+###### userId?
+
+`string`
+
 ###### Returns
 
 `Promise`\<[`Room`](globals.md#room)\>
@@ -5939,7 +6014,7 @@ Defined in: [packages/core/src/core/room-manager.ts:208](https://github.com/dayd
 
 > **findSimilarMemoriesInRoom**(`content`, `roomId`, `limit`): `Promise`\<[`Memory`](namespaces/Types.md#memory)[]\>
 
-Defined in: [packages/core/src/core/room-manager.ts:166](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L166)
+Defined in: [packages/core/src/core/room-manager.ts:169](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L169)
 
 ###### Parameters
 
@@ -5963,7 +6038,7 @@ Defined in: [packages/core/src/core/room-manager.ts:166](https://github.com/dayd
 
 > **getMemoriesFromRoom**(`roomId`, `limit`?): `Promise`\<[`Memory`](namespaces/Types.md#memory)[]\>
 
-Defined in: [packages/core/src/core/room-manager.ts:229](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L229)
+Defined in: [packages/core/src/core/room-manager.ts:237](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L237)
 
 ###### Parameters
 
@@ -5983,7 +6058,7 @@ Defined in: [packages/core/src/core/room-manager.ts:229](https://github.com/dayd
 
 > **getRoom**(`roomId`): `Promise`\<`undefined` \| [`Room`](globals.md#room)\>
 
-Defined in: [packages/core/src/core/room-manager.ts:23](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L23)
+Defined in: [packages/core/src/core/room-manager.ts:23](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L23)
 
 ###### Parameters
 
@@ -5999,7 +6074,7 @@ Defined in: [packages/core/src/core/room-manager.ts:23](https://github.com/daydr
 
 > **getRoomByPlatformId**(`platformId`, `platform`): `Promise`\<`undefined` \| [`Room`](globals.md#room)\>
 
-Defined in: [packages/core/src/core/room-manager.ts:71](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L71)
+Defined in: [packages/core/src/core/room-manager.ts:71](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L71)
 
 ###### Parameters
 
@@ -6019,7 +6094,7 @@ Defined in: [packages/core/src/core/room-manager.ts:71](https://github.com/daydr
 
 > **hasProcessedContentInRoom**(`contentId`, `roomId`): `Promise`\<`boolean`\>
 
-Defined in: [packages/core/src/core/room-manager.ts:253](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L253)
+Defined in: [packages/core/src/core/room-manager.ts:261](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L261)
 
 ###### Parameters
 
@@ -6039,7 +6114,7 @@ Defined in: [packages/core/src/core/room-manager.ts:253](https://github.com/dayd
 
 > **listRooms**(): `Promise`\<[`Room`](globals.md#room)[]\>
 
-Defined in: [packages/core/src/core/room-manager.ts:190](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L190)
+Defined in: [packages/core/src/core/room-manager.ts:193](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L193)
 
 ###### Returns
 
@@ -6049,7 +6124,7 @@ Defined in: [packages/core/src/core/room-manager.ts:190](https://github.com/dayd
 
 > **markContentAsProcessed**(`contentId`, `roomId`): `Promise`\<`boolean`\>
 
-Defined in: [packages/core/src/core/room-manager.ts:276](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/room-manager.ts#L276)
+Defined in: [packages/core/src/core/room-manager.ts:284](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/room-manager.ts#L284)
 
 ###### Parameters
 
@@ -6069,7 +6144,7 @@ Defined in: [packages/core/src/core/room-manager.ts:276](https://github.com/dayd
 
 ### StepManager
 
-Defined in: [packages/core/src/core/step-manager.ts:7](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/step-manager.ts#L7)
+Defined in: [packages/core/src/core/step-manager.ts:7](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/step-manager.ts#L7)
 
 Manages a collection of steps with unique IDs.
 Provides methods to add, retrieve, update, and remove steps.
@@ -6080,7 +6155,7 @@ Provides methods to add, retrieve, update, and remove steps.
 
 > **new StepManager**(): [`StepManager`](globals.md#stepmanager)
 
-Defined in: [packages/core/src/core/step-manager.ts:16](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/step-manager.ts#L16)
+Defined in: [packages/core/src/core/step-manager.ts:16](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/step-manager.ts#L16)
 
 Creates a new StepManager instance with empty steps collection
 
@@ -6094,7 +6169,7 @@ Creates a new StepManager instance with empty steps collection
 
 > **addStep**(`step`): [`Step`](namespaces/Types.md#step-1)
 
-Defined in: [packages/core/src/core/step-manager.ts:27](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/step-manager.ts#L27)
+Defined in: [packages/core/src/core/step-manager.ts:27](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/step-manager.ts#L27)
 
 Adds a new step to the collection
 
@@ -6120,7 +6195,7 @@ Error if a step with the same ID already exists
 
 > **clear**(): `void`
 
-Defined in: [packages/core/src/core/step-manager.ts:95](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/step-manager.ts#L95)
+Defined in: [packages/core/src/core/step-manager.ts:95](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/step-manager.ts#L95)
 
 Removes all steps from the collection
 
@@ -6132,7 +6207,7 @@ Removes all steps from the collection
 
 > **getStepById**(`id`): `undefined` \| [`Step`](namespaces/Types.md#step-1)
 
-Defined in: [packages/core/src/core/step-manager.ts:50](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/step-manager.ts#L50)
+Defined in: [packages/core/src/core/step-manager.ts:50](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/step-manager.ts#L50)
 
 Finds a step by its ID
 
@@ -6154,7 +6229,7 @@ The matching step or undefined if not found
 
 > **getSteps**(): [`Step`](namespaces/Types.md#step-1)[]
 
-Defined in: [packages/core/src/core/step-manager.ts:41](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/step-manager.ts#L41)
+Defined in: [packages/core/src/core/step-manager.ts:41](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/step-manager.ts#L41)
 
 Gets all steps in the collection
 
@@ -6168,7 +6243,7 @@ Array of all steps
 
 > **removeStep**(`id`): `void`
 
-Defined in: [packages/core/src/core/step-manager.ts:82](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/step-manager.ts#L82)
+Defined in: [packages/core/src/core/step-manager.ts:82](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/step-manager.ts#L82)
 
 Removes a step from the collection
 
@@ -6192,7 +6267,7 @@ Error if step with given ID is not found
 
 > **updateStep**(`id`, `updates`): `void`
 
-Defined in: [packages/core/src/core/step-manager.ts:60](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/step-manager.ts#L60)
+Defined in: [packages/core/src/core/step-manager.ts:60](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/step-manager.ts#L60)
 
 Updates an existing step with new properties
 
@@ -6222,7 +6297,7 @@ Error if step with given ID is not found
 
 ### TaskScheduler\<T\>
 
-Defined in: [packages/core/src/core/task-scheduler.ts:6](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/task-scheduler.ts#L6)
+Defined in: [packages/core/src/core/task-scheduler.ts:6](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/task-scheduler.ts#L6)
 
 Priority queue implementation for scheduling tasks.
 Tasks are ordered by their nextRun timestamp.
@@ -6239,7 +6314,7 @@ Type must include a nextRun timestamp property
 
 > **new TaskScheduler**\<`T`\>(`onTaskDue`): [`TaskScheduler`](globals.md#taskschedulert)\<`T`\>
 
-Defined in: [packages/core/src/core/task-scheduler.ts:13](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/task-scheduler.ts#L13)
+Defined in: [packages/core/src/core/task-scheduler.ts:13](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/task-scheduler.ts#L13)
 
 ###### Parameters
 
@@ -6259,7 +6334,7 @@ Callback executed when a task is due to run
 
 > **scheduleTask**(`task`): `void`
 
-Defined in: [packages/core/src/core/task-scheduler.ts:20](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/task-scheduler.ts#L20)
+Defined in: [packages/core/src/core/task-scheduler.ts:20](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/task-scheduler.ts#L20)
 
 Schedules a new task or updates an existing one.
 Tasks are automatically sorted by nextRun timestamp.
@@ -6280,7 +6355,7 @@ The task to schedule
 
 > **stop**(): `void`
 
-Defined in: [packages/core/src/core/task-scheduler.ts:58](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/task-scheduler.ts#L58)
+Defined in: [packages/core/src/core/task-scheduler.ts:58](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/task-scheduler.ts#L58)
 
 Stops the scheduler and clears all pending tasks.
 
@@ -6294,7 +6369,7 @@ Stops the scheduler and clears all pending tasks.
 
 > `const` **defaultCharacter**: [`Character`](namespaces/Types.md#character)
 
-Defined in: [packages/core/src/core/character.ts:2](https://github.com/daydreamsai/daydreams/blob/e2cf9e17e0eefa9ff2799fbebfec204063c42935/packages/core/src/core/character.ts#L2)
+Defined in: [packages/core/src/core/character.ts:2](https://github.com/daydreamsai/daydreams/blob/f0e72101c0795a088a55fd072950f44bb2267eb0/packages/core/src/core/character.ts#L2)
 
 ## Namespaces
 

@@ -14,17 +14,18 @@
 import { Orchestrator } from "../packages/core/src/core/orchestrator";
 import { HandlerRole } from "../packages/core/src/core/types";
 import { HyperliquidClient } from "../packages/core/src/core/io/hyperliquid";
-import { RoomManager } from "../packages/core/src/core/room-manager";
+import { ConversationManager } from "../packages/core/src/core/conversation-manager";
 import { ChromaVectorDB } from "../packages/core/src/core/vector-db";
 import { MessageProcessor } from "../packages/core/src/core/processors/message-processor";
 import { LLMClient } from "../packages/core/src/core/llm-client";
 import { env } from "../packages/core/src/core/env";
 import { LogLevel } from "../packages/core/src/core/types";
 import chalk from "chalk";
-import { defaultCharacter } from "../packages/core/src/core/character_trading_sage";
+import { defaultCharacter } from "../packages/core/src/core/characters/character-trading-sage";
 import { z } from "zod";
 import readline from "readline";
-import { MongoDb } from "../packages/core/src/core/mongo-db";
+import { MongoDb } from "../packages/core/src/core/db/mongo-db";
+import { makeFlowLifecycle } from "../packages/core/src/core/life-cycle";
 
 async function main() {
     const loglevel = LogLevel.ERROR;
@@ -37,7 +38,7 @@ async function main() {
 
     await vectorDb.purge(); // Clear previous session data
 
-    const roomManager = new RoomManager(vectorDb);
+    const conversationManager = new ConversationManager(vectorDb);
     const userId = "console-user";
 
     const llmClient = new LLMClient({
@@ -64,12 +65,9 @@ async function main() {
 
     await scheduledTaskDb.deleteAll();
 
-    // Initialize core system
     const core = new Orchestrator(
-        roomManager,
-        vectorDb,
-        [processor],
-        scheduledTaskDb,
+        processor,
+        makeFlowLifecycle(scheduledTaskDb, conversationManager),
         {
             level: loglevel,
             enableColors: true,
@@ -339,10 +337,12 @@ async function main() {
                 await core.dispatchToInput(
                     "user_chat",
                     {
-                        content: userMessage,
+                        contentId: userMessage,
                         userId,
+                        platformId: "console",
+                        threadId: "console",
+                        data: {},
                     },
-                    userId
                 );
 
                 // Continue prompting

@@ -6,9 +6,9 @@
         "dev": "vocs dev",
         "build": "vocs build",
         "preview": "vocs preview",
-        "docs:api": "cp ../README.md docs/pages/index.mdx && typedoc",
-        "docs:dev": "pnpm docs:api && vocs dev",
-        "docs:build": "pnpm docs:api && vocs build"
+        "docs:api": "typedoc",
+        "docs:dev": "pnpm docs:api && pnpm dev",
+        "docs:build": "pnpm docs:api && pnpm build"
     },
     "dependencies": {
         "@types/react": "latest",

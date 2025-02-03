@@ -7,17 +7,17 @@
 import { Orchestrator } from "../packages/core/src/core/orchestrator";
 import { HandlerRole, LogLevel } from "../packages/core/src/core/types";
 import { DiscordClient } from "../packages/core/src/core/io/discord";
-import { RoomManager } from "../packages/core/src/core/room-manager";
+import { ConversationManager } from "../packages/core/src/core/conversation-manager";
 import { ChromaVectorDB } from "../packages/core/src/core/vector-db";
 import { MessageProcessor } from "../packages/core/src/core/processors/message-processor";
 import { LLMClient } from "../packages/core/src/core/llm-client";
 import { env } from "../packages/core/src/core/env";
 import chalk from "chalk";
-import { defaultCharacter } from "../packages/core/src/core/character";
-import { z } from "zod";
+import { defaultCharacter } from "../packages/core/src/core/characters/character";
 import readline from "readline";
-import { MongoDb } from "../packages/core/src/core/mongo-db";
-import { Message } from "discord.js";
+import { MongoDb } from "../packages/core/src/core/db/mongo-db";
+import { MasterProcessor } from "../packages/core/src/core/processors/master-processor";
+import { makeFlowLifecycle } from "../packages/core/src/core/life-cycle";
 
 async function main() {
     // Set logging level as you see fit
@@ -32,38 +32,39 @@ async function main() {
     // Optional: Purge previous session data if you want a fresh start
     await vectorDb.purge();
 
-    const roomManager = new RoomManager(vectorDb);
+    const conversationManager = new ConversationManager(vectorDb);
 
     const llmClient = new LLMClient({
-        model: "anthropic/claude-3-5-sonnet-latest", // Example model
+        model: "anthropic/claude-3-5-sonnet-latest",
         temperature: 0.3,
     });
 
-    // Use a sample message processor with a default "character" config
-    const processor = new MessageProcessor(
+    const masterProcessor = new MasterProcessor(
         llmClient,
         defaultCharacter,
         loglevel
     );
 
+    masterProcessor.addProcessor(
+        new MessageProcessor(llmClient, defaultCharacter, loglevel)
+    );
+
     // Connect to MongoDB (for scheduled tasks, if you use them)
-    const scheduledTaskDb = new MongoDb(
+    const KVDB = new MongoDb(
         "mongodb://localhost:27017",
         "myApp",
         "scheduled_tasks"
     );
-    await scheduledTaskDb.connect();
+    await KVDB.connect();
     console.log(chalk.green("✅ Scheduled task database connected"));
 
     // Clear any existing tasks if you like
-    await scheduledTaskDb.deleteAll();
+    await KVDB.deleteAll();
 
     // Create the Orchestrator
     const core = new Orchestrator(
-        roomManager,
-        vectorDb,
-        [processor],
-        scheduledTaskDb,
+        masterProcessor,
+        makeFlowLifecycle(KVDB, conversationManager),
         {
             level: loglevel,
             enableColors: true,
@@ -87,9 +88,7 @@ async function main() {
         name: "discord_stream",
         role: HandlerRole.INPUT,
         subscribe: (onData) => {
-            discord.startMessageStream((incomingMessage: Message) => {
-                onData(incomingMessage);
-            });
+            discord.startMessageStream(onData);
             return () => {
                 discord.stopMessageStream();
             };
