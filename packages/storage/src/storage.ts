@@ -34,7 +34,7 @@ export interface Storage {
     /**
      * Get a repository for a certain collection.
      *
-     * @param kind - The kind of the collection.
+     * @param kind The kind of the collection.
      * @returns The repository
      */
     getRepository(kind: string): Repository;

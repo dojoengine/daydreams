@@ -109,7 +109,23 @@ export class MongoRepository implements Repository {
      * @returns A promise that resolves with the found documents.
      */
     public async find<T>(query: Record<string, any>, limits?: Limits, sort?: Sort): Promise<T[]> {
-        return this.collection.find(query).toArray();
+        const find = this.collection.find(query)
+
+        if (limits) {
+            if (limits.limit) {
+                find.limit(limits.limit);
+            }
+
+            if (limits.skip) {
+                find.skip(limits.skip);
+            }
+        }
+
+        if (sort) {
+            find.sort(sort);
+        }
+
+        return find.toArray();
     }
 
     /**
