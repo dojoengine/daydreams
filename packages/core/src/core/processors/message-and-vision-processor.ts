@@ -59,14 +59,14 @@ export class MessageAndVisionProcessor extends BaseProcessor {
         });
 
         const contentStr =
-            typeof content === "string" ? content : content.content;
+            typeof content === "string" ? content : content.data.content;
 
         const filesAndImages: Array<FilePart | ImagePart> = [
-            ...(content.images?.map((image: DataContent | string) => ({
+            ...(content.data.images?.map((image: DataContent | string) => ({
                 type: "image" as const,
                 image,
             })) || []),
-            ...(content.files?.map(
+            ...(content.data.files?.map(
                 (data: { data: DataContent | string; mimeType: string }) => ({
                     type: "file" as const,
                     data: data.data,

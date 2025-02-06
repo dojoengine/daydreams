@@ -7,6 +7,7 @@
         "twitter": "bun run examples/example-twitter.ts",
         "server": "bun run examples/example-server.ts",
         "discord": "bun run examples/example-discord.ts",
+        "sui": "bun run examples/example-sui.ts",
         "telegram": "bun run examples/example-telegram.ts",
         "hyperliquid": "bun run examples/example-hyperliquid.ts",
         "vision": "bun run examples/example-vision.ts",

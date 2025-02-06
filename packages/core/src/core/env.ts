@@ -12,6 +12,8 @@ const envSchema = z.object({
     OPENROUTER_API_KEY: z.string(),
     GRAPHQL_URL: z.string(),
     DISCORD_TOKEN: z.string(),
+    SUI_NETWORK: z.string().default("testnet"),
+    SUI_PRIVATE_KEY: z.string(),
     TELEGRAM_TOKEN: z.string(),
     TELEGRAM_API_ID: z.string(),
     TELEGRAM_API_HASH: z.string(),

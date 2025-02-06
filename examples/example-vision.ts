@@ -98,13 +98,13 @@ async function main() {
         execute: async (payload) => {
             // Extract image URLs from content using a more robust regex pattern
             const imageRegex = /<IMAGE:([^>]+)>/g;
-            const images = Array.from(payload.content.matchAll(imageRegex))
+            const images = Array.from(payload.data.content.matchAll(imageRegex))
                 .map((match) => (match as string[])[1])
                 .filter((url) => url.length > 0);
 
             // Extract file information using regex with proper mime type and data parsing
             const fileRegex = /<FILE:([^:]+):([^>]+)>/g;
-            const files = Array.from(payload.content.matchAll(fileRegex))
+            const files = Array.from(payload.data.content.matchAll(fileRegex))
                 .map((match) => ({
                     mimeType: (match as string[])[1].trim(),
                     data: (match as string[])[2].trim(),
