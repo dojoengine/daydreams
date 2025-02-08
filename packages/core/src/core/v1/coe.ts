@@ -61,7 +61,7 @@ export async function chainOfExperts({
     experts: { name: string; description: string }[];
     model: LanguageModelV1;
 }): Promise<any> {
-    const context = render(chainExpertManagerPrompt, {
+    const prompt = render(chainExpertManagerPrompt, {
         context: JSON.stringify(state),
         experts: experts
             .map((expert) =>
@@ -79,12 +79,11 @@ export async function chainOfExperts({
             .join("\n"),
     });
 
-    console.log({ context });
+    console.log({ prompt });
 
     const response = await llm({
         model,
-        system: context,
-        prompt: "<response>",
+        prompt,
         stopSequences: ["</response>"],
     });
 
