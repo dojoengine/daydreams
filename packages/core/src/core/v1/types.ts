@@ -1,5 +1,6 @@
 import { type LanguageModelV1 } from "ai";
 import { z } from "zod";
+import type { PlanningSystem } from "./planning";
 
 /** Represents a task with text content and completion status */
 export type Task = {
@@ -195,6 +196,7 @@ export type Expert<Context = any> = {
 export interface AgentContext {
     conversationId: string;
     memory: WorkingMemory;
+    planning?: PlanningSystem; // Make optional for backward compatibility
 }
 
 /** Interface defining an agent's capabilities and structure */
