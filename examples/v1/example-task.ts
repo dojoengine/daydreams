@@ -136,7 +136,23 @@ const agent = createDreams({
         // agentMemory.long_term.push(...call.data.goal.long_term);
         // agentMemory.medium_term.push(...call.data.goal.medium_term);
         // agentMemory.short_term.push(...call.data.goal.short_term);
-        return {};
+        return call;
+      },
+      evaluator: {
+        name: "validateGoalPlanning",
+        description: "Ensures the goal planning is achievable",
+        prompt: "Ensure the goal is achievable",
+        handler: async (data, result, ctx, agent) => {
+          console.log("evaluationContext", data, result, ctx, agent);
+          const isValid = true;
+          return isValid;
+        },
+        schema: z.object({
+          isValid: z.boolean(),
+        }),
+        onFailure: async (ctx, agent) => {
+          console.log({ ctx, agent });
+        },
       },
     }),
     action({
@@ -159,22 +175,6 @@ const agent = createDreams({
         goal.required_resources = call.data.goal.required_resources;
         goal.estimated_difficulty = call.data.goal.estimated_difficulty;
         return {};
-      },
-      evaluator: {
-        name: "validateFetchData",
-        description: "Ensures fetched data meets requirements",
-        handler: async (result, ctx, agent) => {
-          console.log({ result, ctx, agent });
-          const isValid = true;
-          return isValid;
-        },
-        schema: z.object({
-          isValid: z.boolean(),
-        }),
-        prompt: "Ensure the goal is achievable",
-        onFailure: async (ctx, agent) => {
-          console.log({ ctx, agent });
-        },
       },
     }),
   ],

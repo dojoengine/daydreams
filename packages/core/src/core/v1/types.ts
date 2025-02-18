@@ -129,18 +129,20 @@ type InferAgentMemory<TAgent extends AnyAgent> =
  */
 export type Evaluator<
   Data = any,
+  Schema extends z.AnyZodObject = z.AnyZodObject,
   Context extends AgentContext<any, any> = AgentContext<any, any>,
   TAgent extends AnyAgent = AnyAgent,
 > = {
   name: string;
   description?: string;
   /** Schema for the evaluation result */
-  schema?: z.ZodType<any>;
+  schema: Schema;
   /** Custom prompt template for LLM-based evaluation */
-  prompt?: string;
+  prompt: string;
   /** Custom handler for evaluation logic */
-  handler?: (
+  handler: (
     data: Data,
+    result: z.infer<Schema>,
     ctx: Context,
     agent: TAgent
   ) => Promise<boolean> | boolean;
@@ -180,7 +182,7 @@ export type Action<
   ) => Promise<Result> | Result;
   format?: (result: ActionResult<Result>) => string | string[];
   /** Optional evaluator for this specific action */
-  evaluator?: Evaluator<Result, Context, TAgent>;
+  evaluator?: Evaluator;
 };
 
 export type OutputSchema = z.AnyZodObject | z.ZodString;
@@ -213,7 +215,7 @@ export type Output<
   format?: (res: Response) => string | string[];
   examples?: z.infer<Schema>[];
   /** Optional evaluator for this specific output */
-  evaluator?: Evaluator<Response, Context, TAgent>;
+  evaluator?: Evaluator;
 };
 
 export type AnyAction = Action<any, any, any>;
@@ -594,9 +596,9 @@ export interface Context<
     /** Evaluate after every action execution */
     evaluateActions?: boolean;
     /** Global evaluator for all actions */
-    actionEvaluator?: Evaluator<any, AgentContext<Memory>>;
+    actionEvaluator?: Evaluator<any, z.AnyZodObject, AgentContext<Memory>>;
     /** Global evaluator for all outputs */
-    outputEvaluator?: Evaluator<any, AgentContext<Memory>>;
+    outputEvaluator?: Evaluator<any, z.AnyZodObject, AgentContext<Memory>>;
     /** Default prompt template for action evaluation */
     defaultActionPrompt?: string;
     /** Default prompt template for output evaluation */

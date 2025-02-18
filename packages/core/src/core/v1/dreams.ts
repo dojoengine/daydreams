@@ -11,6 +11,7 @@ import {
   type Context,
   type ContextState,
   type Debugger,
+  type Evaluator,
   type Log,
   type Output,
   type OutputRef,
@@ -554,7 +555,7 @@ export function createDreams<
       const data = input.schema.parse(params.data);
 
       if (input.handler) {
-        await input.handler(
+        const result = await input.handler(
           data,
           {
             type: contextHandler.type,
@@ -565,6 +566,46 @@ export function createDreams<
           } as any,
           agent
         );
+
+        // Handle output evaluation
+        const output = agent.outputs[params.type];
+        if (output?.evaluator || contextHandler.evaluation?.outputEvaluator) {
+          const evaluator =
+            output?.evaluator || contextHandler.evaluation?.outputEvaluator;
+
+          if (evaluator) {
+            const isValid = await runEvaluation(
+              evaluator,
+              result,
+              {
+                type: contextHandler.type,
+                key,
+                memory,
+                workingMemory,
+                options,
+              } as any,
+              agent
+            );
+
+            if (!isValid) {
+              logger.warn("agent:output", "OUTPUT_EVALUATION_FAILED", {
+                type: params.type,
+              });
+              if (evaluator.onFailure) {
+                await evaluator.onFailure(
+                  {
+                    type: contextHandler.type,
+                    key,
+                    memory,
+                    workingMemory,
+                    options,
+                  } as any,
+                  agent
+                );
+              }
+            }
+          }
+        }
       } else {
         workingMemory.inputs.push({
           ref: "input",
@@ -785,6 +826,46 @@ export const runAction = task(
     try {
       const result = await action.handler(call, context, agent);
       logger.debug("agent:action", "ACTION_SUCCESS", { result });
+
+      // Handle action evaluation
+      const shouldEvaluate =
+        action.evaluator ||
+        (context.context.evaluation?.evaluateActions &&
+          context.context.evaluation?.actionEvaluator);
+
+      if (shouldEvaluate) {
+        const evaluator =
+          action.evaluator || context.context.evaluation?.actionEvaluator;
+        if (evaluator) {
+          const evaluationContext = {
+            result,
+            call,
+            context,
+            action: {
+              name: action.name,
+              description: action.description,
+            },
+          };
+
+          const isValid = await runEvaluation(
+            evaluator,
+            evaluationContext,
+            context,
+            agent
+          );
+
+          if (!isValid) {
+            logger.warn("agent:action", "ACTION_EVALUATION_FAILED", {
+              action: action.name,
+            });
+            if (evaluator.onFailure) {
+              await evaluator.onFailure(context, agent);
+            }
+            throw new Error(`Action ${action.name} evaluation failed`);
+          }
+        }
+      }
+
       return result;
     } catch (error) {
       logger.error("agent:action", "ACTION_FAILED", { error });
@@ -860,4 +941,26 @@ function renderContexts(
         .filter((t) => !!t),
     })
   );
+}
+
+// Update runEvaluation to handle the enhanced evaluation context
+async function runEvaluation<Data = any>(
+  evaluator: Evaluator<Data>,
+  data: Data,
+  context: AgentContext<any>,
+  agent: AnyAgent
+): Promise<boolean> {
+  const evaluationResult = await generateObject({
+    model: agent.reasoningModel ?? agent.model,
+    schema: evaluator.schema,
+    prompt: evaluator.prompt,
+    context: {
+      data: JSON.stringify(data),
+      context: JSON.stringify(context),
+      workingMemory: JSON.stringify(context.workingMemory),
+      timestamp: Date.now(),
+    },
+  });
+
+  return evaluator.handler(data, evaluationResult, context, agent);
 }
