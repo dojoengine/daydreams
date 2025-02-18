@@ -168,6 +168,9 @@ const agent = createDreams({
           const isValid = true;
           return isValid;
         },
+        schema: z.object({
+          isValid: z.boolean(),
+        }),
         prompt: "Ensure the goal is achievable",
         onFailure: async (ctx, agent) => {
           console.log({ ctx, agent });
