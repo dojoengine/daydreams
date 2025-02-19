@@ -7,6 +7,7 @@ import type {
   AnyContext,
   Config,
   Context,
+  Evaluator,
   ExpertConfig,
   Extension,
   InferMemoryData,
@@ -82,6 +83,22 @@ export function action<
   TMemory extends Memory<any> = never,
 >(action: Action<Schema, Result, Context, TAgent, TMemory>) {
   return action;
+}
+
+/**
+ * Creates an evaluator configuration
+ * @template Schema - Zod schema type for evaluator validation
+ * @template Context - Context type for evaluator execution
+ * @param config - Evaluator configuration object
+ * @returns Typed evaluator configuration
+ */
+export function evaluator<
+  Data = any,
+  Schema extends z.AnyZodObject = z.AnyZodObject,
+  Context extends AgentContext<any, any> = AgentContext<any, any>,
+  TAgent extends AnyAgent = AnyAgent,
+>(config: Evaluator<Data, Schema, Context, TAgent>) {
+  return config;
 }
 
 /**

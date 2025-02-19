@@ -10,6 +10,7 @@ import {
   render,
   action,
   LogLevel,
+  evaluator,
 } from "@daydreamsai/core/v1";
 import { deepResearch } from "./deep-research/research";
 import { string, z } from "zod";
