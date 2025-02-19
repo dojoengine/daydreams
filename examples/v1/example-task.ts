@@ -143,7 +143,7 @@ const agent = createDreams({
         description: "Ensures the goal planning is achievable",
         prompt: "Ensure the goal is achievable",
         handler: async (data, result, ctx, agent) => {
-          console.log("evaluationContext", data, result, ctx, agent);
+          console.log("evaluationContext", result);
           const isValid = true;
           return isValid;
         },

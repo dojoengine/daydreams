@@ -962,5 +962,5 @@ async function runEvaluation<Data = any>(
     },
   });
 
-  return evaluator.handler(data, evaluationResult, context, agent);
+  return evaluator.handler(data, evaluationResult.object, context, agent);
 }
