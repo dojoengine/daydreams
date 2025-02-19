@@ -134,9 +134,9 @@ const agent = createDreams({
       handler(call, ctx, agent) {
         const agentMemory = ctx.agentMemory.goal as Goal;
 
-        // agentMemory.long_term.push(...call.data.goal.long_term);
-        // agentMemory.medium_term.push(...call.data.goal.medium_term);
-        // agentMemory.short_term.push(...call.data.goal.short_term);
+        agentMemory.long_term.push(...call.data.goal.long_term);
+        agentMemory.medium_term.push(...call.data.goal.medium_term);
+        agentMemory.short_term.push(...call.data.goal.short_term);
         return call;
       },
       evaluator: {
@@ -150,6 +150,7 @@ const agent = createDreams({
         },
         schema: z.object({
           isValid: z.boolean(),
+          reason: z.string(),
         }),
         onFailure: async (ctx, agent) => {
           console.log({ ctx, agent });

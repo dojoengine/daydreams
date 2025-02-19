@@ -953,13 +953,14 @@ async function runEvaluation<Data = any>(
   const evaluationResult = await generateObject({
     model: agent.reasoningModel ?? agent.model,
     schema: evaluator.schema,
-    prompt: evaluator.prompt,
-    context: {
-      data: JSON.stringify(data),
-      context: JSON.stringify(context),
-      workingMemory: JSON.stringify(context.workingMemory),
-      timestamp: Date.now(),
-    },
+    prompt:
+      evaluator.prompt +
+      {
+        data: JSON.stringify(data),
+        context: JSON.stringify(context),
+        workingMemory: JSON.stringify(context.workingMemory),
+        timestamp: Date.now(),
+      },
   });
 
   return evaluator.handler(data, evaluationResult.object, context, agent);
