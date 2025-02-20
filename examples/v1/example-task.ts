@@ -20,6 +20,19 @@ import { deepResearch } from "./deep-research/research";
 import { string, z } from "zod";
 import { tavily } from "@tavily/core";
 import { ETERNUM_CONTEXT } from "../v0/eternum-context";
+
+const taskSchema = z.object({
+  plan: z.string().optional(),
+  meta: z.any().optional(),
+  actions: z.array(
+    z.object({
+      type: z.string(),
+      context: z.string(),
+      payload: z.any(),
+    })
+  ),
+});
+
 export const goalSchema = z
   .object({
     id: z.string(),
@@ -35,17 +48,28 @@ export const goalSchema = z
       .min(1)
       .max(10)
       .describe("The estimated difficulty of the goal"),
+    tasks: z
+      .array(taskSchema)
+      .describe(
+        "The tasks to achieve the goal. This is where you build potential tasks you need todo, based on your understanding of what you can do. These are actions."
+      ),
   })
   .describe("A goal to be achieved");
 
 export const goalPlanningSchema = z.object({
   long_term: z
     .array(goalSchema)
-    .describe("Strategic goals that might take multiple sessions"),
+    .describe("Strategic goals that are the main goals you want to achieve"),
   medium_term: z
     .array(goalSchema)
-    .describe("Tactical goals achievable in one session"),
-  short_term: z.array(goalSchema).describe("Immediate actionable goals"),
+    .describe(
+      "Tactical goals that will require many short term goals to achieve"
+    ),
+  short_term: z
+    .array(goalSchema)
+    .describe(
+      "Immediate actionable goals that will require a few tasks to achieve"
+    ),
 });
 
 // Initialize Groq client
