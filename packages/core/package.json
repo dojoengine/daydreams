@@ -54,7 +54,7 @@
     "ethers": "^6.13.5",
     "js-tiktoken": "^1.0.18",
     "mongodb": "^6.13.0",
-    "openai": "^4.83.0",
+    "openai": "^4.85.2",
     "starknet": "^6.23.1",
     "telegraf": "^4.16.3",
     "zod": "^3.24.2",
