@@ -146,7 +146,7 @@ container.singleton("tavily", () => {
 
 // Create Dreams agent instance
 const agent = createDreams({
-  logger: LogLevel.INFO,
+  logger: LogLevel.DEBUG,
   model: groq("deepseek-r1-distill-llama-70b"),
   extensions: [cli, deepResearch],
   context: goalContexts,
@@ -236,32 +236,32 @@ const agent = createDreams({
       },
     }),
   ],
-  // outputs: {
-  //   "goal-manager:state": output({
-  //     description:
-  //       "Use this when you need to update the goals. Use the goal id",
-  //     instructions: "Increment the state of the goal manager",
-  //     schema: z.object({
-  //       type: z
-  //         .enum(["SET", "UPDATE"])
-  //         .describe("SET to set the goals. UPDATE to update a goal."),
-  //       goal: goalSchema,
-  //     }),
-  //     handler: async (call, ctx, agent) => {
-  //       // get goal id
-  //       // update state of the goal id and the changes
+  outputs: {
+    "goal-manager:state": output({
+      description:
+        "Use this when you need to update the goals. Use the goal id to update the goal. You should attempt the goal then call this to update the goal.",
+      instructions: "Increment the state of the goal manager",
+      schema: z.object({
+        type: z
+          .enum(["SET", "UPDATE"])
+          .describe("SET to set the goals. UPDATE to update a goal."),
+        goal: goalSchema,
+      }),
+      handler: async (call, ctx, agent) => {
+        // get goal id
+        // update state of the goal id and the changes
 
-  //       console.log("handler", { call, ctx, agent });
+        console.log("handler", { call, ctx, agent });
 
-  //       return {
-  //         data: {
-  //           goal: "",
-  //         },
-  //         timestamp: Date.now(),
-  //       };
-  //     },
-  //   }),
-  // },
+        return {
+          data: {
+            goal: "",
+          },
+          timestamp: Date.now(),
+        };
+      },
+    }),
+  },
 }).start({
   id: "game",
   goalPlanningSchema: {
