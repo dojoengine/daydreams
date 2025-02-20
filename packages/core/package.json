@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/bun": "latest",
     "tsup": "^8.3.6",
-    "vitest": "^3.0.5"
+    "vitest": "^3.0.6"
   },
   "scripts": {
     "start": "bun run src/main.ts",
