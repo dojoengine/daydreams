@@ -11,24 +11,41 @@ import {
   action,
   LogLevel,
   evaluator,
+  output,
+  createContainer,
+  createChromaVectorStore,
+  createMemoryStore,
 } from "@daydreamsai/core/v1";
 import { deepResearch } from "./deep-research/research";
 import { string, z } from "zod";
-
-export const goalSchema = z.object({
-  id: z.string(),
-  description: z.string(),
-  success_criteria: z.array(z.string()),
-  dependencies: z.array(z.string()),
-  priority: z.number().min(1).max(10),
-  required_resources: z.array(z.string()),
-  estimated_difficulty: z.number().min(1).max(10),
-});
+import { tavily } from "@tavily/core";
+import { ETERNUM_CONTEXT } from "../v0/eternum-context";
+export const goalSchema = z
+  .object({
+    id: z.string(),
+    description: z.string().describe("A description of the goal"),
+    success_criteria: z.array(z.string()).describe("The criteria for success"),
+    dependencies: z.array(z.string()).describe("The dependencies of the goal"),
+    priority: z.number().min(1).max(10).describe("The priority of the goal"),
+    required_resources: z
+      .array(z.string())
+      .describe("The resources needed to achieve the goal"),
+    estimated_difficulty: z
+      .number()
+      .min(1)
+      .max(10)
+      .describe("The estimated difficulty of the goal"),
+  })
+  .describe("A goal to be achieved");
 
 export const goalPlanningSchema = z.object({
-  long_term: z.array(goalSchema),
-  medium_term: z.array(goalSchema),
-  short_term: z.array(goalSchema),
+  long_term: z
+    .array(goalSchema)
+    .describe("Strategic goals that might take multiple sessions"),
+  medium_term: z
+    .array(goalSchema)
+    .describe("Tactical goals achievable in one session"),
+  short_term: z.array(goalSchema).describe("Immediate actionable goals"),
 });
 
 // Initialize Groq client
@@ -50,11 +67,6 @@ Current Task: {{currentTask}}
 6. Ensure goals are achievable given the current context
 7. Consider past experiences when setting goals
 8. Use available game state information to inform strategy
-
-# Return a JSON structure with three arrays:
-- long_term: Strategic goals that might take multiple sessions
-- medium_term: Tactical goals achievable in one session
-- short_term: Immediate actionable goals
 
 # Each goal must include:
 - id: Unique temporary ID used in dependencies
@@ -100,12 +112,21 @@ const goalContexts = context({
   },
 });
 
+const container = createContainer();
+
+container.singleton("tavily", () => {
+  return tavily({
+    apiKey: process.env.TAVILY_API_KEY!,
+  });
+});
+
 // Create Dreams agent instance
 const agent = createDreams({
-  logger: LogLevel.DEBUG,
+  logger: LogLevel.INFO,
   model: groq("deepseek-r1-distill-llama-70b"),
   extensions: [cli, deepResearch],
   context: goalContexts,
+  container,
   actions: [
     action({
       name: "addTask",
@@ -139,23 +160,6 @@ const agent = createDreams({
         agentMemory.short_term.push(...call.data.goal.short_term);
         return call;
       },
-      evaluator: {
-        name: "validateGoalPlanning",
-        description: "Ensures the goal planning is achievable",
-        prompt: "Ensure the goal is achievable",
-        handler: async (data, result, ctx, agent) => {
-          console.log("evaluationContext", result);
-          const isValid = true;
-          return isValid;
-        },
-        schema: z.object({
-          isValid: z.boolean(),
-          reason: z.string(),
-        }),
-        onFailure: async (ctx, agent) => {
-          console.log({ ctx, agent });
-        },
-      },
     }),
     action({
       name: "updateGoal",
@@ -179,7 +183,61 @@ const agent = createDreams({
         return {};
       },
     }),
+    action({
+      name: "queryEternum",
+      description:
+        "This will tell you everything you need to know about Eternum for how to win the game",
+      schema: z.object({ query: z.string() }),
+      handler(call, ctx, agent) {
+        return {
+          data: {
+            result: ETERNUM_CONTEXT,
+          },
+          timestamp: Date.now(),
+        };
+      },
+    }),
+    action({
+      name: "Query:Eternum:Graphql",
+      description: "Search Eternum GraphQL API",
+      schema: z.object({ query: z.string() }),
+      handler(call, ctx, agent) {
+        console.log(call.data.query);
+        return {
+          data: {
+            result: ETERNUM_CONTEXT,
+          },
+          timestamp: Date.now(),
+        };
+      },
+    }),
   ],
+  // outputs: {
+  //   "goal-manager:state": output({
+  //     description:
+  //       "Use this when you need to update the goals. Use the goal id",
+  //     instructions: "Increment the state of the goal manager",
+  //     schema: z.object({
+  //       type: z
+  //         .enum(["SET", "UPDATE"])
+  //         .describe("SET to set the goals. UPDATE to update a goal."),
+  //       goal: goalSchema,
+  //     }),
+  //     handler: async (call, ctx, agent) => {
+  //       // get goal id
+  //       // update state of the goal id and the changes
+
+  //       console.log("handler", { call, ctx, agent });
+
+  //       return {
+  //         data: {
+  //           goal: "",
+  //         },
+  //         timestamp: Date.now(),
+  //       };
+  //     },
+  //   }),
+  // },
 }).start({
   id: "game",
   goalPlanningSchema: {

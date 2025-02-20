@@ -150,27 +150,38 @@ export function createDreams<
     },
 
     async start(args) {
-      logger.info("agent:start", "booting", { args, booted });
+      logger.info("agent:lifecycle", "Starting agent", { args, booted });
       if (booted) return agent;
 
       booted = true;
 
+      logger.info("agent:lifecycle", "Booting services");
       await serviceManager.bootAll();
 
+      logger.info("agent:lifecycle", "Installing extensions");
       for (const extension of extensions) {
         if (extension.install) await extension.install(agent);
       }
 
+      logger.info("agent:lifecycle", "Setting up input handlers");
       for (const [key, input] of Object.entries(agent.inputs)) {
         if (input.install) await Promise.resolve(input.install(agent));
 
         if (input.subscribe) {
           let subscription = input.subscribe((contextHandler, args, data) => {
-            logger.info("agent", "input", { contextHandler, args, data });
+            logger.debug("agent:input", "Received input", {
+              type: key,
+              contextHandler: contextHandler.type,
+              args,
+            });
             agent
               .send(contextHandler, args, { type: key, data })
               .catch((err) => {
-                logger.error("agent:input", "error", err);
+                logger.error("agent:input", "Failed to process input", {
+                  type: key,
+                  error: err.message,
+                  stack: err.stack,
+                });
               });
           }, agent);
 
@@ -202,11 +213,22 @@ export function createDreams<
     async stop() {},
 
     run: async (context, args) => {
-      if (!booted) throw new Error("Not booted");
+      if (!booted) throw new Error("Agent not booted");
 
       const ctxState = await getContextState(context, args);
 
-      if (contextsRunning.has(ctxState.id)) return;
+      logger.info("agent:run", "Starting context run", {
+        contextType: context.type,
+        contextId: ctxState.id,
+        args,
+      });
+
+      if (contextsRunning.has(ctxState.id)) {
+        logger.debug("agent:run", "Context already running", {
+          contextId: ctxState.id,
+        });
+        return;
+      }
       contextsRunning.add(ctxState.id);
 
       const workingMemory = await getContextWorkingMemory(ctxState.id);
@@ -266,6 +288,14 @@ export function createDreams<
       let hasError = false;
 
       while (maxSteps > step) {
+        logger.debug("agent:run", "Starting step", {
+          step,
+          maxSteps,
+          contextId: ctxState.id,
+          pendingResults: workingMemory.results.filter((r) => !r.processed)
+            .length,
+        });
+
         const data =
           step > 1
             ? await taskRunner.enqueueTask(
@@ -301,6 +331,14 @@ export function createDreams<
                   debug: agent.debugger,
                 }
               );
+
+        logger.debug("agent:run", "Generated response", {
+          contextId: ctxState.id,
+          step,
+          thoughts: data.think.length,
+          actions: data.calls.length,
+          outputs: data.outputs.length,
+        });
 
         logger.debug("agent:parsed", "data", data);
 
@@ -520,12 +558,23 @@ export function createDreams<
 
         step++;
 
-        if (hasError) continue;
+        if (hasError) {
+          logger.warn("agent:run", "Step completed with errors", {
+            contextId: ctxState.id,
+            step,
+          });
+          continue;
+        }
 
         if (
           workingMemory.results.find((i) => i.processed === false) === undefined
-        )
+        ) {
+          logger.info("agent:run", "All results processed, ending run", {
+            contextId: ctxState.id,
+            totalSteps: step,
+          });
           break;
+        }
       }
 
       workingMemory.inputs.forEach((i) => {
@@ -533,6 +582,11 @@ export function createDreams<
       });
 
       await agent.memory.store.set(ctxState.id, workingMemory);
+
+      logger.info("agent:run", "Context run completed", {
+        contextId: ctxState.id,
+        totalSteps: step - 1,
+      });
 
       contextsRunning.delete(ctxState.id);
     },
@@ -555,7 +609,7 @@ export function createDreams<
       const data = input.schema.parse(params.data);
 
       if (input.handler) {
-        const result = await input.handler(
+        await input.handler(
           data,
           {
             type: contextHandler.type,
@@ -566,46 +620,6 @@ export function createDreams<
           } as any,
           agent
         );
-
-        // Handle output evaluation
-        const output = agent.outputs[params.type];
-        if (output?.evaluator || contextHandler.evaluation?.outputEvaluator) {
-          const evaluator =
-            output?.evaluator || contextHandler.evaluation?.outputEvaluator;
-
-          if (evaluator) {
-            const isValid = await runEvaluation(
-              evaluator,
-              result,
-              {
-                type: contextHandler.type,
-                key,
-                memory,
-                workingMemory,
-                options,
-              } as any,
-              agent
-            );
-
-            if (!isValid) {
-              logger.warn("agent:output", "OUTPUT_EVALUATION_FAILED", {
-                type: params.type,
-              });
-              if (evaluator.onFailure) {
-                await evaluator.onFailure(
-                  {
-                    type: contextHandler.type,
-                    key,
-                    memory,
-                    workingMemory,
-                    options,
-                  } as any,
-                  agent
-                );
-              }
-            }
-          }
-        }
       } else {
         workingMemory.inputs.push({
           ref: "input",
@@ -823,9 +837,18 @@ export const runAction = task(
     agent: AnyAgent;
     logger: Logger;
   }) => {
+    logger.debug("agent:action", "Executing action", {
+      actionName: action.name,
+      callId: call.id,
+      contextId: context.id,
+    });
+
     try {
       const result = await action.handler(call, context, agent);
-      logger.debug("agent:action", "ACTION_SUCCESS", { result });
+      logger.debug("agent:action", "Action completed successfully", {
+        actionName: action.name,
+        callId: call.id,
+      });
 
       // Handle action evaluation
       const shouldEvaluate =
@@ -854,6 +877,10 @@ export const runAction = task(
             agent
           );
 
+          // save state here
+          // @dev: TODO: save state here
+          // eposodic memory saved here:
+
           if (!isValid) {
             logger.warn("agent:action", "ACTION_EVALUATION_FAILED", {
               action: action.name,
@@ -868,7 +895,12 @@ export const runAction = task(
 
       return result;
     } catch (error) {
-      logger.error("agent:action", "ACTION_FAILED", { error });
+      logger.error("agent:action", "Action execution failed", {
+        actionName: action.name,
+        callId: call.id,
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      });
       throw error;
     }
   }
@@ -944,6 +976,7 @@ function renderContexts(
 }
 
 // Update runEvaluation to handle the enhanced evaluation context
+// @dev: TODO: make a render context function for the evaluation prompt
 async function runEvaluation<Data = any>(
   evaluator: Evaluator<Data>,
   data: Data,
