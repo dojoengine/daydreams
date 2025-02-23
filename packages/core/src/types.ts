@@ -636,21 +636,6 @@ export interface Context<
   /** Optional function to render memory state as string(s) */
   render?: (state: ContextState<this>) => string | string[];
 
-  /** Optional configuration for evaluation behavior */
-  evaluation?: {
-    /** Evaluate after every action execution */
-    evaluateActions?: boolean;
-    /** Global evaluator for all actions */
-    actionEvaluator?: Evaluator<any, z.AnyZodObject, AgentContext<Memory>>;
-    /** Global evaluator for all outputs */
-    outputEvaluator?: Evaluator<any, z.AnyZodObject, AgentContext<Memory>>;
-    /** Default prompt template for action evaluation */
-    defaultActionPrompt?: string;
-    /** Default prompt template for output evaluation */
-    defaultOutputPrompt?: string;
-    /** Default schema for evaluation results */
-    defaultSchema?: z.ZodType<any>;
-  };
   use?: [];
 }
 
