@@ -1,20 +1,24 @@
 import * as React from "react";
-import { Bot, MessageSquare, History, Bookmark, Settings } from "lucide-react";
+import {
+  Bot,
+  MessageSquare,
+  History,
+  Bookmark,
+  Settings,
+  Wrench,
+} from "lucide-react";
 import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
-import { NavUser } from "@/components/nav-user";
-import { TeamSwitcher } from "@/components/team-switcher";
-import { useChatHistories } from "@/hooks/use-chat-histories";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarRail,
+  SidebarSeparator,
 } from "@/components/ui/sidebar";
-import { ModeToggle } from "./mode-toggle";
 import { Link } from "@tanstack/react-router";
-
+import { useAgent } from "@/hooks/use-agent";
+import { useQuery } from "@tanstack/react-query";
 // This is sample data.
 const data = {
   user: {
@@ -31,39 +35,40 @@ const data = {
   ],
   navMain: [
     {
-      title: "Agents",
-      url: "#",
+      title: "Home",
+      url: "/",
       icon: Bot,
       isActive: true,
-      items: [
-        {
-          title: "My Agents",
-          url: "#",
-        },
-        {
-          title: "Create Agent",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
     },
+
+    // {
+    //   title: "Agents",
+    //   url: "#",
+    //   icon: Bot,
+    //   isActive: true,
+    //   items: [
+    //     {
+    //       title: "My Agents",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Create Agent",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Settings",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
     {
       title: "Chats",
       url: "#",
       icon: MessageSquare,
       items: [
         {
-          title: "Recent Chats",
-          url: "#",
-          icon: History,
-          component: ChatHistoryList,
-        },
-        {
-          title: "Saved",
-          url: "#",
+          title: "New",
+          url: "/chats/new",
           icon: Bookmark,
         },
         {
@@ -71,7 +76,19 @@ const data = {
           url: "#",
           icon: Settings,
         },
+        {
+          title: "Recent Chats",
+          url: "#",
+          icon: History,
+          component: ChatHistoryList,
+        },
       ],
+    },
+    {
+      title: "Workbench",
+      url: "/workbench",
+      icon: Wrench,
+      isActive: true,
     },
   ],
   projects: [],
@@ -79,34 +96,40 @@ const data = {
 
 // Create a new ChatHistory component
 function ChatHistoryList() {
-  const { chatItems, loading, error } = useChatHistories();
+  const agent = useAgent();
 
-  if (loading) {
-    return <div className="px-4 py-2 text-sm">Loading histories...</div>;
+  const chats = useQuery({
+    queryKey: ["agent:chats"],
+
+    queryFn: async () => {
+      const contexts = await agent.getContexts();
+      return contexts.filter((ctx) => ctx.type === "chat");
+    },
+  });
+
+  if (chats.isLoading) {
+    return <div className="px-4 py-2 text-sm">Loading chats...</div>;
   }
 
-  if (error) {
-    return <div className="px-4 py-2 text-sm text-red-500">{error}</div>;
+  if (chats.isError) {
+    return (
+      <div className="px-4 py-2 text-sm text-red-500">
+        {chats.error.message}
+      </div>
+    );
   }
-
-  console.log(chatItems);
 
   return (
-    <div className="space-y-1">
-      {chatItems.map((chat) => (
-        <Link to={"/chats/$chatId"} params={{ chatId: chat._id }}>
-          <button
-            key={chat._id}
-            className="w-full px-4 py-2 text-left text-sm hover:bg-accent/50 rounded-lg"
-          >
-            <div className="font-medium truncate">{chat.title}</div>
-            {chat.lastMessage && (
-              <div className="text-xs text-muted-foreground truncate">
-                {chat.lastMessage}
-              </div>
-            )}
-          </button>
-        </Link>
+    <div>
+      <SidebarSeparator className="my-4" />
+      {chats.data?.map((chat) => (
+        <SidebarMenuSubItem key={chat.id}>
+          <SidebarMenuSubButton asChild>
+            <Link to={"/chats/$chatId"} params={{ chatId: chat.args.chatId }}>
+              <div className="font-medium truncate">{chat.args.chatId}</div>
+            </Link>
+          </SidebarMenuSubButton>
+        </SidebarMenuSubItem>
       ))}
     </div>
   );
@@ -121,11 +144,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     >
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
-      <SidebarFooter>
+      {/* <SidebarFooter>
         <NavUser user={data.user} />
-      </SidebarFooter>
+      </SidebarFooter> */}
       <SidebarRail />
     </Sidebar>
   );

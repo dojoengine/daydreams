@@ -107,6 +107,7 @@ export function SidebarRight({
     <Sidebar
       collapsible="none"
       className="sticky hidden lg:flex top-0 h-svh border bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)]"
+      side="right"
       {...props}
     >
       <SidebarContent className="px-4 py-4">

@@ -7,7 +7,7 @@ import {
   OpenAIEmbeddingFunction,
   type IEmbeddingFunction,
 } from "chromadb";
-import type { InferContextMemory, VectorStore } from "../types";
+import type { InferContextMemory, VectorStore } from "../../types";
 
 /**
  * Implementation of VectorStore using ChromaDB as the backend

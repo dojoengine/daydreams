@@ -1,5 +1,6 @@
 import { createGroq } from "@ai-sdk/groq";
-import { cli, createDreams, LogLevel } from "@daydreamsai/core/v1";
+import { createDreams, LogLevel } from "@daydreamsai/core";
+import { cli } from "@daydreamsai/core/extensions";
 import { deepResearch } from "./research";
 
 const groq = createGroq({

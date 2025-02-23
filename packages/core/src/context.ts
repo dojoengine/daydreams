@@ -24,18 +24,25 @@ export function context<
   return ctx;
 }
 
+export function getWorkingMemoryLogs(
+  memory: Partial<WorkingMemory>,
+  includeThoughts = true
+) {
+  return [
+    ...(memory.inputs ?? []),
+    ...(memory.outputs ?? []),
+    ...(memory.calls ?? []),
+    ...((includeThoughts ? memory.thoughts : undefined) ?? []),
+    ...(memory.results ?? []),
+  ].sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
+}
+
 export function defaultContextRender({
   memory,
 }: {
   memory: Partial<WorkingMemory>;
 }) {
-  return [
-    ...(memory.inputs ?? []),
-    ...(memory.outputs ?? []),
-    ...(memory.calls ?? []),
-    ...(memory.results ?? []),
-  ]
-    .sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1))
+  return getWorkingMemoryLogs(memory, false)
     .map((i) => formatContextLog(i))
     .flat();
 }

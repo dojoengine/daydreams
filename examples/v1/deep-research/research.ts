@@ -14,8 +14,9 @@ import {
   extension,
   context,
   type Debugger,
-} from "@daydreamsai/core/v1";
+} from "@daydreamsai/core";
 import { z } from "zod";
+import { v7 as randomUUUIDv7 } from "uuid";
 
 export type Research = {
   id: string;
@@ -295,6 +296,7 @@ const startDeepResearchAction = action({
       .then((res) => {
         ctx.workingMemory.results.push({
           ref: "action_result",
+          id: randomUUUIDv7(),
           callId: call.id,
           data: res,
           name: call.name,
@@ -304,7 +306,10 @@ const startDeepResearchAction = action({
 
         research.status = "done";
 
-        return agent.run(ctx.context, ctx.args);
+        return agent.run({
+          context: ctx.context,
+          args: ctx.args,
+        });
       })
       .catch((err) => console.error(err));
 
@@ -329,7 +334,7 @@ const deepResearchContext = context({
   type: "deep-research",
   schema: z.string(),
   key: (id) => id,
-  create(params, ctx) {
+  create() {
     return researchMemory.create();
   },
 });

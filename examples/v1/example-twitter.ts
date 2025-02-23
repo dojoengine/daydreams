@@ -1,5 +1,6 @@
 import { createGroq } from "@ai-sdk/groq";
-import { createDreams, LogLevel, memory, twitter } from "@daydreamsai/core/v1";
+import { twitter } from "@daydreamsai/core/extensions";
+import { createDreams, LogLevel, memory } from "@daydreamsai/core";
 
 const groq = createGroq({
   apiKey: process.env.GROQ_API_KEY!,

@@ -1,4 +1,4 @@
-import { createParser, createPrompt, formatXml } from "@daydreamsai/core/v1";
+import { createParser, createPrompt, formatXml } from "@daydreamsai/core";
 import { z } from "zod";
 import zodToJsonSchema from "zod-to-json-schema";
 import { type Research } from "./research";

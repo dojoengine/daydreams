@@ -1,5 +1,5 @@
 import { Collection, MongoClient, ObjectId } from "mongodb";
-import type { MemoryStore } from "../types";
+import type { MemoryStore } from "../../types";
 
 export interface MongoMemoryOptions {
   uri: string;

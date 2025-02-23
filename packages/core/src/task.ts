@@ -1,5 +1,5 @@
+import { v7 as randomUUIDv7 } from "uuid";
 import type { Debugger } from "./types";
-import { randomUUID } from "crypto";
 
 /**
  * Options for configuring a task.
@@ -9,6 +9,7 @@ export type TaskOptions = {
   retry?: number;
   debug?: Debugger;
   priority?: number;
+  callId?: string;
 };
 
 /**
@@ -22,9 +23,15 @@ export type TaskContext = {
 /**
  * A task function that takes parameters and options and returns a promise.
  */
-export type Task<Params, Result> = {
-  (params: Params, options?: TaskOptions): Promise<Result>;
-};
+export type Task<in Params, out Result> = (
+  params: Params,
+  options?: TaskOptions
+) => Promise<Result>;
+
+type InferTaskParams<T extends Task<any, any>> =
+  T extends Task<infer Params, any> ? Params : unknown;
+type InferTaskResult<T extends Task<any, any>> =
+  T extends Task<any, infer Result> ? Result : unknown;
 
 /**
  * Represents a task that is queued for execution.
@@ -109,7 +116,7 @@ export class TaskRunner {
   enqueue<T>(taskFn: () => Promise<T>, priority: number = 0): Promise<T> {
     return new Promise((resolve, reject) => {
       const queuedTask: QueuedTask = {
-        id: randomUUID(),
+        id: randomUUIDv7(),
         execute: taskFn,
         priority,
         resolve,
@@ -143,11 +150,11 @@ export class TaskRunner {
    * @param options - Task options including priority
    * @returns A promise that resolves when the task is completed
    */
-  enqueueTask<Params, Result>(
-    taskFn: (params: Params, options?: TaskOptions) => Promise<Result>,
-    params: Params,
+  enqueueTask<TTask extends Task<any, any>>(
+    taskFn: TTask,
+    params: InferTaskParams<TTask>,
     options: TaskOptions = {}
-  ): Promise<Result> {
+  ): Promise<InferTaskResult<TTask>> {
     return this.enqueue(() => taskFn(params, options), options.priority ?? 0);
   }
 }
@@ -162,15 +169,17 @@ export class TaskRunner {
 export function task<Params, Result>(
   key: string,
   fn: (params: Params, ctx: TaskContext) => Promise<Result>,
-  defaultOptions?: TaskOptions
+  defaultOptions?: Omit<TaskOptions, "callId">
 ): (params: Params, options?: TaskOptions) => Promise<Result> {
   async function execute(params: Params, options?: TaskOptions) {
-    const callId = randomUUID();
+    const callId = options?.callId ?? randomUUIDv7();
 
     const mergedOptions = {
       ...defaultOptions,
       ...options,
     };
+
+    delete mergedOptions.callId;
 
     try {
       const res = await Promise.resolve(

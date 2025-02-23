@@ -185,3 +185,97 @@ export function isElement(node: Node): node is ElementNode {
 export function isText(node: Node): node is TextNode {
   return node.type === "text";
 }
+
+type StartTag = {
+  type: "start";
+  name: string;
+  attributes: Record<string, string>;
+};
+
+type EndTag = {
+  type: "end";
+  name: string;
+};
+
+type TextContent = {
+  type: "text";
+  content: string;
+};
+
+type SelfClosingTag = {
+  type: "self-closing";
+  name: string;
+  attributes: Record<string, string>;
+};
+
+type XMLToken = StartTag | EndTag | TextContent | SelfClosingTag;
+
+export function* xmlStreamParser(
+  parseTags: Set<string>
+): Generator<XMLToken | void, void, string> {
+  let buffer = "";
+  let textContent = "";
+
+  while (true) {
+    const chunk = yield;
+    if (!chunk) continue;
+
+    buffer += chunk;
+
+    while (buffer.length > 0) {
+      const tagStart = buffer.indexOf("<");
+
+      if (tagStart > 0) {
+        const text = buffer.slice(0, tagStart).trim();
+        textContent += text;
+        buffer = buffer.slice(tagStart);
+        break;
+      }
+
+      if (tagStart === -1) {
+        textContent += buffer;
+        buffer = "";
+        break;
+      }
+
+      const tagEnd = buffer.indexOf(">", tagStart);
+      if (tagEnd === -1) {
+        // textContent += buffer;
+        // buffer = "";
+        break;
+      }
+
+      let tagContent = buffer.slice(tagStart + 1, tagEnd);
+      const isClosingTag = tagContent.startsWith("/");
+      const tagName = isClosingTag
+        ? tagContent.slice(1).trim().split(" ")[0]
+        : tagContent.trim().split(" ")[0];
+
+      if (parseTags.has(tagName)) {
+        // Emit accumulated text if any
+        if (textContent) {
+          yield { type: "text", content: textContent };
+          textContent = "";
+        }
+
+        if (isClosingTag) {
+          yield { type: "end", name: tagName };
+        } else {
+          const attributes = parseAttributes(tagContent.slice(tagName.length));
+          yield { type: "start", name: tagName, attributes };
+        }
+      } else {
+        // Not a tag we care about, treat as text
+        textContent += buffer.slice(0, tagEnd + 1);
+      }
+
+      buffer = buffer.slice(tagEnd + 1);
+    }
+
+    // Emit accumulated text if buffer is empty
+    if (textContent) {
+      yield { type: "text", content: textContent };
+      textContent = "";
+    }
+  }
+}

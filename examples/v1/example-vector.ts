@@ -3,10 +3,9 @@ import {
   createContainer,
   createDreams,
   LogLevel,
-  cli,
-  createChromaVectorStore,
   createMemoryStore,
-} from "@daydreamsai/core/v1";
+} from "@daydreamsai/core";
+import { cli, createChromaVectorStore } from "@daydreamsai/core/extensions";
 
 const groq = createGroq({
   apiKey: process.env.GROQ_API_KEY!,

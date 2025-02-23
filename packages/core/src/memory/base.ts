@@ -3,22 +3,12 @@ import type { MemoryStore, VectorStore, WorkingMemory } from "../types";
 /**
  * Base memory implementation providing storage and vector capabilities
  */
-export class BaseMemory {
+export type BaseMemory = {
   /** Store for conversation memory data */
   store: MemoryStore;
   /** Store for vector embeddings and similarity search */
   vector: VectorStore;
-
-  /**
-   * Creates a new BaseMemory instance
-   * @param store - Memory store implementation for conversation data
-   * @param vector - Vector store implementation for embeddings
-   */
-  constructor(store: MemoryStore, vector: VectorStore) {
-    this.store = store;
-    this.vector = vector;
-  }
-}
+};
 
 /**
  * Creates a new BaseMemory instance
@@ -26,8 +16,11 @@ export class BaseMemory {
  * @param vector - Vector store implementation for embeddings
  * @returns A new BaseMemory instance
  */
-export function createMemory(store: MemoryStore, vector: VectorStore) {
-  return new BaseMemory(store, vector);
+export function createMemory(
+  store: MemoryStore,
+  vector: VectorStore
+): BaseMemory {
+  return { store, vector };
 }
 
 /**
@@ -55,8 +48,8 @@ export async function getOrCreateConversationMemory(
  * Creates a new in-memory store for conversation data
  * @returns A MemoryStore implementation using a Map for storage
  */
+const data = new Map<string, any>();
 export function createMemoryStore(): MemoryStore {
-  const data = new Map<string, any>();
   return {
     /**
      * Retrieves a value from the store
@@ -64,7 +57,7 @@ export function createMemoryStore(): MemoryStore {
      * @returns The stored value or null if not found
      */
     async get(key: string) {
-      return data.get(key);
+      return data.get(key) ?? null;
     },
 
     /**

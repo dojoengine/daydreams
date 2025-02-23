@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { MessagesList } from "@/components/message-list";
 import { generateUserId, useDaydreamsWs } from "@/hooks/use-daydreams";
-import { useChatHistory } from "@/hooks/use-chat-history";
 import { useSingleChatHistory } from "@/hooks/use-single-chat-history";
 
 interface MessageType {
@@ -82,7 +81,7 @@ function ChatUI({ chatId }: { chatId: string }) {
 
   // Add quote cycling effect when loading
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: Timer;
     if (isLoading) {
       interval = setInterval(() => {
         setQuoteIndex((prev) => (prev + 1) % bladerunnerQuotes.length);

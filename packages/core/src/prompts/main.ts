@@ -5,6 +5,7 @@ import {
 } from "../formatters";
 import { createParser, createPrompt } from "../prompt";
 import type { ActionResult, AnyAction, Log, Output } from "../types";
+import { xmlStreamParser } from "../xml";
 
 const promptTemplate = `
 You are tasked with analyzing messages, formulating responses, and initiating actions based on a given context. 
@@ -115,7 +116,8 @@ export const prompt = createPrompt(
   }) => ({
     context: context,
     outputs: outputs.map(formatOutputInterface),
-    actions: actions.map(formatAction),
+    actions:
+      actions.length > 0 ? actions.map(formatAction) : "NO ACTIONS AVAILABLE",
     updates: updates,
     examples: [],
   })
@@ -310,3 +312,88 @@ export const resultsPrompt = createPrompt(
     examples: [],
   })
 );
+
+type AsyncIterableStream<T> = AsyncIterable<T> & ReadableStream<T>;
+
+export type StackElement = {
+  index: number;
+  tag: string;
+  attributes: Record<string, any>;
+  content: string[];
+  done: boolean;
+};
+
+const tags = new Set([
+  "think",
+  "response",
+  "output",
+  "action_call",
+  "reasoning",
+]);
+
+export async function handleStream(
+  textStream: AsyncGenerator<string>,
+  initialIndex: number,
+  fn: (el: StackElement) => void
+) {
+  const parser = xmlStreamParser(tags);
+
+  parser.next();
+
+  let current: StackElement | undefined = undefined;
+  let stack: StackElement[] = [];
+
+  let index = initialIndex;
+
+  async function handleChunk(chunk: string) {
+    let result = parser.next(chunk);
+    while (!result.done && result.value) {
+      if (result.value.type === "start") {
+        if (current) stack.push(current);
+        current = {
+          index: index++,
+          tag: result.value.name,
+          attributes: result.value.attributes,
+          content: [],
+          done: false,
+        };
+        fn(current);
+      }
+
+      if (result.value.type === "end") {
+        if (current)
+          fn({
+            ...current,
+            done: true,
+          });
+        current = stack.pop();
+      }
+
+      if (result.value.type === "text") {
+        if (current) {
+          current.content.push(result.value.content);
+          fn(current);
+        }
+      }
+      result = parser.next();
+    }
+  }
+
+  for await (const chunk of textStream) {
+    handleChunk(chunk);
+  }
+
+  parser.return?.();
+}
+
+export async function* wrapStream(
+  stream: AsyncIterableStream<string>,
+  prefix: string,
+  suffix: string
+) {
+  yield prefix;
+  for await (const value of stream) {
+    yield value;
+  }
+  yield suffix;
+}

@@ -102,64 +102,13 @@
   font-style: italic;
 }
 
-@layer utilities {
-  .dither-border {
-    position: relative;
-    background: hsl(var(--card));
-    z-index: 1;
-    border: 1px solid hsl(var(--primary));
-  }
 
-  .dither-border::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    top: 8px;
-    left: 8px;
-    z-index: -1;
-    background-image: conic-gradient(
-      from var(--border-angle),
-      hsl(var(--primary)) 0%,
-      hsl(var(--primary)) 12.5%,
-      transparent 12.5%,
-      transparent 25%,
-      hsl(var(--primary)) 25%,
-      hsl(var(--primary)) 37.5%,
-      transparent 37.5%,
-      transparent 50%,
-      hsl(var(--primary)) 50%,
-      hsl(var(--primary)) 62.5%,
-      transparent 62.5%,
-      transparent 75%,
-      hsl(var(--primary)) 75%,
-      hsl(var(--primary)) 87.5%,
-      transparent 87.5%,
-      transparent 100%
-    );
-    background-size: 8px 8px;
-    background-position: 0px 0px;
-    animation: border-rotate 8s linear infinite;
-  }
 
-  .dither-border::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: inherit;
-    z-index: 1;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-
-  .dither-border > * {
-    position: relative;
-    z-index: 3;
-  }
-
-  @keyframes border-rotate {
-    from {
-      --border-angle: 0turn;
-    }
-    to {
-      --border-angle: 1turn;
-    }
+  body {
+    @apply bg-background text-foreground;
   }
 }

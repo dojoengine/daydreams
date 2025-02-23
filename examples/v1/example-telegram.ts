@@ -2,10 +2,10 @@ import { createGroq } from "@ai-sdk/groq";
 import {
   createDreams,
   LogLevel,
-  telegram,
   seachWebAction,
   getWeatherAction,
-} from "@daydreamsai/core/v1";
+} from "@daydreamsai/core";
+import { telegram } from "@daydreamsai/core/extensions";
 import { deepResearch } from "./deep-research/research";
 
 const groq = createGroq({

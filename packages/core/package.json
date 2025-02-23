@@ -14,15 +14,15 @@
         "default": "./src/index.ts"
       }
     },
-    "./v1": {
+    "./extensions": {
       "import": {
-        "@daydreamsai/core": "./src/core/v1/index.ts",
-        "types": "./src/core/v1/index.ts",
-        "default": "./src/core/v1/index.ts"
+        "@daydreamsai/core": "./src/extensions/index.ts",
+        "types": "./src/extensions/index.ts",
+        "default": "./src/extensions/index.ts"
       }
     },
     "./io/*": {
-      "default": "./src/core/v1/io/*.ts"
+      "default": "./src/io/*.ts"
     }
   },
   "devDependencies": {
@@ -54,8 +54,10 @@
     "js-tiktoken": "^1.0.18",
     "mongodb": "^6.13.0",
     "openai": "^4.83.0",
+    "p-defer": "^4.0.1",
     "starknet": "^6.23.1",
     "telegraf": "^4.16.3",
+    "uuid": "^11.0.5",
     "zod": "^3.24.2",
     "zod-to-json-schema": "^3.24.1"
   }

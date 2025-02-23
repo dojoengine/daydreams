@@ -8,111 +8,111 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router'
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as ChatsIndexImport } from "./routes/chats/index";
-import { Route as ChatsChatIdImport } from "./routes/chats/$chatId";
+import { Route as rootRoute } from './routes/__root'
+import { Route as WorkbenchIndexImport } from './routes/workbench/index'
+import { Route as ChatsChatIdImport } from './routes/chats/$chatId'
 
 // Create Virtual Routes
 
-const IndexLazyImport = createFileRoute("/")();
+const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
 
 const IndexLazyRoute = IndexLazyImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
-const ChatsIndexRoute = ChatsIndexImport.update({
-  id: "/chats/",
-  path: "/chats/",
+const WorkbenchIndexRoute = WorkbenchIndexImport.update({
+  id: '/workbench/',
+  path: '/workbench/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const ChatsChatIdRoute = ChatsChatIdImport.update({
-  id: "/chats/$chatId",
-  path: "/chats/$chatId",
+  id: '/chats/$chatId',
+  path: '/chats/$chatId',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexLazyImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/chats/$chatId": {
-      id: "/chats/$chatId";
-      path: "/chats/$chatId";
-      fullPath: "/chats/$chatId";
-      preLoaderRoute: typeof ChatsChatIdImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/chats/": {
-      id: "/chats/";
-      path: "/chats";
-      fullPath: "/chats";
-      preLoaderRoute: typeof ChatsIndexImport;
-      parentRoute: typeof rootRoute;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/chats/$chatId': {
+      id: '/chats/$chatId'
+      path: '/chats/$chatId'
+      fullPath: '/chats/$chatId'
+      preLoaderRoute: typeof ChatsChatIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/workbench/': {
+      id: '/workbench/'
+      path: '/workbench'
+      fullPath: '/workbench'
+      preLoaderRoute: typeof WorkbenchIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexLazyRoute;
-  "/chats/$chatId": typeof ChatsChatIdRoute;
-  "/chats": typeof ChatsIndexRoute;
+  '/': typeof IndexLazyRoute
+  '/chats/$chatId': typeof ChatsChatIdRoute
+  '/workbench': typeof WorkbenchIndexRoute
 }
 
 export interface FileRoutesByTo {
-  "/": typeof IndexLazyRoute;
-  "/chats/$chatId": typeof ChatsChatIdRoute;
-  "/chats": typeof ChatsIndexRoute;
+  '/': typeof IndexLazyRoute
+  '/chats/$chatId': typeof ChatsChatIdRoute
+  '/workbench': typeof WorkbenchIndexRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  "/": typeof IndexLazyRoute;
-  "/chats/$chatId": typeof ChatsChatIdRoute;
-  "/chats/": typeof ChatsIndexRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexLazyRoute
+  '/chats/$chatId': typeof ChatsChatIdRoute
+  '/workbench/': typeof WorkbenchIndexRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/chats/$chatId" | "/chats";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/chats/$chatId" | "/chats";
-  id: "__root__" | "/" | "/chats/$chatId" | "/chats/";
-  fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/chats/$chatId' | '/workbench'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/chats/$chatId' | '/workbench'
+  id: '__root__' | '/' | '/chats/$chatId' | '/workbench/'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute;
-  ChatsChatIdRoute: typeof ChatsChatIdRoute;
-  ChatsIndexRoute: typeof ChatsIndexRoute;
+  IndexLazyRoute: typeof IndexLazyRoute
+  ChatsChatIdRoute: typeof ChatsChatIdRoute
+  WorkbenchIndexRoute: typeof WorkbenchIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   ChatsChatIdRoute: ChatsChatIdRoute,
-  ChatsIndexRoute: ChatsIndexRoute,
-};
+  WorkbenchIndexRoute: WorkbenchIndexRoute,
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
@@ -122,7 +122,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/chats/$chatId",
-        "/chats/"
+        "/workbench/"
       ]
     },
     "/": {
@@ -131,8 +131,8 @@ export const routeTree = rootRoute
     "/chats/$chatId": {
       "filePath": "chats/$chatId.tsx"
     },
-    "/chats/": {
-      "filePath": "chats/index.tsx"
+    "/workbench/": {
+      "filePath": "workbench/index.tsx"
     }
   }
 }
