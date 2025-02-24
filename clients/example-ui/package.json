@@ -31,7 +31,7 @@
     "react-dom": "^18.3.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
-    "three": "^0.172.0"
+    "three": "^0.173.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
