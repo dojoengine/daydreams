@@ -23,7 +23,7 @@
     "@radix-ui/react-tooltip": "^1.1.6",
     "@tanstack/react-query": "^5.66.8",
     "@tanstack/react-router": "^1.97.23",
-    "@types/three": "^0.172.0",
+    "@types/three": "^0.173.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.475.0",
