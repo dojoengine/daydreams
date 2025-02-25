@@ -48,7 +48,7 @@
     "@mysten/sui": "^1.16.0",
     "@solana/web3.js": "^1.98.0",
     "agent-twitter-client": "^0.0.18",
-    "ai": "^4.1.41",
+    "ai": "^4.1.46",
     "ajv": "^8.17.1",
     "bignumber.js": "9.1.2",
     "bs58": "^6.0.0",
