@@ -26,7 +26,7 @@
     "@types/three": "^0.172.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.475.0",
+    "lucide-react": "^0.476.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwind-merge": "^3.0.2",
