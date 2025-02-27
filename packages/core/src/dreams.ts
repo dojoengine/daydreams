@@ -319,9 +319,9 @@ export function createDreams<
         count: contextOuputs.length,
       });
 
-      const maxSteps = 5;
+      const maxSteps = 10;
       let step = 1;
-      const minSteps = 3; // Increased from 2 to 3 to ensure more steps are executed
+      const minSteps = 3; // Minimum steps before considering early termination
 
       logger.debug("agent:run", "Preparing actions");
       const contextActions = await Promise.all(
@@ -487,15 +487,40 @@ export function createDreams<
               }
             );
 
+            // Check if there are recent outputs that haven't been reasoned about yet
+            const recentOutputs = workingMemory.outputs
+              .sort((a, b) => b.timestamp - a.timestamp)
+              .slice(0, 3);
+
+            // Check if there's been a thought after the most recent output
+            const mostRecentOutputTime =
+              recentOutputs.length > 0 ? recentOutputs[0].timestamp : 0;
+            const hasReasonedAfterOutputs = workingMemory.thoughts.some(
+              (t) => t.timestamp > mostRecentOutputTime
+            );
+
+            logger.debug(
+              "agent:run",
+              "Checking for reasoning after recent outputs",
+              {
+                hasReasonedAfterOutputs,
+                mostRecentOutputTime,
+                recentOutputsCount: recentOutputs.length,
+              }
+            );
+
             // Only break if there are no pending outputs, no pending action calls,
-            // AND either there are no recent results or we've reasoned about them already
+            // AND either there are no recent results/outputs or we've reasoned about them already
             const shouldContinue =
-              recentResults.length > 0 && !hasReasonedAfterResults;
+              (recentResults.length > 0 && !hasReasonedAfterResults) ||
+              (recentOutputs.length > 0 && !hasReasonedAfterOutputs);
 
             logger.debug("agent:run", "Checking if should continue", {
               shouldContinue,
               recentResultsCount: recentResults.length,
               hasReasonedAfterResults,
+              recentOutputsCount: recentOutputs.length,
+              hasReasonedAfterOutputs,
             });
 
             if (
@@ -508,6 +533,13 @@ export function createDreams<
                 "All results and outputs processed, breaking loop",
                 {
                   step,
+                  pendingOutputs,
+                  pendingActionCalls,
+                  shouldContinue,
+                  recentResultsCount: recentResults.length,
+                  hasReasonedAfterResults,
+                  recentOutputsCount: recentOutputs.length,
+                  hasReasonedAfterOutputs,
                 }
               );
               break;
@@ -1091,8 +1123,23 @@ function createContextStreamHandler({
     });
 
     for (const ref of Array.isArray(refs) ? refs : [refs]) {
-      // Mark the output as processed to prevent duplicate processing in subsequent steps
-      ref.processed = true;
+      // Only mark simple outputs as processed immediately
+      // Complex outputs that might need further reasoning should remain unprocessed
+      const output = outputs.find((output) => output.type === ref.type);
+      const isSimpleOutput =
+        output?.schema?._def?.typeName === "ZodString" ||
+        (output?.schema?._def?.typeName === "ZodObject" &&
+          Object.keys(output?.schema?._def?.shape() || {}).length <= 2);
+
+      // Mark as processed only if it's a simple output or has an error
+      ref.processed = isSimpleOutput || ref.params?.error ? true : false;
+
+      logger.debug("agent:output", "Output processed status", {
+        type: ref.type,
+        processed: ref.processed,
+        isSimpleOutput,
+      });
+
       chain.push(ref);
       workingMemory.outputs.push(ref);
       pushLogStream(ref, true);
