@@ -32,7 +32,7 @@
     "@ai-sdk/groq": "^1.1.7",
     "@ai-sdk/openai": "^1.1.14",
     "@mendable/firecrawl-js": "^1.16.0",
-    "@openrouter/ai-sdk-provider": "^0.2.1",
+    "@openrouter/ai-sdk-provider": "^0.4.1",
     "@tailwindcss/postcss": "^4.0.6",
     "@tavily/core": "^0.3.1",
     "ai": "^4.1.25",
