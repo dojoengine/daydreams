@@ -71,7 +71,9 @@ export class StarknetChain implements IChain {
    */
   public async write(call: Call): Promise<any> {
     try {
+      console.log("Pre-compilation execution calldata: ", call.calldata);
       call.calldata = CallData.compile(call.calldata || []);
+      console.log("Post-compilation execution calldata: ", call.calldata);
       const { transaction_hash } = await this.account.execute(call);
       return this.account.waitForTransaction(transaction_hash, {
         retryInterval: 1000,
