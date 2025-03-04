@@ -40,7 +40,7 @@ importers:
         version: 0.3.1
       ai:
         specifier: ^4.1.25
-        version: 4.1.46(react@18.3.1)(zod@3.24.2)
+        version: 4.1.51(react@18.3.1)(zod@3.24.2)
       ajv:
         specifier: ^8.17.1
         version: 8.17.1
@@ -288,7 +288,7 @@ importers:
         version: 0.0.18(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       ai:
         specifier: ^4.1.46
-        version: 4.1.46(react@18.3.1)(zod@3.24.2)
+        version: 4.1.51(react@18.3.1)(zod@3.24.2)
       ajv:
         specifier: ^8.17.1
         version: 8.17.1
@@ -488,8 +488,8 @@ packages:
     resolution: {integrity: sha512-jie6ZJT2ZR0uVOVCDc9R2xCX5I/Dum/wEK28lx21PJx6ZnFAN9EzD2WsPhcDWfCgGx3OAZZ0GyM3CEobXpa9LA==}
     engines: {node: '>=18'}
 
-  '@ai-sdk/react@1.1.18':
-    resolution: {integrity: sha512-2wlWug6NVAc8zh3pgqtvwPkSNTdA6Q4x9CmrNXCeHcXfJkJ+MuHFQz/I7Wb7mLRajf0DAxsFLIhHyBCEuTkDNw==}
+  '@ai-sdk/react@1.1.20':
+    resolution: {integrity: sha512-4QOM9fR9SryaRraybckDjrhl1O6XejqELdKmrM5g9y9eLnWAfjwF+W1aN0knkSHzbbjMqN77sy9B9yL8EuJbDw==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^18 || ^19 || ^19.0.0-rc
@@ -3552,8 +3552,8 @@ packages:
     resolution: {integrity: sha512-4I7Td01quW/RpocfNayFdFVk1qSuoh0E7JrbRJ16nH01HhKFQ88INq9Sd+nd72zqRySlr9BmDA8xlEJ6vJMrYA==}
     engines: {node: '>=8'}
 
-  ai@4.1.46:
-    resolution: {integrity: sha512-VTvAktT69IN1qcNAv7OlcOuR0q4HqUlhkVacrWmMlEoprYykF9EL5RY8IECD5d036Wqg0walwbSKZlA2noHm1A==}
+  ai@4.1.51:
+    resolution: {integrity: sha512-CuJgbi2Ktfv/7jjxvUhFOGZ8OFxWQ8a7ZF19lwJuVLauL4uWHLetm6R3iaafahJ8ZkueSbhR/Bnroy5apd1nCw==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^18 || ^19 || ^19.0.0-rc
@@ -8376,7 +8376,7 @@ snapshots:
     dependencies:
       json-schema: 0.4.0
 
-  '@ai-sdk/react@1.1.18(react@18.3.1)(zod@3.24.2)':
+  '@ai-sdk/react@1.1.20(react@18.3.1)(zod@3.24.2)':
     dependencies:
       '@ai-sdk/provider-utils': 2.1.10(zod@3.24.2)
       '@ai-sdk/ui-utils': 1.1.16(zod@3.24.2)
@@ -12261,11 +12261,11 @@ snapshots:
       clean-stack: 2.2.0
       indent-string: 4.0.0
 
-  ai@4.1.46(react@18.3.1)(zod@3.24.2):
+  ai@4.1.51(react@18.3.1)(zod@3.24.2):
     dependencies:
       '@ai-sdk/provider': 1.0.9
       '@ai-sdk/provider-utils': 2.1.10(zod@3.24.2)
-      '@ai-sdk/react': 1.1.18(react@18.3.1)(zod@3.24.2)
+      '@ai-sdk/react': 1.1.20(react@18.3.1)(zod@3.24.2)
       '@ai-sdk/ui-utils': 1.1.16(zod@3.24.2)
       '@opentelemetry/api': 1.9.0
       jsondiffpatch: 0.6.0
