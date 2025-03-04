@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@ai-sdk/anthropic':
         specifier: ^1.1.6
-        version: 1.1.9(zod@3.24.2)
+        version: 1.1.14(zod@3.24.2)
       '@ai-sdk/google':
         specifier: ^1.1.16
         version: 1.1.16(zod@3.24.2)
@@ -425,8 +425,8 @@ packages:
   '@adraffy/ens-normalize@1.10.1':
     resolution: {integrity: sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==}
 
-  '@ai-sdk/anthropic@1.1.9':
-    resolution: {integrity: sha512-oPZ0r1XyXHWYwOSFnUTRdPMjX3SOfmZjgb1YaRYQk5Zhrcm8DcmZLkdXBkIXbfMeeOnT+bidqGbQSejXEzk/FQ==}
+  '@ai-sdk/anthropic@1.1.14':
+    resolution: {integrity: sha512-dLrZIU1OFA9rWxEEKGcLFWNicwsxtIXSuL/7H3QuBHFKiyO5RstVUZGRhyiFRYquoEsazG/5Xxi4VjsxcakbMg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.0.0
@@ -8313,10 +8313,10 @@ snapshots:
 
   '@adraffy/ens-normalize@1.10.1': {}
 
-  '@ai-sdk/anthropic@1.1.9(zod@3.24.2)':
+  '@ai-sdk/anthropic@1.1.14(zod@3.24.2)':
     dependencies:
-      '@ai-sdk/provider': 1.0.8
-      '@ai-sdk/provider-utils': 2.1.9(zod@3.24.2)
+      '@ai-sdk/provider': 1.0.9
+      '@ai-sdk/provider-utils': 2.1.10(zod@3.24.2)
       zod: 3.24.2
 
   '@ai-sdk/google@1.1.16(zod@3.24.2)':
