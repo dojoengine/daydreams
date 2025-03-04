@@ -59,7 +59,7 @@
     "dotenv": "^16.4.7",
     "ethers": "^6.13.5",
     "js-tiktoken": "^1.0.18",
-    "mongodb": "^6.13.0",
+    "mongodb": "^6.14.1",
     "openai": "^4.83.0",
     "p-defer": "^4.0.1",
     "starknet": "^6.23.1",
