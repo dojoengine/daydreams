@@ -42,7 +42,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^1.1.14",
+    "@ai-sdk/openai": "^1.2.0",
     "@cetusprotocol/aggregator-sdk": "^0.3.22",
     "@langchain/core": "^0.3.39",
     "@langchain/textsplitters": "^0.1.0",
