@@ -18,6 +18,7 @@
     "ui": "bun --dir clients/example-ui run dev",
     "test": "bun run packages/core",
     "build:core": "cd packages/core && bun run build",
+    "build:create-agent": "cd packages/create-agent && bun run build",
     "release": "cd packages/core && bun run build && cd ../.. && cd packages/create-agent && bun run build && cd ../.. && npx lerna publish --no-private --force-publish",
     "prettier-check": "pnpx prettier --check packages",
     "prettier": "pnpx prettier --write packages",

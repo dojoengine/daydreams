@@ -26,5 +26,7 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Build
+      - name: Build core
         run: bun run build:core
+      - name: Build create-agent
+        run: bun run build:create-agent
