@@ -34,7 +34,7 @@
     "@ai-sdk/openai": "^1.1.14",
     "@mendable/firecrawl-js": "^1.16.0",
     "@modelcontextprotocol/sdk": "^1.6.1",
-    "@openrouter/ai-sdk-provider": "^0.2.1",
+    "@openrouter/ai-sdk-provider": "^0.4.3",
     "@tavily/core": "^0.3.1",
     "@types/blessed": "^0.1.25",
     "ai": "^4.1.25",
