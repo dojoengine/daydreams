@@ -51,7 +51,7 @@
     "@solana/web3.js": "^1.98.0",
     "@telegraf/types": "^8.3.1",
     "agent-twitter-client": "^0.0.18",
-    "ai": "^4.1.46",
+    "ai": "^4.1.53",
     "ajv": "^8.17.1",
     "bignumber.js": "9.1.2",
     "bs58": "^6.0.0",
